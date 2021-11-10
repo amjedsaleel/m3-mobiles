@@ -6,3 +6,40 @@
 body {
     background-color: #F6F7FB;
 }
+
+.regular-text-bold {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.small-gray-text {
+    font-size: 14px;
+    color: #969696;
+}
+
+.btn-outline-primary {
+    border: 1px solid #BC7070;
+    color: #BC7070;
+}
+
+.btn-primary {
+    background-color: #BC7070;
+    color: white;
+    border: 1px solid #BC7070;
+}
+
+.btn-primary:hover {
+    background-color: #b05d5d;
+    border: 1px solid #b05d5d;
+}
+
+.btn-outline-primary:hover {
+    background-color: #BC7070;
+    color: white;
+    border: 1px solid #BC7070;
+}
+
+.offer {
+    color: #469649;
+    font-weight: bold;
+}
