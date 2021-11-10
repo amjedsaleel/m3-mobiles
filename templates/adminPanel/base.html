@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{% static 'admin-panel/css/prism.css' %}">
+    <link rel="stylesheet" href="{% static 'admin-panel/css/prism-line-numbers.css' %}">
+    <link rel="stylesheet" href="{% static 'admin-panel/css/prism-toolbar.css' %}">
+    <link rel="stylesheet" href="{% static 'admin-panel/css/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'admin-panel/css/dropzone.css' %}">
+    <link href="{% static 'admin-panel/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
+
+    {#    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css">#}
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'admin-panel/css/theme.min.css' %}">
+    <title>Homepage | Dash Ui - Bootstrap 5 Admin Dashboard Template</title>
+</head>
+
+<body>
+<div id="db-wrapper">
+    <nav class="navbar-vertical navbar">
+    <div class="nav-scroller">
+        <!-- Brand logo -->
+        <a class="navbar-brand" href="#">
+            M3 Mobiles
+        </a>
+        <!-- Navbar nav -->
+        <ul class="navbar-nav flex-column" id="sideNavbar">
+            <li class="nav-item">
+                <a class="nav-link has-arrow active" href="#">
+                    <i data-feather="home" class="nav-icon icon-xs me-2"></i> Dashboard
+                </a>
+            </li>
+
+
+            <!-- Brand management -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#navPages" aria-expanded="false" aria-controls="navPages">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/brand.svg' %}" alt="" srcset=""> Brand management
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav sub items-->
+                <div id="navPages" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% block brands-list %}{% endblock %}" href="#">
+                                Brands list
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link has-arrow {% block add-brand %}{% endblock %}" href="#">
+                                Add brand
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- Product management -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#productManagement" aria-expanded="false" aria-controls="productManagement">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/product.svg' %}" alt="" srcset=""> product management
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="productManagement" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">Product list</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  " href="#">Add product</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- Order management -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#orderManagement" aria-expanded="false" aria-controls="orderManagement">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/order.svg' %}" alt="" srcset=""> Order management
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="orderManagement" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">Active orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  " href="#">Order history</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- User management -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#userManagement" aria-expanded="false" aria-controls="userManagement">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/user.svg' %}" alt="" srcset=""> User management
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="userManagement" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">View all users</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- Offer management -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#offerManagement" aria-expanded="false" aria-controls="offerManagement">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/offer.svg' %}" alt="" srcset=""> Offer management
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="offerManagement" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">All coupons</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  " href="#">Add coupons</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link  " href="#">Redeemed coupons</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link  " href="#">Brand offers</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link  " href="#">Product offers</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- Report -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#report" aria-expanded="false" aria-controls="report">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/report.svg' %}" alt="" srcset=""> View report
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="report" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="#">View report</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
+            <!-- Ads -->
+            <li class="nav-item">
+                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#ads" aria-expanded="false" aria-controls="report">
+                    <div>
+                        <img src="{% static 'admin-panel/icons/ads.svg' %}" alt="" srcset=""> Ads
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-chevron-down">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <!-- Nav item sub items -->
+                <div id="ads" class="collapse " data-bs-parent="#sideNavbar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ads</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+
+    <!-- Page content -->
+    <div id="page-content">
+        <div class="header @@classList">
+            <!-- navbar -->
+            <nav class="navbar-classic navbar navbar-expand-lg">
+                <a id="nav-toggle" href="#"><i
+                        data-feather="menu"
+
+                        class="nav-icon me-2 icon-xs"></i></a>
+                <div class="ms-lg-3 d-none d-md-none d-lg-block">
+                    <!-- Form -->
+                    <form class="d-flex align-items-center">
+                        <input type="search" class="form-control" placeholder="Search"/>
+                    </form>
+                </div>
+                <!--Navbar nav -->
+                <ul class="navbar-nav navbar-right-wrap ms-auto d-flex nav-top-wrap">
+                    <!-- List -->
+                    <li class="dropdown ms-2">
+                        <a class="rounded-circle" href="#" role="button" id="dropdownUser"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-md avatar-indicators avatar-online">
+                                <img alt="avatar" src="#"
+                                     class="rounded-circle"/>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        {% block content %} {% endblock %}
+    </div>
+</div>
+
+
+<!-- Scripts -->
+<!-- Libs JS -->
+<script src="{% static 'admin-panel/js/jquery.min.js' %}"></script>
+<script src="{% static 'admin-panel/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin-panel/js/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'admin-panel/js/feather.min.js' %}"></script>
+{#<script src="assets/libs/prismjs/components/prism-core.min.js"></script>#}
+{#<script src="assets/libs/prismjs/components/prism-markup.min.js"></script>#}
+{#<script src="assets/libs/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>#}
+{#<script src="assets/libs/apexcharts/dist/apexcharts.min.js"></script>#}
+{#<script src="assets/libs/dropzone/dist/min/dropzone.min.js"></script>#}
+
+<!-- clipboard -->
+{#<script src="../../cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>#}
+
+<!-- Theme JS -->
+<script src="{% static 'admin-panel/js/theme.min.js' %}"></script>
+</body>
+</html>
