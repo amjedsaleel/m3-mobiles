@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="{% static 'admin-panel/css/prism-toolbar.css' %}">
     <link rel="stylesheet" href="{% static 'admin-panel/css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'admin-panel/css/dropzone.css' %}">
+    <link rel="stylesheet" href="{% static 'admin-panel/css/style.css' %}">
+
     <link href="{% static 'admin-panel/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
+
 
     {#    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css">#}
 
@@ -24,236 +27,245 @@
 <body>
 <div id="db-wrapper">
     <nav class="navbar-vertical navbar">
-    <div class="nav-scroller">
-        <!-- Brand logo -->
-        <a class="navbar-brand" href="#">
-            M3 Mobiles
-        </a>
-        <!-- Navbar nav -->
-        <ul class="navbar-nav flex-column" id="sideNavbar">
-            <li class="nav-item">
-                <a class="nav-link has-arrow active" href="#">
-                    <i data-feather="home" class="nav-icon icon-xs me-2"></i> Dashboard
-                </a>
-            </li>
+        <div class="nav-scroller">
+            <!-- Brand logo -->
+            <a class="navbar-brand" href="#">
+                M3 Mobiles
+            </a>
+            <!-- Navbar nav -->
+            <ul class="navbar-nav flex-column" id="sideNavbar">
+                <li class="nav-item">
+                    <a class="nav-link has-arrow active" href="#">
+                        <i data-feather="home" class="nav-icon icon-xs me-2"></i> Dashboard
+                    </a>
+                </li>
 
 
-            <!-- Brand management -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#navPages" aria-expanded="false" aria-controls="navPages">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/brand.svg' %}" alt="" srcset=""> Brand management
+                <!-- Brand management -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#navPages" aria-expanded="false" aria-controls="navPages">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/brand.svg' %}" alt="" srcset=""> Brand management
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav sub items-->
+                    <div id="navPages" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link {% block brands-list %}{% endblock %}"
+                                   href="{% url 'admin-panel:brand' %}">
+                                    Brands list
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link has-arrow {% block add-brand %}{% endblock %}"
+                                   href="{% url 'admin-panel:add-brand' %}">
+                                    Add brand
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav sub items-->
-                <div id="navPages" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link {% block brands-list %}{% endblock %}" href="{% url 'admin-panel:brand' %}">
-                                Brands list
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link has-arrow {% block add-brand %}{% endblock %}" href="#">
-                                Add brand
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- Product management -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#productManagement" aria-expanded="false" aria-controls="productManagement">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/product.svg' %}" alt="" srcset=""> product management
+                <!-- Product management -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#productManagement" aria-expanded="false" aria-controls="productManagement">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/product.svg' %}" alt="" srcset=""> product management
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="productManagement" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">Product list</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Add product</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="productManagement" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">Product list</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#">Add product</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- Order management -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#orderManagement" aria-expanded="false" aria-controls="orderManagement">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/order.svg' %}" alt="" srcset=""> Order management
+                <!-- Order management -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#orderManagement" aria-expanded="false" aria-controls="orderManagement">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/order.svg' %}" alt="" srcset=""> Order management
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="orderManagement" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">Active orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Order history</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="orderManagement" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">Active orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#">Order history</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- User management -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#userManagement" aria-expanded="false" aria-controls="userManagement">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/user.svg' %}" alt="" srcset=""> User management
+                <!-- User management -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#userManagement" aria-expanded="false" aria-controls="userManagement">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/user.svg' %}" alt="" srcset=""> User management
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="userManagement" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">View all users</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="userManagement" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">View all users</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- Offer management -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#offerManagement" aria-expanded="false" aria-controls="offerManagement">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/offer.svg' %}" alt="" srcset=""> Offer management
+                <!-- Offer management -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#offerManagement" aria-expanded="false" aria-controls="offerManagement">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/offer.svg' %}" alt="" srcset=""> Offer management
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="offerManagement" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">All coupons</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Add coupons</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Redeemed coupons</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Brand offers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  " href="#">Product offers</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="offerManagement" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">All coupons</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#">Add coupons</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link  " href="#">Redeemed coupons</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link  " href="#">Brand offers</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link  " href="#">Product offers</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- Report -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#report" aria-expanded="false" aria-controls="report">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/report.svg' %}" alt="" srcset=""> View report
+                <!-- Report -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#report" aria-expanded="false" aria-controls="report">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/report.svg' %}" alt="" srcset=""> View report
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="report" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">View report</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="report" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">View report</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
 
-            <!-- Ads -->
-            <li class="nav-item">
-                <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
-                   data-bs-toggle="collapse"
-                   data-bs-target="#ads" aria-expanded="false" aria-controls="report">
-                    <div>
-                        <img src="{% static 'admin-panel/icons/ads.svg' %}" alt="" srcset=""> Ads
+                <!-- Ads -->
+                <li class="nav-item">
+                    <a class="nav-link has-arrow collapsed d-flex justify-content-between" href="#"
+                       data-bs-toggle="collapse"
+                       data-bs-target="#ads" aria-expanded="false" aria-controls="report">
+                        <div>
+                            <img src="{% static 'admin-panel/icons/ads.svg' %}" alt="" srcset=""> Ads
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-chevron-down">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <!-- Nav item sub items -->
+                    <div id="ads" class="collapse " data-bs-parent="#sideNavbar">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">ads</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-chevron-down">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <!-- Nav item sub items -->
-                <div id="ads" class="collapse " data-bs-parent="#sideNavbar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">ads</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+                </li>
 
-        </ul>
-    </div>
-</nav>
+            </ul>
+        </div>
+    </nav>
 
 
     <!-- Page content -->
@@ -309,5 +321,7 @@
 
 <!-- Theme JS -->
 <script src="{% static 'admin-panel/js/theme.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+{% block script %} {% endblock %}
 </body>
 </html>
