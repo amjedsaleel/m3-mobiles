@@ -45,6 +45,7 @@ class Product(models.Model):
     ram = models.CharField(max_length=20, choices=RAM)
     storage = models.CharField(max_length=20, choices=STORAGE)
     color = models.CharField(max_length=20, choices=COLOR)
+    price = models.IntegerField()
     description = models.TextField(max_length=300)
     image1 = models.ImageField(upload_to='products')
     image2 = models.ImageField(upload_to='products')
