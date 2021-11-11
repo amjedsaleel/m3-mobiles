@@ -1,0 +1,22 @@
+{% extends 'adminPanel/base.html' %}
+{% load static %}
+{% block tittle %} Brand list {% endblock %}
+{% block brands-list %} active {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for brand in brands %}
+                <div class="col-12 col-md-6 col-lg-4 mt-4">
+                <div class="card text-center" style="width: 20rem;">
+                    <img src="{{ brand.log.url }}" class="card-img-top img-fluid">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ brand.name }}</h5>
+                        <p class="card-text">{{ brand.get_count }}</p>
+                        <a href="#" class="btn btn-sm btn-primary">View all products</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

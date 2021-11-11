@@ -15,3 +15,6 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_count(self):
+        return self.product_set.filter(brand=self.id).count()

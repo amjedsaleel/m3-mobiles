@@ -18,7 +18,7 @@
 
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{% static 'admin-panel/css/theme.min.css' %}">
-    <title>Homepage | Dash Ui - Bootstrap 5 Admin Dashboard Template</title>
+    <title>{% block tittle %}Dashboard{% endblock %}</title>
 </head>
 
 <body>
@@ -58,7 +58,7 @@
                 <div id="navPages" class="collapse " data-bs-parent="#sideNavbar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {% block brands-list %}{% endblock %}" href="#">
+                            <a class="nav-link {% block brands-list %}{% endblock %}" href="{% url 'admin-panel:brand' %}">
                                 Brands list
                             </a>
                         </li>
