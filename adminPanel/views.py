@@ -6,6 +6,7 @@ from django.contrib import messages
 from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Product
+from store.forms import ProductForm
 
 # Create your views here.
 
@@ -47,4 +48,17 @@ def product(request):
 
 
 def product_add(request):
-    return render(request, 'adminPanel/product-add.html')
+    form = ProductForm(use_required_attribute=False)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, use_required_attribute=False)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully product added')
+            return redirect('admin-panel:products')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'adminPanel/product-add.html', context)
