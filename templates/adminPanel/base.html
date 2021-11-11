@@ -15,6 +15,10 @@
     <link rel="stylesheet" href="{% static 'admin-panel/css/style.css' %}">
     <link href="{% static 'admin-panel/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
 
+    <!-- Jquery data table CSS-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.css"/>
+
+    <!-- Google icons -->
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
           rel="stylesheet">
     {#    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css">#}
@@ -323,6 +327,11 @@
 <!-- Theme JS -->
 <script src="{% static 'admin-panel/js/theme.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+<!-- Jquery datatable js-->
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/datatables.min.js"></script>
+
+
 {% block script %} {% endblock %}
 </body>
 </html>
