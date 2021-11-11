@@ -1,5 +1,6 @@
 # django
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 # local Django
 from brand.models import Brand
@@ -27,6 +28,7 @@ def add_brand(request):
         form = BrandForm(request.POST, request.FILES, use_required_attribute=False)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Successfully added new brand')
             return redirect('admin-panel:brand')
 
     context = {
