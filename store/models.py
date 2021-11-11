@@ -56,3 +56,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super(Product, self).save(*args, **kwargs)
