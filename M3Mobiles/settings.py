@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     # Installed apps
     'accounts.apps.AccountsConfig',
     'store.apps.StoreConfig',
-    'adminPanel.apps.AdminpanelConfig'
+    'adminPanel.apps.AdminpanelConfig',
+    'brand.apps.BrandConfig'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
