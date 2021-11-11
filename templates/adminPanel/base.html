@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="{% static 'admin-panel/css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'admin-panel/css/dropzone.css' %}">
     <link rel="stylesheet" href="{% static 'admin-panel/css/style.css' %}">
-
     <link href="{% static 'admin-panel/css/materialdesignicons.min.css' %}" rel="stylesheet"/>
 
-
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+          rel="stylesheet">
     {#    <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css">#}
 
     <!-- Theme CSS -->
@@ -35,7 +35,7 @@
             <!-- Navbar nav -->
             <ul class="navbar-nav flex-column" id="sideNavbar">
                 <li class="nav-item">
-                    <a class="nav-link has-arrow active" href="#">
+                    <a class="nav-link has-arrow active" href="{% url 'admin-panel:dashboard' %}">
                         <i data-feather="home" class="nav-icon icon-xs me-2"></i> Dashboard
                     </a>
                 </li>
@@ -99,10 +99,12 @@
                     <div id="productManagement" class="collapse " data-bs-parent="#sideNavbar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link " href="#">Product list</a>
+                                <a class="nav-link {% block product-list %}{% endblock %}"
+                                   href="{% url 'admin-panel:products' %}">Product list</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  " href="#">Add product</a>
+                                <a class="nav-link {% block add-product %}{% endblock %}"
+                                   href="{% url 'admin-panel:add-product' %}">Add product</a>
                             </li>
                         </ul>
                     </div>
@@ -273,10 +275,7 @@
         <div class="header @@classList">
             <!-- navbar -->
             <nav class="navbar-classic navbar navbar-expand-lg">
-                <a id="nav-toggle" href="#"><i
-                        data-feather="menu"
-
-                        class="nav-icon me-2 icon-xs"></i></a>
+                <a id="nav-toggle" href="#"><i data-feather="menu" class="nav-icon me-2 icon-xs"></i></a>
                 <div class="ms-lg-3 d-none d-md-none d-lg-block">
                     <!-- Form -->
                     <form class="d-flex align-items-center">

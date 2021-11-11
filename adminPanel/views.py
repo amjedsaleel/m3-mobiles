@@ -5,6 +5,7 @@ from django.contrib import messages
 # local Django
 from brand.models import Brand
 from brand.forms import BrandForm
+from store.models import Product
 
 # Create your views here.
 
@@ -35,3 +36,15 @@ def add_brand(request):
         'form': form
     }
     return render(request, 'adminPanel/add-brand.html', context)
+
+
+def product(request):
+    products = Product.objects.all()
+    context = {
+        'products': products
+    }
+    return render(request, 'adminPanel/product-list.html', context)
+
+
+def product_add(request):
+    return render(request, 'adminPanel/product-add.html')
