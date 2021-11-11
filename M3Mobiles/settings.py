@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'store.apps.StoreConfig',
     'adminPanel.apps.AdminpanelConfig',
-    'brand.apps.BrandConfig'
+    'brand.apps.BrandConfig',
+
+    # Installed via pip
+    'crispy_forms',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -140,3 +143,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
