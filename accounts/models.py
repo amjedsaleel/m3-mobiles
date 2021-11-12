@@ -60,7 +60,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     is_superuser = models.BooleanField(_('supper user'), default=False)
     is_staff = models.BooleanField(_('staff status'), default=False)
-    is_active = models.BooleanField(_('active'), default=False)
+    is_active = models.BooleanField(_('active'), default=True)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     objects = CustomUserManager()
