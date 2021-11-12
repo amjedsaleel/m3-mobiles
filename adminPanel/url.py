@@ -8,6 +8,8 @@ app_name = 'admin-panel'
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    path('login/', views.admin_login, name='login'),
+    path('logout', views.logout, name='logout'),
     path('brands/', views.brand, name='brand'),
     path('add-brand/', views.add_brand, name='add-brand'),
     path('products/', views.all_products, name='products'),

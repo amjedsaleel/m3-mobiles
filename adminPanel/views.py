@@ -1,20 +1,52 @@
 # django
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 
 # local Django
 from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Variant
 from store.forms import VariantForm, ProductForm
+from .decorators import admin_ony
+
+User = get_user_model()
+
 
 # Create your views here.
 
 
+def admin_login(request):
+    if 'admin' in request.session:
+        return redirect('admin-panel:dashboard')
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(email=email, password=password)
+
+        if user is not None:
+            if user.is_superuser:
+                request.session['admin'] = 'admin'
+                return redirect('admin-panel:dashboard')
+
+        messages.error(request, 'Invalid credentials')
+        return redirect('admin-panel:login')
+    return render(request, 'adminPanel/sign-in.html')
+
+
+def logout(request):
+    del request.session['admin']
+    return redirect('admin-panel:login')
+
+
+@admin_ony
 def dashboard(request):
     return render(request, 'adminPanel/dashboard.html')
 
 
+@admin_ony
 def brand(request):
     brands = Brand.objects.all()
     context = {
@@ -23,6 +55,7 @@ def brand(request):
     return render(request, 'adminPanel/brand.html', context)
 
 
+@admin_ony
 def add_brand(request):
     form = BrandForm(use_required_attribute=False)
 
@@ -39,6 +72,7 @@ def add_brand(request):
     return render(request, 'adminPanel/add-brand.html', context)
 
 
+@admin_ony
 def all_products(request):
     variants = Variant.objects.all()
     context = {
@@ -47,6 +81,7 @@ def all_products(request):
     return render(request, 'adminPanel/product-list.html', context)
 
 
+@admin_ony
 def add_product(request):
     form = ProductForm(use_required_attribute=False)
 
@@ -64,6 +99,7 @@ def add_product(request):
     return render(request, 'adminPanel/product-add.html', context)
 
 
+@admin_ony
 def add_variant(request):
     form = VariantForm(use_required_attribute=False)
 
