@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
+
+        <!-- Last 6 products-->
         <div class="row mt-4">
             <div class="col-12 d-flex justify-content-between">
                 <h4>New Arrivals</h4>
@@ -9,107 +11,64 @@
             </div>
         </div>
         <div class="row mt-5">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
+            {% for last_product in last_products %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap mt-4 mb-4"> <img src="{{ last_product.image1.url }}" alt=""/>
+                        </a>
+                        <hr>
+                        <h5 class="pl-3">{{ last_product.product.name | capfirst }}</h5>
+                        <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
+                            <p class="price regular-text-bold">₹{{ last_product.price }}</p>
+                            <p class="original-price small-gray-text">
+                                <del>25999</del>
+                            </p>
+                            <p class="offer small-gray-text">10% off</p>
+                        </div>
+                        <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
+                            <a href="#" class="btn btn-outline-primary">Add to cart</a>
+                            <a href="#" class="btn btn-primary">Buy now</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="card card-product-grid">
-                    <a href="#" class="img-wrap mt-4 mb-4"> <img src="{% static 'images/phone.jpeg' %}"  alt=""/> </a>
-                    <hr>
-                    <h5 class="pl-3">Google pixel 4a</h5>
-                    <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                        <p class="price regular-text-bold">₹21319</p>
-                        <p class="original-price small-gray-text"><del>25999</del></p>
-                        <p class="offer small-gray-text">10% off</p>
-                    </div>
-                    <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
-                        <a href="#" class="btn btn-primary">Buy now</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
+
+
+        <!-- Last three products based on the brand-->
+        {% for brand in brands %}
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-between mt-4 mb-3">
+                    <h4>{{ brand.name | capfirst }}</h4>
+                    <a href="#" class="btn btn-outline-primary">See all</a>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for product in brand.product_set.all %}
+                    {% for variant in product.variant_set.reverse|slice:":3" %}
+                        <div class="col-12 col-md-6">
+                            <div class="card card-product-grid">
+                                <a href="#" class="img-wrap mt-4 mb-4"> <img src="{{ variant.image1.url }}" alt=""/>
+                                </a>
+                                <hr>
+                                <h5 class="pl-3">{{ product.name | capfirst }}</h5>
+                                <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
+                                    <p class="price regular-text-bold">₹{{ variant.price }}</p>
+                                    <p class="original-price small-gray-text">
+                                        <del>25999</del>
+                                    </p>
+                                    <p class="offer small-gray-text">10% off</p>
+                                </div>
+                                <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
+                                    <a href="#" class="btn btn-outline-primary">Add to cart</a>
+                                    <a href="#" class="btn btn-primary">Buy now</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

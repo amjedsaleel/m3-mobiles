@@ -110,6 +110,10 @@
                                 <a class="nav-link {% block add-product %}{% endblock %}"
                                    href="{% url 'admin-panel:add-product' %}">Add product</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" {% block add-variant %} {% endblock %}
+                                   href="{% url 'admin-panel:add-variant' %}">Add Variant</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

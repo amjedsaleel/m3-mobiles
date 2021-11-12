@@ -7,12 +7,11 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form action="" method="post" enctype="multipart/form-data" class="card mt-5 mb-5 p-4" id="add-product">
-                    <h3 class="card-title">Add product</h3>
+                <form action="{% url 'admin-panel:add-product' %}" method="post" class="card mt-5 mb-5 p-4" id="add-product">
                     {% csrf_token %}
                     {{ form | crispy }}
-                    <div class="text-center">
-                        <input type="submit" value="Add product" class="btn btn-primary w-50">
+                    <div class="text-center mt-3">
+                        <input type="submit" class="btn btn-primary w-50" value="Add product">
                     </div>
                 </form>
             </div>
@@ -21,37 +20,14 @@
 {% endblock %}
 {% block script %}
     <script>
-        $(document).ready(function () {
+        console.log('Okkkkkk')
+         $(document).ready(function () {
             $("#add-product").validate({
                 rules: {
                     brand: {
                         required: true,
                     },
                     name: {
-                        required: true,
-                    },
-                    stock: {
-                        required: true,
-                    },
-                    ram: {
-                        required: true,
-                    },
-                    storage: {
-                        required: true,
-                    },
-                    color: {
-                        required: true,
-                    },
-                    description: {
-                        required: true,
-                    },
-                    image1: {
-                        required: true,
-                    },
-                    image2: {
-                        required: true,
-                    },
-                    image3: {
                         required: true,
                     },
                 },

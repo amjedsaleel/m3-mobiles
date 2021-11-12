@@ -1,0 +1,64 @@
+{% extends 'adminPanel/base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block tittle %} Add variant {% endblock %}
+{% block add-product %} active {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="" method="post" enctype="multipart/form-data" class="card mt-5 mb-5 p-4" id="add-variant">
+                    <div class="d-flex justify-content-between">
+                            <h3 class="card-title">Add Variant</h3>
+                        <a href="#" class="btn btn-primary">Add product</a>
+                    </div>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="text-center">
+                        <input type="submit" value="Add product" class="btn btn-primary w-50">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#add-variant").validate({
+                rules: {
+                    brand: {
+                        required: true,
+                    },
+                    name: {
+                        required: true,
+                    },
+                    stock: {
+                        required: true,
+                    },
+                    ram: {
+                        required: true,
+                    },
+                    storage: {
+                        required: true,
+                    },
+                    color: {
+                        required: true,
+                    },
+                    description: {
+                        required: true,
+                    },
+                    image1: {
+                        required: true,
+                    },
+                  /*  image2: {
+                        required: true,
+                    },
+                    image3: {
+                        required: true,
+                    }, */
+                },
+            })
+        })
+    </script>
+{% endblock %}

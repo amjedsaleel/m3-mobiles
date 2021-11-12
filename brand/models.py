@@ -16,8 +16,8 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
-    def get_count(self):
-        return self.product_set.filter(brand=self.id).count()
+    # def get_count(self):
+    #     return self.product_set.all()
 
     def save(self, *args, **kwargs):
         self.name = self.name.lower()

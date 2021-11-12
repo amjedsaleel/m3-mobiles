@@ -9,6 +9,21 @@ from brand.models import Brand
 
 # Create your models here.
 
+
+class Product(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, unique=True)
+    offer = models.CharField(max_length=30, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super(Product, self).save(*args, **kwargs)
+
+
 RAM = (
     ('2GB', '2GB'),
     ('4GB', '4GB'),
@@ -36,10 +51,9 @@ COLOR = (
 )
 
 
-class Product(models.Model):
+class Variant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # slug = models.SlugField(max_length=255, unique=True)
     stock = models.IntegerField()
     ram = models.CharField(max_length=20, choices=RAM)
@@ -48,16 +62,14 @@ class Product(models.Model):
     price = models.IntegerField()
     description = models.TextField(max_length=300)
     image1 = models.ImageField(upload_to='products')
-    image2 = models.ImageField(upload_to='products')
-    image3 = models.ImageField(upload_to='products')
+    image2 = models.ImageField(upload_to='products', blank=True)
+    image3 = models.ImageField(upload_to='products', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return self.name
+        return self.product.name
 
-    def save(self, *args, **kwargs):
-        self.name = self.name.lower()
-        return super(Product, self).save(*args, **kwargs)
+
