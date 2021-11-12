@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block title %} M3|Register {% endblock %}
+{% block content %}
+    <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <article class="card-body">
+            <header class="mb-4"><h4 class="card-title text-primary">Sign up</h4></header>
+            <form method="post" action="{% url 'accounts:signup' %}">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Sign Up</button>
+                </div>
+            </form>
+        </article>
+    </div>
+
+    <p class="text-center mt-4">Have an account? <a href="" class="text-primary">Log In</a></p>
+    <br><br>
+{% endblock %}

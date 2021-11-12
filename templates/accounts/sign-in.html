@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% block title %} M3|Sign In {% endblock %}
+{% block content %}
+    <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Sign in</h4>
+            <form method="post" action="{% url 'accounts:sign-in' %}">
+                {% include 'includes/messages.html' %}
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="email" class="form-control" placeholder="Email Address" name="email">
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="password">
+                </div>
+                <div class="form-group">
+                    <a href="#" class="float-right">Forgot password?</a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

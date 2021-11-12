@@ -43,3 +43,8 @@ body {
     color: #469649;
     font-weight: bold;
 }
+
+.asteriskField {
+    color: red;
+    margin-left: 2px;
+}
