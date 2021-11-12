@@ -33,9 +33,9 @@ RAM = (
 
 STORAGE = (
     ('8GB', '8GB'),
-    ('8GB', '8GB'),
-    ('8GB', '8GB'),
-    ('8GB', '8GB'),
+    ('16GB', '16GB'),
+    ('32GB', '32GB'),
+    ('64GB', '64GB'),
     ('128GB', '128GB'),
     ('256GB', '256GB'),
     ('128GB', '128GB'),
@@ -47,7 +47,6 @@ COLOR = (
     ('BLUE', 'BLUE'),
     ('GREEN', 'GREEN'),
     ('WHITE', 'WHITE'),
-
 )
 
 
