@@ -18,6 +18,9 @@
                         </a>
                         <hr>
                         <h5 class="pl-3">{{ last_product.product.name | capfirst }}</h5>
+                        <h6 class="pl-3 small-gray-text">
+                            ({{ last_product.ram }}, {{ last_product.storage }}, {{ last_product.color }})
+                        </h6>
                         <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
                             <p class="price regular-text-bold">₹{{ last_product.price }}</p>
                             <p class="original-price small-gray-text">

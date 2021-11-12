@@ -16,3 +16,15 @@ def index(request):
         'brands': brands
     }
     return render(request, 'store/index.html', context)
+
+
+def store(request):
+    brands = Brand.objects.all()
+    variants = Variant.objects.all()
+    variants_count = variants.count()
+    context = {
+        'brands': brands,
+        'variants': variants,
+        'variants_count': variants_count
+    }
+    return render(request, 'store/store.html', context)
