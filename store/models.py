@@ -14,6 +14,7 @@ class Product(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     offer = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
@@ -53,7 +54,7 @@ COLOR = (
 class Variant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     stock = models.IntegerField()
     ram = models.CharField(max_length=20, choices=RAM)
     storage = models.CharField(max_length=20, choices=STORAGE)
