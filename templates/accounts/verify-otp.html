@@ -4,7 +4,7 @@
     <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
         <div class="card-body">
             <h4 class="card-title mb-4">Enter OTP</h4>
-            <form method="post" action="">
+            <form method="post" action="" id="otp">
                 {% include 'includes/messages.html' %}
                 {% csrf_token %}
                 <div class="form-group">
@@ -17,4 +17,17 @@
             </form>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#otp").validate({
+                rules: {
+                    otp: {
+                        required: true,
+                    }
+                },
+            })
+        })
+    </script>
 {% endblock %}

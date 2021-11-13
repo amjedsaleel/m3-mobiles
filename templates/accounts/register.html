@@ -6,7 +6,7 @@
     <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
         <article class="card-body">
             <header class="mb-4"><h4 class="card-title text-primary">Sign up</h4></header>
-            <form method="post" action="{% url 'accounts:signup' %}">
+            <form method="post" action="{% url 'accounts:signup' %}" id="register">
                 {% csrf_token %}
                 {{ form | crispy }}
                 <div class="form-group">
@@ -18,4 +18,35 @@
 
     <p class="text-center mt-4">Have an account? <a href="" class="text-primary">Log In</a></p>
     <br><br>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#register").validate({
+                rules: {
+                    first_name: {
+                        required: true,
+                    },
+                    last_name: {
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    mobile: {
+                        required: true
+                    },
+                    password1: {
+                        required: true,
+                        minlength: 8,
+                    },
+                    password2: {
+                        required: true,
+                        equalTo: "#id_password1"
+                    }
+                },
+            })
+        })
+    </script>
 {% endblock %}

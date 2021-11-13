@@ -18,10 +18,10 @@ def signup(request):
     """
     Sign Up
     """
-    form = CustomUserCreationForm()
+    form = CustomUserCreationForm(use_required_attribute=False)
 
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, use_required_attribute=False)
 
         if form.is_valid():
             form.save()
