@@ -40,6 +40,12 @@ def sign_in(request):
         user = authenticate(email=email, password=password)
 
         if user is not None:
+            if not user.is_verified:
+                request.session['phone_number'] = user.mobile
+                send_otp(user.mobile)
+                messages.warning(request, 'Your account is not verified. Verify account with OTP')
+                return redirect('accounts:verify-account')
+
             login(request, user)
             messages.success(request, 'Successfully logged In')
             return redirect('store:index')
