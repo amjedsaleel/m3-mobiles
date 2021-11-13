@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('brands/', views.brand, name='brand'),
     path('add-brand/', views.add_brand, name='add-brand'),
+    path('edit-brand/<str:brand_id>/', views.edit_brand, name='edit-brand'),
     path('products/', views.all_products, name='products'),
     path('add-product/', views.add_product, name='add-product'),
     path('add-variant/', views.add_variant, name='add-variant'),

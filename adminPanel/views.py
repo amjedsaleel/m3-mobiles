@@ -74,6 +74,25 @@ def add_brand(request):
 
 
 @admin_ony
+def edit_brand(request, brand_id):
+    brand = Brand.objects.get(pk=brand_id)
+    form = BrandForm(instance=brand, use_required_attribute=False)
+
+    if request.method == 'POST':
+        form = BrandForm(request.POST, request.FILES, instance=brand, use_required_attribute=False)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully brand updated')
+            return redirect('admin-panel:brand')
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'adminPanel/edit-brand.html', context)
+
+
+@admin_ony
 def all_products(request):
     variants = Variant.objects.all()
     context = {
