@@ -9,6 +9,4 @@ from .models import Brand
 
 @receiver(pre_save, sender=Brand)
 def create_brand_slug(sender, instance, *args, **kwargs):
-
-    if not instance.slug:
-        instance.slug = slugify(instance.name)
+    instance.slug = slugify(instance.name)
