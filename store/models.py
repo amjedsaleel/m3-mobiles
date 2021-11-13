@@ -68,6 +68,7 @@ class Variant(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        unique_together = ('product', 'ram', 'storage', 'color', )
 
     def __str__(self):
         return self.product.name

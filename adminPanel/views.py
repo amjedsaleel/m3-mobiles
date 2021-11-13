@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.views.decorators.cache import never_cache
 
 # local Django
 from brand.models import Brand
@@ -42,11 +43,13 @@ def logout(request):
     return redirect('admin-panel:login')
 
 
+@never_cache
 @admin_ony
 def dashboard(request):
     return render(request, 'adminPanel/dashboard.html')
 
 
+@never_cache
 @admin_ony
 def brand(request):
     brands = Brand.objects.all()
@@ -56,6 +59,7 @@ def brand(request):
     return render(request, 'adminPanel/brand.html', context)
 
 
+@never_cache
 @admin_ony
 def add_brand(request):
     form = BrandForm(use_required_attribute=False)
@@ -73,6 +77,7 @@ def add_brand(request):
     return render(request, 'adminPanel/add-brand.html', context)
 
 
+@never_cache
 @admin_ony
 def edit_brand(request, brand_id):
     brand = Brand.objects.get(pk=brand_id)
@@ -92,6 +97,7 @@ def edit_brand(request, brand_id):
     return render(request, 'adminPanel/edit-brand.html', context)
 
 
+@never_cache
 @admin_ony
 def all_products(request):
     variants = Variant.objects.all()
@@ -101,6 +107,7 @@ def all_products(request):
     return render(request, 'adminPanel/product-list.html', context)
 
 
+@never_cache
 @admin_ony
 def edit_variant(request, product_id):
     variant = Variant.objects.get(pk=product_id)
@@ -120,6 +127,7 @@ def edit_variant(request, product_id):
     return render(request, 'adminPanel/edit-variant.html', context)
 
 
+@never_cache
 @admin_ony
 def add_product(request):
     form = ProductForm(use_required_attribute=False)
@@ -138,6 +146,7 @@ def add_product(request):
     return render(request, 'adminPanel/product-add.html', context)
 
 
+@never_cache
 @admin_ony
 def add_variant(request):
     form = VariantForm(use_required_attribute=False)
@@ -156,6 +165,7 @@ def add_variant(request):
     return render(request, 'adminPanel/add-variants.html', context)
 
 
+@never_cache
 def delete_variant(request, id):
     if request.is_ajax():
         Variant.objects.get(pk=id).delete()
