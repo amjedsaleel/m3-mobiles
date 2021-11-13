@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ brand.name | capfirst }}</h5>
                             {#                        <p class="card-text">{{ brand.get_count }}</p>#}
-                            <a href="#" class="btn btn-sm btn-primary">View all products</a>
+                            <a href="{% url 'admin-panel:brand-wise-variant' brand.slug %}" class="btn btn-sm btn-primary">View all products</a>
                         </div>
                     </div>
                 </div>

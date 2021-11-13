@@ -109,6 +109,16 @@ def all_products(request):
 
 @never_cache
 @admin_ony
+def brand_wise_variant(request, id):
+    variants = Variant.objects.filter(product__brand__slug=id)
+    context = {
+        'variants': variants
+    }
+    return render(request, 'adminPanel/product-list.html', context)
+
+
+@never_cache
+@admin_ony
 def edit_variant(request, product_id):
     variant = Variant.objects.get(pk=product_id)
     form = VariantForm(instance=variant, use_required_attribute=False)
