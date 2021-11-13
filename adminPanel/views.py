@@ -83,6 +83,25 @@ def all_products(request):
 
 
 @admin_ony
+def edit_variant(request, product_id):
+    variant = Variant.objects.get(pk=product_id)
+    form = VariantForm(instance=variant, use_required_attribute=False)
+
+    if request.method == 'POST':
+        form = VariantForm(request.POST, request.FILES, instance=variant)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully updated')
+            return redirect('admin-panel:products')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'adminPanel/edit-variant.html', context)
+
+
+@admin_ony
 def add_product(request):
     form = ProductForm(use_required_attribute=False)
 
