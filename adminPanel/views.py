@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 
 # local Django
 from brand.models import Brand
@@ -115,3 +116,10 @@ def add_variant(request):
         'form': form
     }
     return render(request, 'adminPanel/add-variants.html', context)
+
+
+def delete_variant(request, id):
+    if request.is_ajax():
+        Variant.objects.get(pk=id).delete()
+        return JsonResponse({'message': 'success'})
+    return redirect('admin-panel:products')
