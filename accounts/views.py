@@ -24,6 +24,7 @@ def signup(request):
             phone_number = form.cleaned_data['mobile']
             request.session['phone_number'] = phone_number
             send_otp(phone_number)  # Sending OTP for verify user account
+            messages.success(request, 'Successfully account created. Now verify your account with OTP')
             return redirect('accounts:verify-account')
 
     context = {
@@ -90,6 +91,7 @@ def verify_account(request):
             user.is_verified = True
             user.save()
             login(request, user)
+            messages.success(request, 'Successfully account verified')
             return redirect('store:index')
         else:
             messages.error(request, 'Invalid OTP, please try again')
