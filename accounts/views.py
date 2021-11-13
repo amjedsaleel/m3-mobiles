@@ -5,6 +5,7 @@ from django.contrib import messages
 
 # local Django
 from .forms import CustomUserCreationForm
+from .verification import send_otp, verify_otp_number
 
 # Create your views here.
 
@@ -18,7 +19,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('store:index')
+            return redirect('accounts:verify-account')
 
     context = {
         'form': form
@@ -49,3 +50,27 @@ def log_out(request):
     messages.success(request, 'Successfully logged out')
     return redirect('store:index')
 
+
+def verify_account(request):
+
+    if request.method == 'POST':
+        phone_number = request.POST.get('number')
+        request.session['phone_number'] = phone_number
+        send_otp(phone_number)
+        return redirect('accounts:verify-otp')
+    return render(request, 'accounts/phone-number.html')
+
+
+def verity_opt(request):
+
+    if request.method == 'POST':
+        phone_number = request.session['phone_number']
+        otp = request.POST.get('otp')
+        verified = verify_otp_number(phone_number, otp)
+
+        if verified:
+            print("Success")
+        else:
+            print("Error")
+
+    return render(request, 'accounts/verify-otp.html')

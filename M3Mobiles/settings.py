@@ -150,3 +150,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+# Twilio API credentials
+# (find here https://www.twilio.com/console)
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
+
+# Verification Service SID
+# (create one here https://www.twilio.com/console/verify/services)
+VERIFICATION_SID = config('VERIFICATION_SID')
