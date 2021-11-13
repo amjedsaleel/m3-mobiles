@@ -11,6 +11,6 @@ urlpatterns = [
     path('login/', views.sign_in, name='sign-in'),
     path('sign-out/', views.log_out, name='sign-out'),
     path('verifiy-account/', views.verify_account, name='verify-account'),
-    # path('verify-otp/', views.verity_opt, name='verify-otp'),
-
+    path('mobile-login/', views.mobile_login, name='mobile-login'),
+    path('mobile-login-otp-verify/', views.mobile_login_otp_verify, name='mobile-login-otp-verify')
 ]

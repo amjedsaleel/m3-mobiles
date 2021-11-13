@@ -24,6 +24,17 @@
                     <button type="submit" class="btn btn-primary btn-block"> Login</button>
                 </div>
             </form>
+            <button class="btn btn-outline-primary mt-3 mb-3 w-100">Login with OTP</button>
+            <form method="post" action="{% url 'accounts:mobile-login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="">Mobile</label>
+                    <input type="number" class="form-control"  placeholder="Mobile number" name="number">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Login</button>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}

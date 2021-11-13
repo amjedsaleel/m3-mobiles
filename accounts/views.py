@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 
 # local Django
 from .forms import CustomUserCreationForm
@@ -14,6 +15,9 @@ User = get_user_model()
 
 
 def signup(request):
+    """
+    Sign Up
+    """
     form = CustomUserCreationForm()
 
     if request.method == 'POST':
@@ -34,6 +38,9 @@ def signup(request):
 
 
 def sign_in(request):
+    """
+    Sign in with email and password
+    """
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -63,19 +70,6 @@ def log_out(request):
     return redirect('store:index')
 
 
-# def account_verification(request):
-#     """
-#     Send OTP to user phone for verify user account,
-#     """
-#
-#     if request.method == 'POST':
-#         phone_number = request.POST.get('number')
-#         request.session['phone_number'] = phone_number
-#         send_otp(phone_number)
-#         return redirect('accounts:verify-otp')
-#     return render(request, 'accounts/phone-number.html')
-
-
 def verify_account(request):
     """
     Verifying the user account and updating is_verified filed
@@ -97,4 +91,40 @@ def verify_account(request):
             messages.error(request, 'Invalid OTP, please try again')
             return redirect('accounts:verify-account')
 
+    return render(request, 'accounts/verify-otp.html')
+
+
+def mobile_login(request):
+    """
+    Login with mobile number
+    """
+
+    if request.method == 'POST':
+        phone_number = request.POST.get('number')
+        try:
+            User.objects.get(mobile=phone_number)
+            request.session['phone_number'] = phone_number
+            send_otp(phone_number)
+            return redirect('accounts:mobile-login-otp-verify')
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Enter a registered mobile number')
+            return redirect('accounts:sign-in')
+
+
+def mobile_login_otp_verify(request):
+
+    if request.method == 'POST':
+        phone_number = request.session['phone_number']
+        otp = request.POST.get('otp')
+        verified = verify_otp_number(phone_number, otp)
+
+        if verified:
+            user = User.objects.get(mobile=phone_number)
+            login(request, user)
+            messages.success(request, 'Successfully logged in')
+            return redirect('store:index')
+
+        messages.error(request, 'Invalid OTP')
+        return redirect('accounts:mobile-login-otp-verify')
     return render(request, 'accounts/verify-otp.html')
