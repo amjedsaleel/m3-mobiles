@@ -3,6 +3,29 @@
 {% block product-list %} active {% endblock %}
 {% block content %}
     <div class="container-fluid">
+        <div class="row mt-5">
+            {% for product in products %}
+                <div class="col-6 col-md-4 mb-3 col-xl-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title d-flex justify-content-between">
+                                <div class="card-title"><h3>{{ product.name }}</h3></div>
+                                <div>
+                                    <a href="#"><span
+                                            class="material-icons-outlined text-warning">edit</span></a>
+                                    <a href="#"><span
+                                            class="material-icons-outlined text-danger"
+                                            onclick="deleteProduct(event, '{% url 'admin-panel:delete-product' product.id %}')">delete</span></a>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h5>{{ product.get_count }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
         <div class="row">
             <div class="col-12 mt-5">
                 <div class="card mt-5">
@@ -64,6 +87,44 @@
         $(document).ready(function () {
             $('#products-list').DataTable();
         });
+
+
+        function deleteProduct(e, id) {
+            // Deleting product
+            let url = id
+            e.preventDefault()
+            console.log('delete product')
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("Successfully deleted", {
+                        icon: "success",
+                    }).then(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.message === "success") {
+                                    window.location.replace("{% url 'admin-panel:products' %}");
+                                }
+                            }
+                        })
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+        }
+
 
         function deleteVariant(e, id) {
             // Deleting product variant

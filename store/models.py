@@ -24,6 +24,12 @@ class Product(models.Model):
         self.name = self.name.lower()
         return super(Product, self).save(*args, **kwargs)
 
+    def get_count(self):
+        """
+        Get total count of variants under this product
+        """
+        return self.variant_set.all().count()
+
 
 RAM = (
     ('2GB', '2GB'),

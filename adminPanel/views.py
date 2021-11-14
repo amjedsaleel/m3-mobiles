@@ -9,7 +9,7 @@ from django.views.decorators.cache import never_cache
 # local Django
 from brand.models import Brand
 from brand.forms import BrandForm
-from store.models import Variant
+from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
 from .decorators import admin_ony
 
@@ -104,15 +104,28 @@ def delete_brand(request, brand_id):
         Brand.objects.get(pk=brand_id).delete()
         return JsonResponse({'message': 'success'})
 
+    return redirect('admin-panel:products')
+
 
 @never_cache
 @admin_ony
 def all_products(request):
+    products = Product.objects.all()
     variants = Variant.objects.all()
     context = {
-        'variants': variants
+        'variants': variants,
+        'products': products
     }
     return render(request, 'adminPanel/product-list.html', context)
+
+
+@never_cache
+@admin_ony
+def delete_product(request, product_id):
+    if request.is_ajax():
+        print('Delete product')
+        Product.objects.get(pk=product_id).delete()
+        return JsonResponse({'message': 'success'})
 
 
 @never_cache
