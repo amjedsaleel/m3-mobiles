@@ -128,6 +128,22 @@ def delete_product(request, product_id):
         return JsonResponse({'message': 'success'})
 
 
+def edit_product(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    form = ProductForm(instance=product)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully product updated')
+            return redirect('admin-panel:products')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'adminPanel/edit-product.html', context)
+
 @never_cache
 @admin_ony
 def brand_wise_variant(request, id):

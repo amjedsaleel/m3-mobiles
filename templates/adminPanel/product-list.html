@@ -11,7 +11,7 @@
                             <div class="card-title d-flex justify-content-between">
                                 <div class="card-title"><h3>{{ product.name }}</h3></div>
                                 <div>
-                                    <a href="#"><span
+                                    <a href="{% url 'admin-panel:edit-product' product.id %}"><span
                                             class="material-icons-outlined text-warning">edit</span></a>
                                     <a href="#"><span
                                             class="material-icons-outlined text-danger"
