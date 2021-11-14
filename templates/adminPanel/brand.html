@@ -13,16 +13,56 @@
                             <a href="{% url 'admin-panel:edit-brand' brand.id %}"><span
                                     class="material-icons-outlined text-warning">edit</span></a>
                             <a href="#"><span
-                                    class="material-icons-outlined text-danger">delete</span></a>
+                                    class="material-icons-outlined text-danger"
+                                    onclick="deleteBrand(event, '{% url 'admin-panel:delete-brand' brand.id %}')">delete</span></a>
                         </h4>
                         <div class="card-body">
                             <h5 class="card-title">{{ brand.name | capfirst }}</h5>
                             {#                        <p class="card-text">{{ brand.get_count }}</p>#}
-                            <a href="{% url 'admin-panel:brand-wise-variant' brand.slug %}" class="btn btn-sm btn-primary">View all products</a>
+                            <a href="{% url 'admin-panel:brand-wise-variant' brand.slug %}"
+                               class="btn btn-sm btn-primary">View all products</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        function deleteBrand(e, link) {
+            e.preventDefault()
+            let url = link
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("Successfully deleted", {
+                        icon: "success",
+                    }).then(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.message === "success") {
+                                    window.location.replace("{% url 'admin-panel:brand' %}");
+                                }
+                            }
+                        })
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+        }
+    </script>
 {% endblock %}

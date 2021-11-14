@@ -99,6 +99,14 @@ def edit_brand(request, brand_id):
 
 @never_cache
 @admin_ony
+def delete_brand(request, brand_id):
+    if request.is_ajax():
+        Brand.objects.get(pk=brand_id).delete()
+        return JsonResponse({'message': 'success'})
+
+
+@never_cache
+@admin_ony
 def all_products(request):
     variants = Variant.objects.all()
     context = {
