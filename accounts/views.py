@@ -6,10 +6,11 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 
 # local Django
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ResetPasswordForm
 from .verification import send_otp, verify_otp_number
 
 User = get_user_model()
+
 
 # Create your views here.
 
@@ -18,6 +19,9 @@ def signup(request):
     """
     Sign Up
     """
+    if request.user.is_authenticated:
+        return redirect('store:index')
+
     form = CustomUserCreationForm(use_required_attribute=False)
 
     if request.method == 'POST':
@@ -41,6 +45,8 @@ def sign_in(request):
     """
     Sign in with email and password
     """
+    if request.user.is_authenticated:
+        return redirect('store:index')
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -74,9 +80,16 @@ def verify_account(request):
     """
     Verifying the user account and updating is_verified filed
     """
+    if request.user.is_authenticated:
+        return redirect('store:index')
 
     if request.method == 'POST':
-        phone_number = request.session['phone_number']
+        try:
+            phone_number = request.session['phone_number']
+        except KeyError:
+            messages.info(request, 'Session timeout')
+            return redirect('accounts:sign-in')
+
         otp = request.POST.get('otp')
         verified = verify_otp_number(phone_number, otp)
 
@@ -98,6 +111,8 @@ def mobile_login(request):
     """
     Login with mobile number
     """
+    if request.user.is_authenticated:
+        return redirect('store:index')
 
     if request.method == 'POST':
         phone_number = request.POST.get('number')
@@ -113,9 +128,16 @@ def mobile_login(request):
 
 
 def mobile_login_otp_verify(request):
+    if request.user.is_authenticated:
+        return redirect('store:index')
 
     if request.method == 'POST':
-        phone_number = request.session['phone_number']
+        try:
+            phone_number = request.session['phone_number']
+        except KeyError:
+            messages.info(request, 'Session timeout')
+            return redirect('accounts:sign-in')
+
         otp = request.POST.get('otp')
         verified = verify_otp_number(phone_number, otp)
 
@@ -128,3 +150,85 @@ def mobile_login_otp_verify(request):
         messages.error(request, 'Invalid OTP')
         return redirect('accounts:mobile-login-otp-verify')
     return render(request, 'accounts/verify-otp.html')
+
+
+def reset_password(request):
+    """
+    Send OTP to user reset password
+    """
+    if request.user.is_authenticated:
+        return redirect('store:index')
+
+    if request.method == 'POST':
+        phone_number = request.POST.get('number')
+
+        try:
+            User.objects.get(mobile=phone_number)
+            request.session['phone_number'] = phone_number
+            send_otp(phone_number)
+            return redirect('accounts:verify-reset-password-otp')
+        except ObjectDoesNotExist:
+            messages.error(request, 'Enter a registered phone number')
+            return redirect('accounts:verify-reset-password-otp')
+
+    return render(request, 'accounts/reset-password-otp.html')
+
+
+def verify_reset_password_otp(request):
+    """
+    Verify the OPT sent for reset password
+    """
+    if request.user.is_authenticated:
+        return redirect('store:index')
+
+    if request.method == 'POST':
+        try:
+            phone_number = request.session['phone_number']
+        except KeyError:
+            messages.info(request, 'Session timeout')
+            return redirect('accounts:sign-in')
+
+        otp = request.POST.get('otp')
+        verified = verify_otp_number(phone_number, otp)
+
+        if verified:
+            return redirect('accounts:set-new-password')
+
+        messages.error(request, 'Invalid OTP, try again')
+        return redirect('accounts:reset-password')
+    return render(request, 'accounts/verify-otp.html')
+
+
+def set_new_password(request):
+    """
+    Set new password
+    """
+    if request.user.is_authenticated:
+        return redirect('store:index')
+
+    if 'phone_number' not in request.session:
+        return redirect('accounts:sign-in')
+
+    form = ResetPasswordForm()
+
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+
+        if form.is_valid():
+            password = form.cleaned_data['confirm_password']
+            try:
+                phone_number = request.session['phone_number']
+            except KeyError:
+                messages.info(request, 'Session timeout')
+                return redirect('accounts:sign-in')
+
+            user = User.objects.get(mobile=phone_number)
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'Password is successfully reset')
+            return redirect('accounts:sign-in')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'accounts/new-password.html', context)
