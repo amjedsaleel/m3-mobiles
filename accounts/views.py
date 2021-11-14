@@ -1,3 +1,6 @@
+# Stated library
+import threading
+
 # django
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -31,7 +34,8 @@ def signup(request):
             form.save()
             phone_number = form.cleaned_data['mobile']
             request.session['phone_number'] = phone_number
-            send_otp(phone_number)  # Sending OTP for verify user account
+            t1 = threading.Thread(target=send_otp, args=(phone_number, ))  # Sending OTP for verify user account
+            t1.start()
             messages.success(request, 'Successfully account created. Now verify your account with OTP')
             return redirect('accounts:verify-account')
 
@@ -54,9 +58,10 @@ def sign_in(request):
         user = authenticate(email=email, password=password)
 
         if user is not None:
-            if not user.is_verified:
+            if not user.is_verified:  # Checking user is verified or not
                 request.session['phone_number'] = user.mobile
-                send_otp(user.mobile)
+                t1 = threading.Thread(target=send_otp, args=(user.mobile, ))
+                t1.start()
                 messages.warning(request, 'Your account is not verified. Verify account with OTP')
                 return redirect('accounts:verify-account')
 
@@ -119,7 +124,9 @@ def mobile_login(request):
         try:
             User.objects.get(mobile=phone_number)
             request.session['phone_number'] = phone_number
-            send_otp(phone_number)
+            t1 = threading.Thread(target=send_otp, args=(phone_number,))
+            t1.start()
+            messages.success(request, 'OTP sent your mobile number')
             return redirect('accounts:mobile-login-otp-verify')
 
         except ObjectDoesNotExist:
@@ -165,7 +172,8 @@ def reset_password(request):
         try:
             User.objects.get(mobile=phone_number)
             request.session['phone_number'] = phone_number
-            send_otp(phone_number)
+            t1 = threading.Thread(target=send_otp, args=(phone_number, ))
+            t1.start()
             return redirect('accounts:verify-reset-password-otp')
         except ObjectDoesNotExist:
             messages.error(request, 'Enter a registered phone number')
