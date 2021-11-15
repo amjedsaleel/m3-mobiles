@@ -6,11 +6,33 @@
             <div class="row no-gutters">
                 <aside class="col-md-6">
                     <article class="gallery-wrap">
-                        <div class="img-big-wrap mt-3">
-                            <a href="#"><img src="{{ variant.image1.url }}"></a>
-                        </div> <!-- img-big-wrap.// -->
+                        <div class="img-big-wrap mainImage mt-4">
+                            <a href="#"><img src="{{ variant.image1.url }}" class=""></a>
+                        </div>
 
-                    </article> <!-- gallery-wrap .end// -->
+                    </article>
+
+                    <ul class="thumb">
+                        <li>
+                            {% if variant.image1 %}
+                                <a href="{{ variant.image1.url }}" target="mainImage"><img
+                                        src="{{ variant.image1.url }}"
+                                        alt="Product Image"></a>
+                            {% endif %}
+
+                            {% if variant.image2 %}
+                                <a href="{{ variant.image2.url }}" target="mainImage"><img
+                                        src="{{ variant.image2.url }}"
+                                        alt="Product Image"></a>
+                            {% endif %}
+                            {% if variant.image3 %}
+                                <a href="{{ variant.image3.url }}" target="mainImage"><img
+                                        src="{{ variant.image3.url }}"
+                                        alt="Product Image"></a>
+                            {% endif %}
+                        </li>
+                    </ul>
+
                 </aside>
                 <main class="col-md-6 border-left">
                     <article class="content-body">
@@ -23,7 +45,7 @@
                                     <p class="price regular-text-bold">₹{{ variant.price }}</p>
                                 </div>
                                 <div>
-                                    <p class="original-price small-gray-text ml-4">
+                                    <p> class="original-price small-gray-text ml-4">
                                         <del>583655</del>
                                     </p>
                                 </div>
@@ -36,40 +58,50 @@
                         <p>{{ variant.description }}</p>
 
                         <hr>
-                        <div class="row">
-                            <!-- <div class="item-option-select">
-                                 <h6>Choose Color</h6>
-                                 <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                                     <label class="btn btn-light">
-                                         <input type="radio" name="radio_color"> Silver
-                                     </label>
-                                     <label class="btn btn-light">
-                                         <input type="radio" name="radio_color"> Gray
-                                     </label>
-                                     <label class="btn btn-light active">
-                                         <input type="radio" name="radio_color checked"> Gold
-                                     </label>
-                                     <label class="btn btn-light">
-                                         <input type="radio" name="radio_color"> Black
-                                     </label>
-                                 </div>
-                             </div> -->
-                        </div>
+{#                        <div class="row">#}
+{#                            <div class="item-option-select">#}
+{#                                <h6>Choose Color</h6>#}
+{#                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">#}
+{#                                    <label class="btn btn-light">#}
+{#                                        <input type="radio" name="radio_color"> Silver#}
+{#                                    </label>#}
+{#                                    <label class="btn btn-light">#}
+{#                                        <input type="radio" name="radio_color"> Gray#}
+{#                                    </label>#}
+{#                                    <label class="btn btn-light active">#}
+{#                                        <input type="radio" name="radio_color checked"> Gold#}
+{#                                    </label>#}
+{#                                    <label class="btn btn-light">#}
+{#                                        <input type="radio" name="radio_color"> Black#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="row">
                             <div class="item-option-select">
                                 <h5 class="mb-3">Specifications</h5>
                                 <h6>Ram: {{ variant.ram }}</h6>
                                 <h6>Storage: {{ variant.storage }}</h6>
                             </div>
-                        </div> <!-- row.// -->
+                        </div>
                         <hr>
                         <div class="d-flex pl-3 pr-3 justify-content-start mb-4">
                             <a href="#" class="btn btn-outline-primary">Add to cart</a>
                             <a href="#" class="btn btn-primary ml-2">Buy now</a>
                         </div>
-                    </article> <!-- product-info-aside .// -->
-                </main> <!-- col.// -->
-            </div> <!-- row.// -->
-        </div> <!-- card.// -->
+                    </article>
+                </main>
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('.thumb a').click(function (e) {
+                e.preventDefault();
+                $('.mainImage img').attr('src', $(this).attr("href"));
+            })
+        })
+    </script>
 {% endblock %}

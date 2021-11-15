@@ -48,3 +48,16 @@ body {
     color: red;
     margin-left: 2px;
 }
+
+ul.thumb{
+  margin:0 auto;
+  padding: 0;
+  float: left;
+}
+ul.thumb li{
+  list-style: none;
+  margin: 10px;
+}
+ul.thumb li img{
+  width: 8%;
+}
