@@ -28,3 +28,11 @@ def store(request):
         'variants_count': variants_count
     }
     return render(request, 'store/store.html', context)
+
+
+def product_details(request, brand_slug, variant_slug):
+    variant = Variant.objects.get(slug=variant_slug)
+    context = {
+        'variant': variant
+    }
+    return render(request, 'store/product-details.html', context)

@@ -17,7 +17,8 @@
             {% for last_product in last_products %}
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card card-product-grid">
-                        <a href="#" class="img-wrap mt-4 mb-4"> <img src="{{ last_product.image1.url }}" alt=""/>
+                        <a href="{% url 'store:products-details' last_product.product.brand.slug last_product.slug %}"
+                           class="img-wrap mt-4 mb-4"> <img src="{{ last_product.image1.url }}" alt=""/>
                         </a>
                         <hr>
                         <h5 class="pl-3">{{ last_product.product.name | capfirst }}</h5>
@@ -55,7 +56,7 @@
                     {% for variant in product.variant_set.reverse|slice:":3" %}
                         <div class="col-12 col-md-6">
                             <div class="card card-product-grid">
-                                <a href="#" class="img-wrap mt-4 mb-4"> <img src="{{ variant.image1.url }}" alt=""/>
+                                <a href="{% url 'store:products-details' variant.product.brand.slug variant.slug %}" class="img-wrap mt-4 mb-4"> <img src="{{ variant.image1.url }}" alt=""/>
                                 </a>
                                 <hr>
                                 <h5 class="pl-3">{{ product.name | capfirst }}</h5>
