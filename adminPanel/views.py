@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 
+
 # local Django
 from brand.models import Brand
 from brand.forms import BrandForm
@@ -254,3 +255,7 @@ def delete_variant(request, variant_id):
         Variant.objects.get(pk=variant_id).delete()
         return JsonResponse({'message': 'success'})
     return redirect('admin-panel:products')
+
+
+def variant_details(request, variant_slug):
+    return render(request, 'adminPanel/variant-detail.html')

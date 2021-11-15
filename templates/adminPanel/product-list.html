@@ -62,7 +62,7 @@
                                     <td>{{ variant.price }}</td>
                                     <td>{{ variant.stock }}</td>
                                     <td>
-                                        <a href="#"><span
+                                        <a href="{% url 'admin-panel:variant-details' variant.slug %}"><span
                                                 class="material-icons-outlined text-primary">visibility</span></a>
                                         <a href="{% url 'admin-panel:edit-variant' variant.id %}"><span
                                                 class="material-icons-outlined text-warning">edit</span></a>
