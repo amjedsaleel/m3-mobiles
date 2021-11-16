@@ -16,13 +16,14 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% for cart_item in cart_items %}
                         <tr>
                             <td>
                                 <figure class="itemside align-items-center">
-                                    <div class="aside"><img src="./images/items/11.jpg" class="img-sm"></div>
+                                    <div class="aside" style="width: 2.5em"><img src="{{ cart_item.variant.image1.url }}" class="img-fluid"></div>
                                     <figcaption class="info">
-                                        <a href="#" class="title text-dark">Camera Canon EOS M50 Kit</a>
-                                    <small class="text-muted"> $315.20 each </small>
+                                        <a href="#" class="title text-dark">{{ cart_item.variant.product.name |capfirst }}</a>
+                                    <small class="text-muted">₹{{ cart_item.variant.price }}</small>
                                     </figcaption>
                                 </figure>
                             </td>
@@ -51,6 +52,7 @@
                                 <a href="" class="btn btn-danger"> Remove</a>
                             </td>
                         </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
