@@ -11,11 +11,21 @@ from store.models import Variant
 # Create your views here.
 
 
-def cart(request):
+def user_cart(request):
     cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
 
+    total = 0
+    for cart_item in cart_items:
+        total += cart_item.variant.price * cart_item.quantity
+
+    tax = (18 * total) / 100
+    grand_total = tax + total
+
     context = {
-        'cart_items': cart_items
+        'cart_items': cart_items,
+        'total': total,
+        'tax': tax,
+        'grand_total': grand_total
     }
 
     return render(request, 'cart/cart.html', context)
@@ -46,3 +56,30 @@ def add_to_cart(request, variant_slug):
             cart_item.save()
             return JsonResponse({'message': 'success'})
     raise Http404
+
+
+def increment_cart_item(request, cart_item_id):
+    if request.is_ajax():
+        cart_item = CartItem.objects.get(pk=cart_item_id)
+        cart_item.quantity += 1
+        cart_item.save()
+        quantity = cart_item.quantity
+        sub_total = cart_item.sub_total()
+
+        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        total = 0
+        for i in cart_items:
+            total += i.variant.price * i.quantity
+
+        tax = (18 * total) / 100
+        grand_total = tax + total
+
+        context = {
+            'quantity': quantity,
+            'sub_total': sub_total,
+            'tax': tax,
+            'total': total,
+            'grand_total': grand_total,
+        }
+
+        return JsonResponse(context)

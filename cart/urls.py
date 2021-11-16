@@ -7,6 +7,7 @@ from .import views
 app_name = 'cart'
 
 urlpatterns = [
-    path('', views.cart, name='cart'),
-    path('add-to-cart/<str:variant_slug>/', views.add_to_cart, name='add-to-cart')
+    path('', views.user_cart, name='cart'),
+    path('add-to-cart/<str:variant_slug>/', views.add_to_cart, name='add-to-cart'),
+    path('increment-cart-item/<str:cart_item_id>/', views.increment_cart_item, name='increment-cart-item')
 ]

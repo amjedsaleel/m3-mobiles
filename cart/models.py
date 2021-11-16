@@ -24,3 +24,6 @@ class CartItem(models.Model):
     def __str__(self):
         return f'{self.cart} + {self.variant}'
 
+    def sub_total(self):
+        return self.variant.price * self.quantity
+
