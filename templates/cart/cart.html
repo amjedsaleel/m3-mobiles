@@ -5,89 +5,104 @@
 {% block content %}
     <div class="container">
         <div class="row mt-4">
-            <aside class="col-lg-9">
-                <div class="card">
-                    <table class="table table-borderless table-shopping-cart">
-                        <thead class="text-muted">
-                        <tr class="small text-uppercase">
-                            <th scope="col">Product</th>
-                            <th scope="col" width="120">Quantity</th>
-                            <th scope="col" width="120">Price</th>
-                            <th scope="col" class="text-right" width="200"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for cart_item in cart_items %}
-                            <tr>
-                                <td>
-                                    <figure class="itemside align-items-center">
-                                        <div class="aside" style="width: 2.5em"><img
-                                                src="{{ cart_item.variant.image1.url }}" class="img-fluid"></div>
-                                        <figcaption class="info">
-                                            <a href="#"
-                                               class="title text-dark">{{ cart_item.variant.product.name |capfirst }}</a>
-                                            <small class="text-muted">₹{{ cart_item.variant.price | intcomma }}</small>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <div class="col">
-                                        <div class="input-group input-spinner">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-light" type="button" id="button-minus"><i
-                                                        class="fa fa-minus"></i></button>
-                                            </div>
-                                            <input type="text" class="form-control" value="{{ cart_item.quantity }}"
-                                                   id="quantity-{{ cart_item.id }}">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-light" type="button" id="button-plus"
-                                                        onclick="IncrementCartItem(event, '{{ cart_item.id }}', '{% url 'cart:increment-cart-item' cart_item.id %}')">
-                                                    <i class="fa fa-plus"></i></button>
+            {% if cart_items %}
+                <aside class="col-lg-9">
+                    <div class="card">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Product</th>
+                                <th scope="col" width="120">Quantity</th>
+                                <th scope="col" width="120">Price</th>
+                                <th scope="col" class="text-right" width="200"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for cart_item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside" style="width: 2.5em"><img
+                                                    src="{{ cart_item.variant.image1.url }}" class="img-fluid"></div>
+                                            <figcaption class="info">
+                                                <a href="#"
+                                                   class="title text-dark">{{ cart_item.variant.product.name |capfirst }}</a>
+                                                <small class="text-muted">₹{{ cart_item.variant.price | intcomma }}</small>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <div class="col">
+                                            <div class="input-group input-spinner">
+                                                <div class="input-group-prepend">
+                                                    <button class="btn btn-light" type="button" id="button-minus"><i
+                                                            class="fa fa-minus"></i></button>
+                                                </div>
+                                                <input type="text" class="form-control" value="{{ cart_item.quantity }}"
+                                                       id="quantity-{{ cart_item.id }}">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-light" type="button" id="button-plus"
+                                                            onclick="IncrementCartItem(event, '{{ cart_item.id }}', '{% url 'cart:increment-cart-item' cart_item.id %}')">
+                                                        <i class="fa fa-plus"></i></button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price" id="sub_total-{{ cart_item.id }}">₹{{ cart_item.sub_total | intcomma }}</var>
-                                    </div>
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger"> Remove</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price"
+                                                 id="sub_total-{{ cart_item.id }}">₹{{ cart_item.sub_total | intcomma }}</var>
+                                        </div>
+                                    </td>
+                                    <td class="text-right">
+                                        <a href="" class="btn btn-danger"> Remove</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-            </aside>
+                </aside>
 
-            <aside class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <dl class="dlist-align">
-                            <dt>Total price:</dt>
-                            <dd class="text-right" id="total-price">₹{{ total | intcomma }}</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Tax:</dt>
-                            <dd class="text-right" id="tax">₹{{ tax | intcomma }}</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Total:</dt>
-                            <dd class="text-right text-dark b" id="grand-total"><strong>₹{{ grand_total | intcomma }}</strong></dd>
-                        </dl>
-                        <hr>
-                        <p class="text-center mb-3">
-                            <img src="{% static 'images/payments.png' %}" height="26">
-                        </p>
-                        <a href="#" class="btn btn-primary btn-block"> Checkout </a>
-                        <a href="#" class="btn btn-light btn-block">Continue Shopping</a>
+                <aside class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <dl class="dlist-align">
+                                <dt>Total price:</dt>
+                                <dd class="text-right" id="total-price">₹{{ total | intcomma }}</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Tax:</dt>
+                                <dd class="text-right" id="tax">₹{{ tax | intcomma }}</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Total:</dt>
+                                <dd class="text-right text-dark b" id="grand-total">
+                                    <strong>₹{{ grand_total | intcomma }}</strong></dd>
+                            </dl>
+                            <hr>
+                            <p class="text-center mb-3">
+                                <img src="{% static 'images/payments.png' %}" height="26">
+                            </p>
+                            <a href="#" class="btn btn-primary btn-block"> Checkout </a>
+                            <a href="#" class="btn btn-light btn-block">Continue Shopping</a>
+                        </div>
+                    </div>
+
+                </aside>
+            {% else %}
+                <div class="col-12 mt-5">
+                    <div class="text-center">
+                        <h2>Your cart is empty</h2>
                     </div>
                 </div>
-
-            </aside>
+                <div class="col-12 mt-5">
+                    <div class="text-center">
+                        <a href="{% url 'store:store' %}" class="btn btn-outline-primary">Continue Shopping</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
