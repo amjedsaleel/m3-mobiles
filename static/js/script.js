@@ -37,11 +37,8 @@ function addToCart(e, id) {
             csrfmiddlewaretoken: csrftoken,
         },
         success: function (data) {
-            console.log(data)
-            if (data.message === 'success') {
-                console.log('s')
-                toast('success', 'product added to cart')
-            }
+            document.getElementById("cart-count").innerHTML =  data.cart_count;
+            toast('success', 'product added to cart')
         }
     })
 }

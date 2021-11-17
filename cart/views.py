@@ -7,6 +7,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from .models import Cart, CartItem
 from .utils import get_cart_id
 from store.models import Variant
+from .context_processors import cart_items_count
 
 
 # Create your views here.
@@ -50,12 +51,16 @@ def add_to_cart(request, variant_slug):
             cart_item = CartItem.objects.get(cart=cart, variant=variant)
             cart_item.quantity += 1
             cart_item.save()
-            return JsonResponse({'message': 'success'})
+            cart_count = cart_items_count(request)
+
+            return JsonResponse({'cart_count': cart_count['count']})
         except CartItem.DoesNotExist:
             """ Adding new item to cart"""
             cart_item = CartItem.objects.create(cart=cart, variant=variant, quantity=1)
             cart_item.save()
-            return JsonResponse({'message': 'success'})
+            cart_count = cart_items_count(request)
+
+            return JsonResponse({'cart_count': cart_count['count']})
     raise Http404
 
 
@@ -74,6 +79,7 @@ def increment_cart_item(request, cart_item_id):
 
         tax = (18 * total) / 100
         grand_total = tax + total
+        cart_count = cart_items_count(request)
 
         context = {
             'quantity': quantity,
@@ -81,6 +87,7 @@ def increment_cart_item(request, cart_item_id):
             'tax': intcomma(tax),
             'total': intcomma(total),
             'grand_total': intcomma(grand_total),
+            'cart_count': cart_count['count']
         }
 
         return JsonResponse(context)
@@ -102,6 +109,7 @@ def decrement_cart_item(request, cart_item_id):
 
         tax = (18 * total) / 100
         grand_total = tax + total
+        cart_count = cart_items_count(request)
 
         context = {
             'quantity': quantity,
@@ -109,6 +117,7 @@ def decrement_cart_item(request, cart_item_id):
             'tax': intcomma(tax),
             'total': intcomma(total),
             'grand_total': intcomma(grand_total),
+            'cart_count': cart_count['count']
         }
 
         return JsonResponse(context)
@@ -116,7 +125,6 @@ def decrement_cart_item(request, cart_item_id):
 
 def delete_cart_item(request, cart_item_id):
     if request.is_ajax():
-        print('delete')
         CartItem.objects.get(pk=cart_item_id).delete()
 
         cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
@@ -126,11 +134,13 @@ def delete_cart_item(request, cart_item_id):
 
         tax = (18 * total) / 100
         grand_total = tax + total
+        cart_count = cart_items_count(request)
 
         context = {
             'tax': intcomma(tax),
             'total': intcomma(total),
             'grand_total': intcomma(grand_total),
+            'cart_count': cart_count['count']
         }
 
         return JsonResponse(context)

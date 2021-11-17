@@ -1,3 +1,5 @@
+const cartCount = document.getElementById("cart-count")
+
 function RemoveCartItem(e, id, url) {
     e.preventDefault()
     Swal.fire({
@@ -26,6 +28,8 @@ function RemoveCartItem(e, id, url) {
                         let tax = data.tax;
                         let total = data.total;
                         let grand_total = data.grand_total;
+                        cartCount.innerHTML = data.cart_count;
+
                         document.getElementById("total-price").innerHTML = "₹" + total;
                         document.getElementById("tax").innerHTML = "₹" + tax;
                         document.getElementById("grand-total").innerHTML = "₹" + grand_total;
@@ -49,11 +53,14 @@ function IncrementCartItem(e, id, url) {
             csrfmiddlewaretoken: csrftoken,
         },
         success: function (data) {
+            console.log(data)
             let quantity = data.quantity;
             let sub_total = data.sub_total;
             let tax = data.tax;
             let total = data.total;
             let grand_total = data.grand_total;
+            cartCount.innerHTML = data.cart_count;
+
             document.getElementById("quantity-" + id).value = quantity;
             document.getElementById("sub_total-" + id).innerHTML = "₹" + sub_total;
             document.getElementById("total-price").innerHTML = "₹" + total;
@@ -87,6 +94,8 @@ function DecrementCartItem(e, id, url) {
             let tax = data.tax;
             let total = data.total;
             let grand_total = data.grand_total;
+            cartCount.innerHTML = data.cart_count;
+
             document.getElementById("quantity-" + id).value = quantity;
             document.getElementById("sub_total-" + id).innerHTML = "₹" + sub_total;
             document.getElementById("total-price").innerHTML = "₹" + total;
