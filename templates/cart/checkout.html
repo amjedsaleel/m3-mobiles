@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} M3 | Checkout {% endblock %}
+{% block content %}
+    <section class="section-content padding-y bg">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8">
+                    <article class="card mb-4 shadow-sm mb-5 bg-white rounded">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">My Addresses</h4>
+                            <div class="row">
+                                <div class="col-12 col-md-12 col-xl-6">
+                                    <figure class="itemside  mb-4 card ">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="text-center align-items-center">
+                                                    <h5 class="">Amjed Saleel K</h5>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
+                                                </div>
+                                            </div>
+                                            <p class="small-gray-text">9495836716</p>
+                                            <p class="small-gray-text">Kajiramkatte house</p>
+                                            <p class="small-gray-text">Madavoor post</p>
+                                            <p class="small-gray-text">Calicut</p>
+                                            <p class="small-gray-text">Kerala</p>
+                                            <p class="small-gray-text">673585</p>
+
+                                        </div>
+                                    </figure>
+                                </div> <!-- col.// -->
+                                <div class="col-12 col-md-12 col-xl-6">
+                                    <figure class="itemside  mb-4 card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="text-center align-items-center">
+                                                    <h5 class="">Amjed Saleel K</h5>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
+                                                </div>
+                                            </div>
+                                            <p class="small-gray-text">9495836716</p>
+                                            <p class="small-gray-text">Kajiramkatte house</p>
+                                            <p class="small-gray-text">Madavoor post</p>
+                                            <p class="small-gray-text">Calicut</p>
+                                            <p class="small-gray-text">Kerala</p>
+                                            <p class="small-gray-text">673585</p>
+                                        </div>
+                                    </figure>
+                                </div>
+                                <div class="col-12 col-md-12 col-xl-6">
+                                    <figure class="itemside  mb-4 card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="text-center align-items-center">
+                                                    <h5 class="">Amjed Saleel K</h5>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
+                                                </div>
+                                            </div>
+                                            <p class="small-gray-text">9495836716</p>
+                                            <p class="small-gray-text">Kajiramkatte house</p>
+                                            <p class="small-gray-text">Madavoor post</p>
+                                            <p class="small-gray-text">Calicut</p>
+                                            <p class="small-gray-text">Kerala</p>
+                                            <p class="small-gray-text">673585</p>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <article class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Billing info</h4>
+                            <form action="">
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label>Frst name</label>
+                                        <input type="text" placeholder="Type here" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Last name</label>
+                                        <input type="text" placeholder="Type here" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Phone</label>
+                                        <input type="text" value="+998" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>Email</label>
+                                        <input type="email" placeholder="example@gmail.com" class="form-control">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </article>
+                </main>
+
+                <aside class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <dl class="dlist-align">
+                                <dt>Total price:</dt>
+                                <dd class="text-right">$69.97</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Tax:</dt>
+                                <dd class="text-right"> $10.00</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Total:</dt>
+                                <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+                            </dl>
+                            <hr>
+                            <p class="text-center mb-3">
+                                <img src="{% static 'images/payments.png' %}" height="26">
+                            </p>
+                            <a href="#" class="btn btn-primary btn-block"> Place Order </a>
+                            <a href="#" class="btn btn-outline-primary btn-block"> Continue shopping </a>
+
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

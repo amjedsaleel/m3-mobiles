@@ -144,3 +144,7 @@ def delete_cart_item(request, cart_item_id):
         }
 
         return JsonResponse(context)
+
+
+def checkout(request):
+    return render(request, 'cart/checkout.html')
