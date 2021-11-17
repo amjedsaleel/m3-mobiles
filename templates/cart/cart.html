@@ -19,7 +19,7 @@
                             </thead>
                             <tbody>
                             {% for cart_item in cart_items %}
-                                <tr>
+                                <tr id="item-row-{{ cart_item.id }}">
                                     <td>
                                         <figure class="itemside align-items-center">
                                             <div class="aside" style="width: 2.5em"><img
@@ -57,7 +57,9 @@
                                         </div>
                                     </td>
                                     <td class="text-right">
-                                        <a href="" class="btn btn-danger"> Remove</a>
+                                        <a href="" class="btn btn-danger"
+                                           onclick="RemoveCartItem(event, '{{ cart_item.id }}', '{% url 'cart:delete-cart-item' cart_item.id %}')">
+                                            Remove</a>
                                     </td>
                                 </tr>
                             {% endfor %}

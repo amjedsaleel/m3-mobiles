@@ -1,5 +1,5 @@
 # Django
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 
@@ -88,6 +88,7 @@ def increment_cart_item(request, cart_item_id):
 
 def decrement_cart_item(request, cart_item_id):
     if request.is_ajax():
+        print('decrement')
         cart_item = CartItem.objects.get(pk=cart_item_id)
         cart_item.quantity -= 1
         cart_item.save()
@@ -105,6 +106,28 @@ def decrement_cart_item(request, cart_item_id):
         context = {
             'quantity': quantity,
             'sub_total': intcomma(sub_total),
+            'tax': intcomma(tax),
+            'total': intcomma(total),
+            'grand_total': intcomma(grand_total),
+        }
+
+        return JsonResponse(context)
+
+
+def delete_cart_item(request, cart_item_id):
+    if request.is_ajax():
+        print('delete')
+        CartItem.objects.get(pk=cart_item_id).delete()
+
+        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        total = 0
+        for i in cart_items:
+            total += i.variant.price * i.quantity
+
+        tax = (18 * total) / 100
+        grand_total = tax + total
+
+        context = {
             'tax': intcomma(tax),
             'total': intcomma(total),
             'grand_total': intcomma(grand_total),
