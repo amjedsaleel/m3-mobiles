@@ -7,10 +7,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 
 # local Django
 from .forms import CustomUserCreationForm, ResetPasswordForm
 from .verification import send_otp, verify_otp_number
+from cart.utils import get_cart_id
+from cart.models import Cart, CartItem
 
 User = get_user_model()
 
@@ -34,7 +37,7 @@ def signup(request):
             form.save()
             phone_number = form.cleaned_data['mobile']
             request.session['phone_number'] = phone_number
-            t1 = threading.Thread(target=send_otp, args=(phone_number, ))  # Sending OTP for verify user account
+            t1 = threading.Thread(target=send_otp, args=(phone_number,))  # Sending OTP for verify user account
             t1.start()
             messages.success(request, 'Successfully account created. Now verify your account with OTP')
             return redirect('accounts:verify-account')
@@ -60,10 +63,32 @@ def sign_in(request):
         if user is not None:
             if not user.is_verified:  # Checking user is verified or not
                 request.session['phone_number'] = user.mobile
-                t1 = threading.Thread(target=send_otp, args=(user.mobile, ))
+                t1 = threading.Thread(target=send_otp, args=(user.mobile,))
                 t1.start()
                 messages.warning(request, 'Your account is not verified. Verify account with OTP')
                 return redirect('accounts:verify-account')
+
+            try:
+                cart = Cart.objects.get(cart_id=get_cart_id(request))  # Guest user cart
+                is_cart_items = CartItem.objects.filter(
+                    cart_id=cart).exists()  # Checking  guest user have any cart items
+
+                if is_cart_items:
+                    cart_items = CartItem.objects.filter(cart=cart)
+
+                    for cart_item in cart_items:
+                        try:
+                            print(cart_item.user, cart_item.variant)
+                            cart_item.user = user
+                            cart_item.save()
+                        except IntegrityError:
+                            user_cart_item = CartItem.objects.get(user=user, variant=cart_item.variant)
+                            user_cart_item.quantity += cart_item.quantity
+                            user_cart_item.save()
+                            cart_item.delete()
+
+            except Cart.DoesNotExist:
+                pass
 
             login(request, user)
             messages.success(request, 'Successfully logged In')
@@ -172,7 +197,7 @@ def reset_password(request):
         try:
             User.objects.get(mobile=phone_number)
             request.session['phone_number'] = phone_number
-            t1 = threading.Thread(target=send_otp, args=(phone_number, ))
+            t1 = threading.Thread(target=send_otp, args=(phone_number,))
             t1.start()
             return redirect('accounts:verify-reset-password-otp')
         except ObjectDoesNotExist:

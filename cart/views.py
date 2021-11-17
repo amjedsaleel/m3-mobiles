@@ -1,5 +1,5 @@
 # Django
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 
@@ -14,7 +14,10 @@ from .context_processors import cart_items_count
 
 
 def user_cart(request):
-    cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+    else:
+        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
 
     total = 0
     for cart_item in cart_items:
@@ -35,32 +38,50 @@ def user_cart(request):
 
 def add_to_cart(request, variant_slug):
     if request.is_ajax():
-
         variant = Variant.objects.get(slug=variant_slug)
 
-        try:
-            """ Fetching the cart with session key """
-            cart = Cart.objects.get(cart_id=get_cart_id(request))
-        except Cart.DoesNotExist:
-            """ Creating new cart """
-            cart = Cart.objects.create(cart_id=get_cart_id(request))
-            cart.save()
+        if request.user.is_authenticated:  # Adding cart items to logged users
 
-        try:
-            """ Incrementing existing cart item quantity """
-            cart_item = CartItem.objects.get(cart=cart, variant=variant)
-            cart_item.quantity += 1
-            cart_item.save()
-            cart_count = cart_items_count(request)
+            try:
+                """ Incrementing existing cart item quantity """
+                cart_item = CartItem.objects.get(user=request.user, variant=variant)
+                cart_item.quantity += 1
+                cart_item.save()
+                cart_count = cart_items_count(request)
 
-            return JsonResponse({'cart_count': cart_count['count']})
-        except CartItem.DoesNotExist:
-            """ Adding new item to cart"""
-            cart_item = CartItem.objects.create(cart=cart, variant=variant, quantity=1)
-            cart_item.save()
-            cart_count = cart_items_count(request)
+                return JsonResponse({'cart_count': cart_count['count']})
+            except CartItem.DoesNotExist:
+                """ Adding new item to cart"""
+                cart_item = CartItem.objects.create(user=request.user, variant=variant, quantity=1)
+                cart_item.save()
+                cart_count = cart_items_count(request)
 
-            return JsonResponse({'cart_count': cart_count['count']})
+                return JsonResponse({'cart_count': cart_count['count']})
+
+        else:  # Adding cart items to not logged user
+            try:
+                """ Fetching the cart with session key """
+                cart = Cart.objects.get(cart_id=get_cart_id(request))
+            except Cart.DoesNotExist:
+                """ Creating new cart """
+                cart = Cart.objects.create(cart_id=get_cart_id(request))
+                cart.save()
+
+            try:
+                """ Incrementing existing cart item quantity """
+                cart_item = CartItem.objects.get(cart=cart, variant=variant)
+                cart_item.quantity += 1
+                cart_item.save()
+                cart_count = cart_items_count(request)
+
+                return JsonResponse({'cart_count': cart_count['count']})
+            except CartItem.DoesNotExist:
+                """ Adding new item to cart"""
+                cart_item = CartItem.objects.create(cart=cart, variant=variant, quantity=1)
+                cart_item.save()
+                cart_count = cart_items_count(request)
+
+                return JsonResponse({'cart_count': cart_count['count']})
     raise Http404
 
 
