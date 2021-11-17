@@ -41,6 +41,13 @@ def add_to_cart(request, variant_slug):
         variant = Variant.objects.get(slug=variant_slug)
 
         if request.user.is_authenticated:  # Adding cart items to logged users
+            try:
+                """ Fetching the cart with session key """
+                cart = Cart.objects.get(cart_id=get_cart_id(request))
+            except Cart.DoesNotExist:
+                """ Creating new cart """
+                cart = Cart.objects.create(cart_id=get_cart_id(request))
+                cart.save()
 
             try:
                 """ Incrementing existing cart item quantity """
@@ -48,11 +55,10 @@ def add_to_cart(request, variant_slug):
                 cart_item.quantity += 1
                 cart_item.save()
                 cart_count = cart_items_count(request)
-
                 return JsonResponse({'cart_count': cart_count['count']})
             except CartItem.DoesNotExist:
                 """ Adding new item to cart"""
-                cart_item = CartItem.objects.create(user=request.user, variant=variant, quantity=1)
+                cart_item = CartItem.objects.create(user=request.user, variant=variant, quantity=1, cart=cart)
                 cart_item.save()
                 cart_count = cart_items_count(request)
 
@@ -93,7 +99,11 @@ def increment_cart_item(request, cart_item_id):
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
+        else:
+            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+
         total = 0
         for i in cart_items:
             total += i.variant.price * i.quantity
@@ -123,7 +133,11 @@ def decrement_cart_item(request, cart_item_id):
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
+        else:
+            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+
         total = 0
         for i in cart_items:
             total += i.variant.price * i.quantity
@@ -148,7 +162,11 @@ def delete_cart_item(request, cart_item_id):
     if request.is_ajax():
         CartItem.objects.get(pk=cart_item_id).delete()
 
-        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user)
+        else:
+            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+
         total = 0
         for i in cart_items:
             total += i.variant.price * i.quantity
