@@ -5,7 +5,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 
 # local Django
 from .models import Cart, CartItem
-from .utils import get_cart_id
+from .utils import get_cart_id, get_cart_items
 from store.models import Variant
 from .context_processors import cart_items_count
 
@@ -14,10 +14,7 @@ from .context_processors import cart_items_count
 
 
 def user_cart(request):
-    if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-    else:
-        cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+    cart_items = get_cart_items(request)
 
     total = 0
     for cart_item in cart_items:
@@ -99,10 +96,7 @@ def increment_cart_item(request, cart_item_id):
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user)
-        else:
-            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        cart_items = get_cart_items(request)
 
         total = 0
         for i in cart_items:
@@ -133,10 +127,7 @@ def decrement_cart_item(request, cart_item_id):
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user)
-        else:
-            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        cart_items = get_cart_items(request)
 
         total = 0
         for i in cart_items:
@@ -162,10 +153,7 @@ def delete_cart_item(request, cart_item_id):
     if request.is_ajax():
         CartItem.objects.get(pk=cart_item_id).delete()
 
-        if request.user.is_authenticated:
-            cart_items = CartItem.objects.filter(user=request.user)
-        else:
-            cart_items = CartItem.objects.filter(cart__cart_id=get_cart_id(request))
+        cart_items = get_cart_items(request)
 
         total = 0
         for i in cart_items:
