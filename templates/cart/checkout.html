@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block title %} M3 | Checkout {% endblock %}
 {% block content %}
@@ -79,26 +80,37 @@
                     <article class="card mb-4">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Billing info</h4>
-                            <form action="">
+                            <form action="{% url 'order:place-order' %}" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="form-group col-sm-6">
-                                        <label>Frst name</label>
-                                        <input type="text" placeholder="Type here" class="form-control">
+                                        {{ from.full_name | as_crispy_field }}
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label>Last name</label>
-                                        <input type="text" placeholder="Type here" class="form-control">
+                                        {{ from.phone | as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        {{ from.email | as_crispy_field }}
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label>Phone</label>
-                                        <input type="text" value="+998" class="form-control">
+                                        {{ from.house_no |  as_crispy_field }}
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label>Email</label>
-                                        <input type="email" placeholder="example@gmail.com" class="form-control">
+                                        {{ from.area |  as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        {{ from.landmark |  as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        {{ from.town |  as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        {{ from.state |  as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        {{ from.pin |  as_crispy_field }}
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </article>
                 </main>
@@ -122,9 +134,9 @@
                             <p class="text-center mb-3">
                                 <img src="{% static 'images/payments.png' %}" height="26">
                             </p>
-                            <a href="#" class="btn btn-primary btn-block"> Place Order </a>
+                            <button class="btn btn-primary btn-block" type="submit"> Place Order</button>
                             <a href="#" class="btn btn-outline-primary btn-block"> Continue shopping </a>
-
+                            </form>
                         </div>
                     </div>
                 </aside>

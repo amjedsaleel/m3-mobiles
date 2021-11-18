@@ -23,7 +23,7 @@ class Order(models.Model):
     landmark = models.CharField(max_length=50)
     town = models.CharField(max_length=50, verbose_name='Town/City')
     state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
+    pin = models.PositiveIntegerField()
     order_total = models.FloatField()
     tax = models.FloatField()
     is_ordered = models.BooleanField(default=False)

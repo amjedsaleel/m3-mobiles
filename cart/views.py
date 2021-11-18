@@ -8,7 +8,7 @@ from .models import Cart, CartItem
 from .utils import get_cart_id, get_cart_items, cart_summery
 from store.models import Variant
 from .context_processors import cart_items_count
-
+from order.forms import OrderForm
 
 # Create your views here.
 
@@ -147,4 +147,9 @@ def delete_cart_item(request, cart_item_id):
 
 
 def checkout(request):
-    return render(request, 'cart/checkout.html')
+    form = OrderForm()
+
+    context = {
+        'from': form
+    }
+    return render(request, 'cart/checkout.html', context)
