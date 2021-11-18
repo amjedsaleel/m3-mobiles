@@ -1,3 +1,6 @@
+# Standard
+import uuid
+
 # Django
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -14,7 +17,7 @@ User = get_user_model()
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    order_number = models.CharField(max_length=20)
+    order_number = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     full_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=50)
@@ -26,12 +29,13 @@ class Order(models.Model):
     pin = models.PositiveIntegerField()
     order_total = models.FloatField()
     tax = models.FloatField()
+    grand_total = models.FloatField(null=True)
     is_ordered = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.name
+        return self.full_name
 
 
 class OrderProduct(models.Model):
