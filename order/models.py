@@ -17,7 +17,7 @@ User = get_user_model()
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    order_number = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order_number = models.UUIDField(default=uuid.uuid4, editable=False)
     full_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=50)
