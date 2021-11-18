@@ -78,7 +78,6 @@ def sign_in(request):
 
                     for cart_item in cart_items:
                         try:
-                            print(cart_item.user, cart_item.variant)
                             cart_item.user = user
                             cart_item.save()
                         except IntegrityError:

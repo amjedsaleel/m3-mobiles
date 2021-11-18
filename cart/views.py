@@ -5,7 +5,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 
 # local Django
 from .models import Cart, CartItem
-from .utils import get_cart_id, get_cart_items
+from .utils import get_cart_id, get_cart_items, cart_summery
 from store.models import Variant
 from .context_processors import cart_items_count
 
@@ -15,19 +15,13 @@ from .context_processors import cart_items_count
 
 def user_cart(request):
     cart_items = get_cart_items(request)
-
-    total = 0
-    for cart_item in cart_items:
-        total += cart_item.variant.price * cart_item.quantity
-
-    tax = (18 * total) / 100
-    grand_total = tax + total
+    result = cart_summery(request)  # Get cart summery with total price, tax, grand total
 
     context = {
         'cart_items': cart_items,
-        'total': total,
-        'tax': tax,
-        'grand_total': grand_total
+        'total': result['total_price'],
+        'tax': result['tax'],
+        'grand_total': result['grand_total']
     }
 
     return render(request, 'cart/cart.html', context)
@@ -96,22 +90,15 @@ def increment_cart_item(request, cart_item_id):
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        cart_items = get_cart_items(request)
-
-        total = 0
-        for i in cart_items:
-            total += i.variant.price * i.quantity
-
-        tax = (18 * total) / 100
-        grand_total = tax + total
-        cart_count = cart_items_count(request)
+        cart_count = cart_items_count(request)  # Get cart count
+        result = cart_summery(request)  # Get cart summery with total price, tax, grand total
 
         context = {
             'quantity': quantity,
             'sub_total': intcomma(sub_total),
-            'tax': intcomma(tax),
-            'total': intcomma(total),
-            'grand_total': intcomma(grand_total),
+            'tax': intcomma(result['tax']),
+            'total': intcomma(result['total_price']),
+            'grand_total': intcomma(result['grand_total']),
             'cart_count': cart_count['count']
         }
 
@@ -120,29 +107,22 @@ def increment_cart_item(request, cart_item_id):
 
 def decrement_cart_item(request, cart_item_id):
     if request.is_ajax():
-        print('decrement')
+        # Cart item decrementing
         cart_item = CartItem.objects.get(pk=cart_item_id)
         cart_item.quantity -= 1
         cart_item.save()
         quantity = cart_item.quantity
         sub_total = cart_item.sub_total()
 
-        cart_items = get_cart_items(request)
-
-        total = 0
-        for i in cart_items:
-            total += i.variant.price * i.quantity
-
-        tax = (18 * total) / 100
-        grand_total = tax + total
-        cart_count = cart_items_count(request)
+        result = cart_summery(request)  # Get cart summery with total price, tax, grand total
+        cart_count = cart_items_count(request)  # Get cart count
 
         context = {
             'quantity': quantity,
             'sub_total': intcomma(sub_total),
-            'tax': intcomma(tax),
-            'total': intcomma(total),
-            'grand_total': intcomma(grand_total),
+            'tax': intcomma(result['tax']),
+            'total': intcomma(result['total_price']),
+            'grand_total': intcomma(result['grand_total']),
             'cart_count': cart_count['count']
         }
 
@@ -153,20 +133,13 @@ def delete_cart_item(request, cart_item_id):
     if request.is_ajax():
         CartItem.objects.get(pk=cart_item_id).delete()
 
-        cart_items = get_cart_items(request)
-
-        total = 0
-        for i in cart_items:
-            total += i.variant.price * i.quantity
-
-        tax = (18 * total) / 100
-        grand_total = tax + total
         cart_count = cart_items_count(request)
+        result = cart_summery(request)  # Get cart summery with total price, tax, grand total
 
         context = {
-            'tax': intcomma(tax),
-            'total': intcomma(total),
-            'grand_total': intcomma(grand_total),
+            'tax': intcomma(result['tax']),
+            'total': intcomma(result['total_price']),
+            'grand_total': intcomma(result['grand_total']),
             'cart_count': cart_count['count']
         }
 
