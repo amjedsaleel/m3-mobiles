@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'adminPanel.apps.AdminpanelConfig',
     'brand.apps.BrandConfig',
     'cart.apps.CartConfig',
+    'order.apps.OrderConfig',
+    'payment.apps.PaymentConfig',
 
     # Installed via pip
     'crispy_forms',
