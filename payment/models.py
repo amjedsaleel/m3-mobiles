@@ -14,3 +14,6 @@ class Payment(models.Model):
     amount_paid = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.payment_id

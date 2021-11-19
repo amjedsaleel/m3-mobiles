@@ -86,7 +86,7 @@
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Grand Total:</dt>
-                                <dd class="text-right text-dark b"><strong>₹{{ grand_total | intcomma}}</strong></dd>
+                                <dd class="text-right text-dark b"><strong>₹{{ grand_total | intcomma }}</strong></dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">
@@ -103,7 +103,6 @@
     </section>
 {% endblock %}
 {% block script %}
-    <script src="https://www.paypal.com/sdk/js?client-id=AU-EJvydFXQPAhRkYbphs-UYGlNGmvTeL_W28ky_tP0zj-5_hJXLpaMVWNtAc9xUQiB-wwZN3OtvH3Ro&currency=USD"></script>
     <script>
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
@@ -130,11 +129,26 @@
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (orderData) {
                     // Successful capture! For demo purposes:
-                    console.log('Capture result', orderData);
                     var transaction = orderData.purchase_units[0].payments.captures[0];
-                    console.log('transation')
                     console.log(transaction)
-                    alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                    let orderNumber = "{{ order.order_number }}"
+                    if (transaction.status === "COMPLETED") {
+                        let url = "{% url 'payments:paypal' %}"
+
+                            $.ajax({
+                                type: 'POST',
+                                url: url,
+                                dataType: 'json',
+                                data: {
+                                    csrfmiddlewaretoken: csrftoken,
+                                    orderNumber: orderNumber,
+                                    transactionId: transaction.id
+                                },
+                                success: function (data) {
+                                    console.log('ok')
+                                }
+                            })
+                    }
 
                     // Replace the above to show a success message within this page, e.g.
                     // const element = document.getElementById('paypal-button-container');
