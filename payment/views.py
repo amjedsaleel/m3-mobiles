@@ -3,8 +3,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 # local Django
+from wheel.metadata import pkginfo_unicode
+
 from .models import Payment
-from order.models import Order
+from order.models import Order, OrderProduct
+from cart.models import CartItem, Variant
 
 # Create your views here.
 
@@ -33,6 +36,28 @@ def paypal(request):
         order.payment = payment
         order.is_ordered = True
         order.save()
+
+        # Saving ordered products
+        cart_items = CartItem.objects.filter(user=request.user)
+
+        for item in cart_items:
+            order_product = OrderProduct.objects.create(
+                user=request.user,
+                order=order,
+                payment=payment,
+                variant=item.variant,
+                quantity=item.quantity,
+                price=item.variant.price,
+                ordered=True,
+            )
+
+            # Decrease the quantity
+            variant = Variant.objects.get(pk=item.variant.id)
+            variant.stock -= item.quantity
+            variant.save()
+
+        # Deleting all cart items
+        cart_items.delete()
 
         return JsonResponse({'success': 'success'})
 
