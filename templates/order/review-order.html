@@ -86,15 +86,12 @@
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Grand Total:</dt>
-                                <dd class="text-right text-dark b"><strong>₹{{ grand_total }}</strong></dd>
+                                <dd class="text-right text-dark b"><strong>₹{{ grand_total | intcomma}}</strong></dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">
                                 <img src="{% static 'images/payments.png' %}" height="26">
                             </p>
-                            <button class="btn btn-primary btn-block" type="submit"> Place Order</button>
-
-
                             <div id="paypal-button-container">
                                 <!-- PayPal Button Will Load -->
                             </div>
@@ -104,4 +101,50 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block script %}
+    <script src="https://www.paypal.com/sdk/js?client-id=AU-EJvydFXQPAhRkYbphs-UYGlNGmvTeL_W28ky_tP0zj-5_hJXLpaMVWNtAc9xUQiB-wwZN3OtvH3Ro&currency=USD"></script>
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            style: {
+                color: 'blue',
+                shape: 'pill',
+                label: 'pay',
+                height: 40,
+                layout: 'horizontal'
+            },
+
+            // Set up the transaction
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ pay_pal_amount }}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData);
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    console.log('transation')
+                    console.log(transaction)
+                    alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+
+                    // Replace the above to show a success message within this page, e.g.
+                    // const element = document.getElementById('paypal-button-container');
+                    // element.innerHTML = '';
+                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                    // Or go to another URL:  actions.redirect('thank_you.html');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
 {% endblock %}
