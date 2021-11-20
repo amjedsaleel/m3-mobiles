@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} M3 | Order completed {% endblock %}
+{% block style %}
+    <style>
+        h1 {
+            color: #88B04B;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-weight: 900;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #404F5E;
+            font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .checkmark {
+            color: #9ABC66;
+            font-size: 70px;
+            line-height: 200px;
+            margin-left: -15px;
+        }
+
+        .card {
+            background: white;
+            padding: 60px;
+            border-radius: 4px;
+            box-shadow: 0 2px 3px #C8D0D8;
+            display: inline-block;
+            margin: 0 auto;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="card">
+            <div class="text-center"
+                 style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+                <i class="fas fa-check checkmark"></i></div>
+            <div class="text-center mt-2">
+                <h1>Success</h1>
+            </div>
+            <p>Your order is successfully placed</p>
+            <div class="text-center mt-3">
+                <a href="{% url 'store:store' %}" class="btn btn-outline-success">Continue shopping</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

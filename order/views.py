@@ -56,3 +56,7 @@ def review_order(request):
         'pay_pal_amount': pay_pal_amount
     }
     return render(request, 'order/review-order.html', context)
+
+
+def order_completed(request):
+    return render(request, 'order/order-complete.html')

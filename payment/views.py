@@ -51,7 +51,7 @@ def paypal(request):
                 ordered=True,
             )
 
-            # Decrease the quantity
+            # Decrease the stock
             variant = Variant.objects.get(pk=item.variant.id)
             variant.stock -= item.quantity
             variant.save()
@@ -59,5 +59,5 @@ def paypal(request):
         # Deleting all cart items
         cart_items.delete()
 
-        return JsonResponse({'success': 'success'})
+        return JsonResponse({'message': 'success'})
 
