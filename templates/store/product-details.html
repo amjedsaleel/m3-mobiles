@@ -58,25 +58,25 @@
                         <p>{{ variant.description }}</p>
 
                         <hr>
-{#                        <div class="row">#}
-{#                            <div class="item-option-select">#}
-{#                                <h6>Choose Color</h6>#}
-{#                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">#}
-{#                                    <label class="btn btn-light">#}
-{#                                        <input type="radio" name="radio_color"> Silver#}
-{#                                    </label>#}
-{#                                    <label class="btn btn-light">#}
-{#                                        <input type="radio" name="radio_color"> Gray#}
-{#                                    </label>#}
-{#                                    <label class="btn btn-light active">#}
-{#                                        <input type="radio" name="radio_color checked"> Gold#}
-{#                                    </label>#}
-{#                                    <label class="btn btn-light">#}
-{#                                        <input type="radio" name="radio_color"> Black#}
-{#                                    </label>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        {#                        <div class="row">#}
+                        {#                            <div class="item-option-select">#}
+                        {#                                <h6>Choose Color</h6>#}
+                        {#                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">#}
+                        {#                                    <label class="btn btn-light">#}
+                        {#                                        <input type="radio" name="radio_color"> Silver#}
+                        {#                                    </label>#}
+                        {#                                    <label class="btn btn-light">#}
+                        {#                                        <input type="radio" name="radio_color"> Gray#}
+                        {#                                    </label>#}
+                        {#                                    <label class="btn btn-light active">#}
+                        {#                                        <input type="radio" name="radio_color checked"> Gold#}
+                        {#                                    </label>#}
+                        {#                                    <label class="btn btn-light">#}
+                        {#                                        <input type="radio" name="radio_color"> Black#}
+                        {#                                    </label>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                         <div class="row">
                             <div class="item-option-select">
                                 <h5 class="mb-3">Specifications</h5>
@@ -86,7 +86,8 @@
                         </div>
                         <hr>
                         <div class="d-flex pl-3 pr-3 justify-content-start mb-4">
-                            <a href="#" class="btn btn-outline-primary">Add to cart</a>
+                            <a href="#" class="btn btn-outline-primary"
+                               onclick="addToCart(event, '{% url 'cart:add-to-cart' variant.slug %}')">Add to cart</a>
                             <a href="#" class="btn btn-primary ml-2">Buy now</a>
                         </div>
                     </article>

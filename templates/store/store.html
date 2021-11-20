@@ -59,7 +59,9 @@
                                         <p class="offer small-gray-text">10% off</p>
                                     </div>
                                     <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
-                                        <a href="#" class="btn btn-outline-primary">Add to cart</a>
+                                        <a href="#" class="btn btn-outline-primary"
+                                           onclick="addToCart(event, '{% url 'cart:add-to-cart' variant.slug %}')">Add
+                                            to cart</a>
                                         <a href="#" class="btn btn-primary">Buy now</a>
                                     </div>
                                 </div>
