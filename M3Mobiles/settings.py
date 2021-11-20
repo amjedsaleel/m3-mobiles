@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'order.apps.OrderConfig',
     'payment.apps.PaymentConfig',
+    'userProfile.apps.UserprofileConfig',
 
     # Installed via pip
     'crispy_forms',
