@@ -5,3 +5,8 @@ from django.shortcuts import render
 
 def dashboard(request):
     return render(request, 'userProfile/dashboard.html')
+
+
+def my_addresses(request):
+    return render(request, 'userProfile/my-addresses.html')
+
