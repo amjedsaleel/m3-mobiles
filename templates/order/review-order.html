@@ -2,8 +2,61 @@
 {% load static %}
 {% load humanize %}
 {% block title %} M3 | Place order {% endblock %}
+{% block style %}
+    <style>
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: black;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <section class="section-content padding-y bg">
+        <!-- Spinner div -->
+        <div id="cover-spin"></div>
+
         <div class="container">
             <h4 class="text-center mb-20">Review Your Order and Make Payment</h4>
             <div class="row">
@@ -134,33 +187,26 @@
                     let orderNumber = "{{ order.order_number }}"
                     if (transaction.status === "COMPLETED") {
                         let url = "{% url 'payments:paypal' %}"
-
-                            $.ajax({
-                                type: 'POST',
-                                url: url,
-                                dataType: 'json',
-                                data: {
-                                    csrfmiddlewaretoken: csrftoken,
-                                    orderNumber: orderNumber,
-                                    transactionId: transaction.id
-                                },
-                                success: function (data) {
-                                    if(data.message === 'success') {
-                                        window.location.replace("{% url 'order:order-completed' %}")
-                                    }
+                        $('#cover-spin').show(0)
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            dataType: 'json',
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                                orderNumber: orderNumber,
+                                transactionId: transaction.id
+                            },
+                            success: function (data) {
+                                if (data.message === 'success') {
+                                    $('#cover-spin').hide()
+                                    window.location.replace("{% url 'order:order-completed' %}")
                                 }
-                            })
+                            }
+                        })
                     }
-
-                    // Replace the above to show a success message within this page, e.g.
-                    // const element = document.getElementById('paypal-button-container');
-                    // element.innerHTML = '';
-                    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-                    // Or go to another URL:  actions.redirect('thank_you.html');
                 });
             }
-
-
         }).render('#paypal-button-container');
     </script>
 {% endblock %}
