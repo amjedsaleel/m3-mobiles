@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}M3 | Profile {% endblock %}
+{% load crispy_forms_filters %}
 {% block content %}
     <section class="section-content padding-y bg">
         <div class="container">
+            {% include 'includes/messages.html' %}
             <div class="row">
                 <aside class="col-md-3">
                     <ul class="list-group">
@@ -26,46 +28,31 @@
                         </header>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <figure class="itemside  mb-4 card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="text-center align-items-center">
-                                                    <h5 class="">Amjed Saleel K</h5>
+                                {% for address in addresses %}
+                                    <div class="col-md-6">
+                                        <figure class="itemside  mb-4 card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="text-center align-items-center">
+                                                        <h5 class="">{{ address.full_name }}</h5>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-primary">{{ address.type }}</button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
-                                                </div>
+                                                <p class="small-gray-text">{{ address.phone }}</p>
+                                                <p class="small-gray-text">{{ address.house_no }}</p>
+                                                <p class="small-gray-text">{{ address.area }}</p>
+                                                <p class="small-gray-text">{{ address.town }}</p>
+                                                <p class="small-gray-text">{{ address.state }}</p>
+                                                <p class="small-gray-text">{{ address.pin }}</p>
                                             </div>
-                                            <p class="small-gray-text">9495836716</p>
-                                            <p class="small-gray-text">Kajiramkatte house</p>
-                                            <p class="small-gray-text">Madavoor post</p>
-                                            <p class="small-gray-text">Calicut</p>
-                                            <p class="small-gray-text">Kerala</p>
-                                            <p class="small-gray-text">673585</p>
-                                        </div>
-                                    </figure>
-                                </div>
-                                <div class="col-md-6">
-                                    <figure class="itemside  mb-4 card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="text-center align-items-center">
-                                                    <h5 class="">Amjed Saleel K</h5>
-                                                </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
-                                                </div>
-                                            </div>
-                                            <p class="small-gray-text">9495836716</p>
-                                            <p class="small-gray-text">Kajiramkatte house</p>
-                                            <p class="small-gray-text">Madavoor post</p>
-                                            <p class="small-gray-text">Calicut</p>
-                                            <p class="small-gray-text">Kerala</p>
-                                            <p class="small-gray-text">673585</p>
-                                        </div>
-                                    </figure>
-                                </div>
+                                        </figure>
+                                    </div>
+                                {% empty %}
+                                    <p>No, saved addresses</p>
+                                {% endfor %}
+
                             </div>
                         </div>
                     </article>
@@ -75,8 +62,43 @@
                             <strong> Add address </strong>
                         </div>
                         <div class="card-body">
-                            <form action="" method="get">
-
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.full_name | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.phone | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-12 form-group">
+                                        {{ form.email | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.house_no | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.area | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-12 form-group">
+                                        {{ form.landmark | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.town | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.state | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.pin | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        {{ form.type | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-primary w-50" value="Add new Address">
+                                </div>
                             </form>
                         </div>
                     </div>
