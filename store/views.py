@@ -30,6 +30,18 @@ def store(request):
     return render(request, 'store/store.html', context)
 
 
+def brand_wise(request, brand_slug):
+    variants = Variant.objects.filter(product__brand__slug=brand_slug)
+    variants_count = variants.count()
+    brands = Brand.objects.all()
+    context = {
+        'brands': brands,
+        'variants': variants,
+        'variants_count': variants_count
+    }
+    return render(request, 'store/store.html', context)
+
+
 def product_details(request, brand_slug, variant_slug):
     variant = Variant.objects.get(slug=variant_slug)
     context = {

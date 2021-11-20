@@ -22,7 +22,8 @@
                                 <div class="card-body">
                                     <ul class="list-menu">
                                         {% for brand in brands %}
-                                            <li><a href="#"> {{ brand.name }}</a></li>
+                                            <li><a href="{% url 'store:brand-wise' brand.slug %}"> {{ brand.name }}</a>
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
