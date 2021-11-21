@@ -126,6 +126,28 @@ def verify_account(request):
             user = User.objects.get(mobile=phone_number)
             user.is_verified = True
             user.save()
+
+            try:
+                cart = Cart.objects.get(cart_id=get_cart_id(request))  # Guest user cart
+                is_cart_items = CartItem.objects.filter(
+                    cart_id=cart).exists()  # Checking  guest user have any cart items
+
+                if is_cart_items:
+                    cart_items = CartItem.objects.filter(cart=cart)
+
+                    for cart_item in cart_items:
+                        try:
+                            cart_item.user = user
+                            cart_item.save()
+                        except IntegrityError:
+                            user_cart_item = CartItem.objects.get(user=user, variant=cart_item.variant)
+                            user_cart_item.quantity += cart_item.quantity
+                            user_cart_item.save()
+                            cart_item.delete()
+
+            except Cart.DoesNotExist:
+                pass
+
             login(request, user)
             messages.success(request, 'Successfully account verified')
             return redirect('store:index')
@@ -174,6 +196,28 @@ def mobile_login_otp_verify(request):
 
         if verified:
             user = User.objects.get(mobile=phone_number)
+
+            try:
+                cart = Cart.objects.get(cart_id=get_cart_id(request))  # Guest user cart
+                is_cart_items = CartItem.objects.filter(
+                    cart_id=cart).exists()  # Checking  guest user have any cart items
+
+                if is_cart_items:
+                    cart_items = CartItem.objects.filter(cart=cart)
+
+                    for cart_item in cart_items:
+                        try:
+                            cart_item.user = user
+                            cart_item.save()
+                        except IntegrityError:
+                            user_cart_item = CartItem.objects.get(user=user, variant=cart_item.variant)
+                            user_cart_item.quantity += cart_item.quantity
+                            user_cart_item.save()
+                            cart_item.delete()
+
+            except Cart.DoesNotExist:
+                pass
+
             login(request, user)
             messages.success(request, 'Successfully logged in')
             return redirect('store:index')
