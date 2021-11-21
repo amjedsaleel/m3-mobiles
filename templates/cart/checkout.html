@@ -11,67 +11,32 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">My Addresses</h4>
                             <div class="row">
-                                <div class="col-12 col-md-12 col-xl-6">
-                                    <figure class="itemside  mb-4 card ">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="text-center align-items-center">
-                                                    <h5 class="">Amjed Saleel K</h5>
+                                {% for address in addresses %}
+                                    <div class="col-12 col-md-12 col-xl-6">
+                                        <figure class="itemside  mb-4 card ">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="text-center align-items-center">
+                                                        <h5 class="">{{ address.full_name }}</h5>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-primary">{{ address.type }}</button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
-                                                </div>
+                                                <p class="small-gray-text">{{ address.phone }}</p>
+                                                <p class="small-gray-text">{{ address.email }}</p>
+                                                <p class="small-gray-text">{{ address.house_no }}</p>
+                                                <p class="small-gray-text">{{ address.area }}</p>
+                                                <p class="small-gray-text">{{ address.landmark }}</p>
+                                                <p class="small-gray-text">{{ address.town }}</p>
+                                                <p class="small-gray-text">{{ address.state }}</p>
+                                                <p class="small-gray-text">{{ address.pin }}</p>
                                             </div>
-                                            <p class="small-gray-text">9495836716</p>
-                                            <p class="small-gray-text">Kajiramkatte house</p>
-                                            <p class="small-gray-text">Madavoor post</p>
-                                            <p class="small-gray-text">Calicut</p>
-                                            <p class="small-gray-text">Kerala</p>
-                                            <p class="small-gray-text">673585</p>
-
-                                        </div>
-                                    </figure>
-                                </div> <!-- col.// -->
-                                <div class="col-12 col-md-12 col-xl-6">
-                                    <figure class="itemside  mb-4 card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="text-center align-items-center">
-                                                    <h5 class="">Amjed Saleel K</h5>
-                                                </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
-                                                </div>
-                                            </div>
-                                            <p class="small-gray-text">9495836716</p>
-                                            <p class="small-gray-text">Kajiramkatte house</p>
-                                            <p class="small-gray-text">Madavoor post</p>
-                                            <p class="small-gray-text">Calicut</p>
-                                            <p class="small-gray-text">Kerala</p>
-                                            <p class="small-gray-text">673585</p>
-                                        </div>
-                                    </figure>
-                                </div>
-                                <div class="col-12 col-md-12 col-xl-6">
-                                    <figure class="itemside  mb-4 card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="text-center align-items-center">
-                                                    <h5 class="">Amjed Saleel K</h5>
-                                                </div>
-                                                <div>
-                                                    <button class="btn btn-sm btn-outline-primary">Home</button>
-                                                </div>
-                                            </div>
-                                            <p class="small-gray-text">9495836716</p>
-                                            <p class="small-gray-text">Kajiramkatte house</p>
-                                            <p class="small-gray-text">Madavoor post</p>
-                                            <p class="small-gray-text">Calicut</p>
-                                            <p class="small-gray-text">Kerala</p>
-                                            <p class="small-gray-text">673585</p>
-                                        </div>
-                                    </figure>
-                                </div>
+                                        </figure>
+                                    </div>
+                                {% empty %}
+                                    <p>No, saved addresses</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </article>
@@ -120,15 +85,15 @@
                         <div class="card-body">
                             <dl class="dlist-align">
                                 <dt>Total price:</dt>
-                                <dd class="text-right">$69.97</dd>
+                                <dd class="text-right">₹{{ total }}</dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Tax:</dt>
-                                <dd class="text-right"> $10.00</dd>
+                                <dd class="text-right">₹{{ tax }}</dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Total:</dt>
-                                <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+                                <dd class="text-right text-dark b"><strong>₹{{ grand_total }}</strong></dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">

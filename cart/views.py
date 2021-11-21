@@ -7,9 +7,10 @@ from django.contrib.auth.decorators import login_required
 # local Django
 from .models import Cart, CartItem
 from .utils import get_cart_id, get_cart_items, cart_summery
-from store.models import Variant
 from .context_processors import cart_items_count
+from store.models import Variant
 from order.forms import OrderForm
+from userProfile.models import Address
 
 # Create your views here.
 
@@ -150,8 +151,14 @@ def delete_cart_item(request, cart_item_id):
 @login_required
 def checkout(request):
     form = OrderForm()
+    addresses = Address.objects.filter(user=request.user)
+    result = cart_summery(request)  # Get cart summery with total price, tax, grand total
 
     context = {
-        'from': form
+        'from': form,
+        'addresses': addresses,
+        'tax': intcomma(result['tax']),
+        'total': intcomma(result['total_price']),
+        'grand_total': intcomma(result['grand_total']),
     }
     return render(request, 'cart/checkout.html', context)
