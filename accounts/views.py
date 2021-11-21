@@ -88,11 +88,13 @@ def sign_in(request):
 
             except Cart.DoesNotExist:
                 pass
-
             login(request, user)
             messages.success(request, 'Successfully logged In')
-            return redirect('store:index')
 
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+
+            return redirect('store:index')
         messages.error(request, 'Invalid credentials')
         return redirect('accounts:sign-in')
 

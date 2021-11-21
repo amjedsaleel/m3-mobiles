@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.contrib.auth.decorators import login_required
 
 # local Django
 from .models import Cart, CartItem
@@ -146,6 +147,7 @@ def delete_cart_item(request, cart_item_id):
         return JsonResponse(context)
 
 
+@login_required
 def checkout(request):
     form = OrderForm()
 

@@ -4,6 +4,8 @@ from forex_python.converter import CurrencyRates
 # Django
 from django.shortcuts import render, redirect
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.contrib.auth.decorators import login_required
+
 
 # local Django
 from .models import Order
@@ -40,6 +42,7 @@ def place_order(request):
         return redirect('order:place-order')
 
 
+@login_required
 def review_order(request):
     cart_items = get_cart_items(request)
     result = cart_summery(request)  # Get cart summery with total price, tax, grand total
@@ -58,5 +61,6 @@ def review_order(request):
     return render(request, 'order/review-order.html', context)
 
 
+@login_required
 def order_completed(request):
     return render(request, 'order/order-complete.html')

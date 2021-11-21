@@ -157,6 +157,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
+LOGIN_URL = '/accounts/login'
+
 # Twilio API credentials
 # (find here https://www.twilio.com/console)
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')

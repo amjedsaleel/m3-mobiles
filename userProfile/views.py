@@ -1,6 +1,7 @@
 # Django
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # local Django
 from .forms import AddressForm
@@ -9,10 +10,12 @@ from .models import Address
 # Create your views here.
 
 
+@login_required
 def dashboard(request):
     return render(request, 'userProfile/dashboard.html')
 
 
+@login_required
 def my_addresses(request):
     form = AddressForm()
     addresses = Address.objects.filter(user=request.user)
