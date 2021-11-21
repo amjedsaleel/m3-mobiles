@@ -23,7 +23,7 @@ class Order(models.Model):
     email = models.EmailField(max_length=50)
     house_no = models.CharField(max_length=255, verbose_name='House no/Building/Company')
     area = models.CharField(max_length=255, verbose_name='Area/Street/Sector/Village')
-    landmark = models.CharField(max_length=50)
+    landmark = models.CharField(max_length=50, blank=True)
     town = models.CharField(max_length=50, verbose_name='Town/City')
     state = models.CharField(max_length=50)
     pin = models.PositiveIntegerField()
