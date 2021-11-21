@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} M3 | Product detail {% endblock %}
 {% block content %}
     <div class="container">
@@ -7,7 +8,7 @@
                 <aside class="col-md-6">
                     <article class="gallery-wrap">
                         <div class="img-big-wrap mainImage mt-4">
-                            <a href="#"><img src="{{ variant.image1.url }}" class=""></a>
+                            <a href="#"><img src="{{ variant.image1.url }}" class="example"/></a>
                         </div>
 
                     </article>
@@ -37,7 +38,7 @@
                 <main class="col-md-6 border-left">
                     <article class="content-body">
 
-                        <h2 class="title">{{ variant.product.name }}</h2>
+                        <h2 class="title">{{ variant.product.name | capfirst }}</h2>
 
                         <div class="mb-3">
                             <div class="d-flex justify-content-start align-items-center">
@@ -56,32 +57,12 @@
                         </div>
 
                         <p>{{ variant.description }}</p>
-
                         <hr>
-                        {#                        <div class="row">#}
-                        {#                            <div class="item-option-select">#}
-                        {#                                <h6>Choose Color</h6>#}
-                        {#                                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">#}
-                        {#                                    <label class="btn btn-light">#}
-                        {#                                        <input type="radio" name="radio_color"> Silver#}
-                        {#                                    </label>#}
-                        {#                                    <label class="btn btn-light">#}
-                        {#                                        <input type="radio" name="radio_color"> Gray#}
-                        {#                                    </label>#}
-                        {#                                    <label class="btn btn-light active">#}
-                        {#                                        <input type="radio" name="radio_color checked"> Gold#}
-                        {#                                    </label>#}
-                        {#                                    <label class="btn btn-light">#}
-                        {#                                        <input type="radio" name="radio_color"> Black#}
-                        {#                                    </label>#}
-                        {#                                </div>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
                         <div class="row">
                             <div class="item-option-select">
-                                <h5 class="mb-3">Specifications</h5>
-                                <h6>Ram: {{ variant.ram }}</h6>
-                                <h6>Storage: {{ variant.storage }}</h6>
+                                <p>Ram: {{ variant.ram }}</p>
+                                <p>Storage: {{ variant.storage }}</p>
+                                <p>Color: {{ variant.color }}</p>
                             </div>
                         </div>
                         <hr>
@@ -94,9 +75,43 @@
                 </main>
             </div>
         </div>
+        {% if suggestions %}
+            <h4 class="mt-5">Suggestions</h4>
+            <div class="row mt-5">
+                {% for i in suggestions %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card card-product-grid">
+                            <a href="{% url 'store:products-details' i.product.brand.slug i.slug %}"
+                               class="img-wrap mt-4 mb-4"> <img src="{{ i.image1.url }}" alt=""/>
+                            </a>
+                            <hr>
+                            <h5 class="pl-3">{{ i.product.name | capfirst }}</h5>
+                            <h6 class="pl-3 small-gray-text">
+                                ({{ i.ram }}, {{ i.storage }}, {{ i.color }})
+                            </h6>
+                            <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
+                                <p class="price regular-text-bold">₹{{ i.price }}</p>
+                                <p class="original-price small-gray-text">
+                                    <del>25999</del>
+                                </p>
+                                <p class="offer small-gray-text">10% off</p>
+                            </div>
+                            <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
+                                <a href="" class="btn btn-outline-primary"
+                                   onclick="addToCart(event, '{% url 'cart:add-to-cart' i.slug %}')">Add to
+                                    cart</a>
+                                <a href="#" class="btn btn-primary">Buy now</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 {% block script %}
+    <script src="{% static 'js/zoomsl.min.js' %}"></script>
+
     <script>
         $(document).ready(function () {
             $('.thumb a').click(function (e) {
@@ -104,5 +119,17 @@
                 $('.mainImage img').attr('src', $(this).attr("href"));
             })
         })
+
+        $(function () {
+
+            $(".example").imagezoomsl({
+                	zoomrange: [2, 2],
+                scrollspeedanimate: 5,
+                zoomspeedanimate: 7,
+                loopspeedanimate: 2.5,
+                magnifierspeedanimate: 350
+            });
+
+        });
     </script>
 {% endblock %}
