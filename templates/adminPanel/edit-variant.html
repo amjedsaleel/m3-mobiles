@@ -9,12 +9,16 @@
             <div class="col-12">
                 <form action="" method="post" enctype="multipart/form-data" class="card mt-5 mb-5 p-4" id="add-variant">
                     <div class="d-flex justify-content-between">
-                            <h3 class="card-title">Edit variant</h3>
+                        <h3 class="card-title">Edit variant</h3>
                     </div>
                     {% csrf_token %}
                     {{ form | crispy }}
+                    <div id="image-box" class="image-container"></div>
+                    <button class="btn btn-outline-info" id="crop-btn"
+                            style="width: 100%; margin-top: 10px; display: none;" type="button">Crop
+                    </button>
                     <div class="text-center">
-                        <input type="submit" value="Update variant" class="btn btn-primary w-50">
+                        <input type="submit" value="Update variant" class="btn btn-primary w-50" id="confirm-btn">
                     </div>
                 </form>
             </div>
@@ -47,15 +51,15 @@
                     description: {
                         required: true,
                     },
-                    /*image1: {
-                        required: true,
-                    }, */
-                  /*  image2: {
+                    image1: {
                         required: true,
                     },
-                    image3: {
-                        required: true,
-                    }, */
+                    /*  image2: {
+                          required: true,
+                      },
+                      image3: {
+                          required: true,
+                      }, */
                 },
             })
         })
