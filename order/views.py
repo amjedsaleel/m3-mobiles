@@ -1,10 +1,12 @@
 # third-party
 from forex_python.converter import CurrencyRates
+import razorpay
 
 # Django
 from django.shortcuts import render, redirect
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 
 # local Django
@@ -12,6 +14,10 @@ from .models import Order
 from .forms import OrderForm
 from cart.context_processors import cart_items_count
 from cart.utils import cart_summery, get_cart_items
+
+
+client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
 
 # Create your views here.
 
@@ -50,13 +56,22 @@ def review_order(request):
     rate = dollar_rate()
     pay_pal_amount = round(int(result['grand_total']) / int(rate))
 
+    data = {"amount": 500000, "currency": "INR", "receipt": "order_rcptid_11" }
+
+    payment = client.order.create(data=data)
+
     context = {
         'cart_items': cart_items,
         'tax': intcomma(result['tax']),
         'total': intcomma(result['total_price']),
         'grand_total': result['grand_total'],
         'order': order,
-        'pay_pal_amount': pay_pal_amount
+        'pay_pal_amount': pay_pal_amount,
+
+        'razor_key': settings.RAZOR_KEY_ID,
+        'order_id': payment['id']
+
+
     }
     return render(request, 'order/review-order.html', context)
 

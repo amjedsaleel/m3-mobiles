@@ -167,3 +167,7 @@ TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
 # Verification Service SID
 # (create one here https://www.twilio.com/console/verify/services)
 VERIFICATION_SID = config('VERIFICATION_SID')
+
+# Razorpay API credentials
+RAZOR_KEY_ID = config('RAZOR_KEY_ID')
+RAZOR_KEY_SECRET = config('RAZOR_KEY_SECRET')

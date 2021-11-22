@@ -1,6 +1,9 @@
+import razorpay
+
 # Django
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.conf import settings
 
 # local Django
 from wheel.metadata import pkginfo_unicode
@@ -8,6 +11,8 @@ from wheel.metadata import pkginfo_unicode
 from .models import Payment
 from order.models import Order, OrderProduct
 from cart.models import CartItem, Variant
+
+
 
 # Create your views here.
 
@@ -61,3 +66,19 @@ def paypal(request):
 
         return JsonResponse({'message': 'success'})
 
+
+def razorpay_payment_verification(request):
+    if request.method == 'POST':
+        razorpay_payment_id = request.POST.get('razorpay_payment_id')
+        razorpay_order_id = request.POST.get('razorpay_order_id')
+        razorpay_signature = request.POST.get('razorpay_signature')
+
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature': razorpay_signature
+        }
+
+        client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+        c = client.utility.verify_payment_signature(params_dict)
+        print(c)
