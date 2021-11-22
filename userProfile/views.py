@@ -62,3 +62,13 @@ def delete_address(request, pk):
     if request.is_ajax():
         Address.objects.get(pk=pk).delete()
         return JsonResponse({'message': 'success'})
+
+
+@login_required
+def set_default_address(request, pk):
+    Address.objects.filter(user=request.user, default=True).update(default=False)
+    address = Address.objects.get(pk=pk)
+    address.default = True
+    address.save()
+    messages.success(request, 'Default address changed')
+    return redirect('userProfile:my-addresses')

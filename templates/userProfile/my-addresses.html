@@ -48,11 +48,15 @@
                                                 <p class="small-gray-text">{{ address.pin }}</p>
                                                 <hr>
                                                 <div class="bottom d-flex justify-content-between">
-                                                    <div class="">
-                                                        <a href=""
+                                                    {% if not address.default %}
+                                                    <div>
+                                                        <a href="{% url 'userProfile:set-default-address' address.id %}"
                                                            class="right small-gray-text d-flex justify-content-between">Set
                                                             as default</a>
                                                     </div>
+                                                    {% else %}
+                                                        <p class="small-gray-text">Default</p>
+                                                    {% endif %}
                                                     <div class="left">
                                                         <p class="small-gray-text">
                                                             <a href="{% url 'userProfile:edit-address' address.id %}"
