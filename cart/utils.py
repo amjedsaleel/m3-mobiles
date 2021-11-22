@@ -35,10 +35,8 @@ def cart_summery(request):
 
     tax = (18 * total) / 100
     grand_total = tax + total
-    context = {
-        'total_price': total,
-        'tax': tax,
-        'grand_total': grand_total
-    }
-    return context
+
+    request.session['total_price'] = total
+    request.session['tax'] = tax
+    request.session['grand_total'] = grand_total
 

@@ -74,16 +74,16 @@
                         <div class="card-body">
                             <dl class="dlist-align">
                                 <dt>Total price:</dt>
-                                <dd class="text-right" id="total-price">₹{{ total | intcomma }}</dd>
+                                <dd class="text-right" id="total-price">₹{{ request.session.total_price | intcomma}}</dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Tax:</dt>
-                                <dd class="text-right" id="tax">₹{{ tax | intcomma }}</dd>
+                                <dd class="text-right" id="tax">₹{{ request.session.tax | intcomma }}</dd>
                             </dl>
                             <dl class="dlist-align">
-                                <dt>Total:</dt>
+                                <dt>Grand Total:</dt>
                                 <dd class="text-right text-dark b" id="grand-total">
-                                    <strong>₹{{ grand_total | intcomma }}</strong></dd>
+                                    <strong>₹{{ request.session.grand_total | intcomma }}</strong></dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">
