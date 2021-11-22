@@ -36,11 +36,10 @@ def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            data = cart_summery(request)
             order = form.save(commit=False)
-            order.order_total = int(data['total_price'])
-            order.tax = int(data['tax'])
-            order.grand_total = int(data['grand_total'])
+            order.order_total = int(request.session['total_price'])
+            order.tax = int(request.session['tax'])
+            order.grand_total = int(request.session['grand_total'])
             order.user = request.user
             order.save()
             request.session['order_id'] = order.id
@@ -51,10 +50,9 @@ def place_order(request):
 @login_required
 def review_order(request):
     cart_items = get_cart_items(request)
-    result = cart_summery(request)  # Get cart summery with total price, tax, grand total
     order = Order.objects.get(pk=request.session['order_id'])
     rate = dollar_rate()
-    pay_pal_amount = round(int(result['grand_total']) / int(rate))
+    pay_pal_amount = round(int(request.session['grand_total']) / int(rate))
 
     data = {"amount": 500000, "currency": "INR", "receipt": "order_rcptid_11" }
 
@@ -62,9 +60,9 @@ def review_order(request):
 
     context = {
         'cart_items': cart_items,
-        'tax': intcomma(result['tax']),
-        'total': intcomma(result['total_price']),
-        'grand_total': result['grand_total'],
+        'tax': intcomma(request.session['tax']),
+        'total': intcomma(request.session['total_price']),
+        'grand_total': intcomma(request.session['grand_total']),
         'order': order,
         'pay_pal_amount': pay_pal_amount,
 
