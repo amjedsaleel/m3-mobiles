@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # local Django
 from .models import Cart, CartItem
@@ -150,8 +152,25 @@ def delete_cart_item(request, cart_item_id):
 
 @login_required
 def checkout(request):
-    form = OrderForm()
     addresses = Address.objects.filter(user=request.user)
+    try:
+        default_address = addresses.get(default=True)
+        form = OrderForm(
+            initial={
+                'full_name': default_address.full_name,
+                'phone': default_address.phone,
+                'email': default_address.email,
+                'house_no': default_address.house_no,
+                'area': default_address.area,
+                'landmark': default_address.landmark,
+                'town': default_address.town,
+                'state': default_address.state,
+                'pin': default_address.pin
+            }
+        )
+    except ObjectDoesNotExist:
+        form = OrderForm()
+
     result = cart_summery(request)  # Get cart summery with total price, tax, grand total
 
     context = {
