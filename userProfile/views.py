@@ -2,10 +2,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # local Django
 from .forms import AddressForm
 from .models import Address
+
 
 # Create your views here.
 
@@ -26,7 +28,7 @@ def my_addresses(request):
             instance = form.save(commit=False)
             instance.user = request.user
             instance.save()
-            messages.success(request, 'Successfully new message added')
+            messages.success(request, 'Successfully new address added')
             return redirect('userProfile:my-addresses')
 
     context = {
@@ -34,3 +36,29 @@ def my_addresses(request):
         'addresses': addresses
     }
     return render(request, 'userProfile/my-addresses.html', context)
+
+
+@login_required
+def edit_address(request, pk):
+    address = Address.objects.get(pk=pk)
+    form = AddressForm(instance=address)
+
+    if request.method == 'POST':
+        form = AddressForm(request.POST, instance=address)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your address is updated')
+            return redirect('userProfile:my-addresses')
+
+    context = {
+        'form': form
+    }
+    return render(request, 'userProfile/edit-address.html', context)
+
+
+@login_required
+def delete_address(request, pk):
+    if request.is_ajax():
+        Address.objects.get(pk=pk).delete()
+        return JsonResponse({'message': 'success'})

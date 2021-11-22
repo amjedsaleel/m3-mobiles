@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div class="row">
                                 {% for address in addresses %}
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" id="{{ address.id }}">
                                         <figure class="itemside  mb-4 card">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -46,13 +46,30 @@
                                                 <p class="small-gray-text">{{ address.town }}</p>
                                                 <p class="small-gray-text">{{ address.state }}</p>
                                                 <p class="small-gray-text">{{ address.pin }}</p>
+                                                <hr>
+                                                <div class="bottom d-flex justify-content-between">
+                                                    <div class="">
+                                                        <a href=""
+                                                           class="right small-gray-text d-flex justify-content-between">Set
+                                                            as default</a>
+                                                    </div>
+                                                    <div class="left">
+                                                        <p class="small-gray-text">
+                                                            <a href="{% url 'userProfile:edit-address' address.id %}"
+                                                               class="small-gray-text">Edit</a>
+                                                            <span> |
+                                                                <a href="" class="small-gray-text"
+                                                                   onclick="deleteAddress(event, '{{ address.id }}')">Delete</a>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </figure>
                                     </div>
                                 {% empty %}
                                     <p>No, saved addresses</p>
                                 {% endfor %}
-
                             </div>
                         </div>
                     </article>
@@ -102,9 +119,47 @@
                             </form>
                         </div>
                     </div>
-
                 </main>
             </div>
         </div>
     </section>
+{% endblock %}
+{% block script %}
+    <script>
+        function deleteAddress(e, id) {
+            e.preventDefault();
+            let url = `/profile/delete-address/${id}/`
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to delete this address",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your address has been deleted.',
+                        'success'
+                    ).then(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            dataType: 'json',
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                            },
+                            success: function (data) {
+                                if (data.message === 'success') {
+                                    document.getElementById(id).style.display = 'none'
+                                }
+                            }
+                        })
+                    })
+                }
+            })
+        }
+    </script>
 {% endblock %}
