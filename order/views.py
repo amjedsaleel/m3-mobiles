@@ -58,8 +58,11 @@ def place_order(request):
 
 @login_required
 def review_order(request):
+
+    if 'tax' not in request.session:
+        return redirect('store:store')
+
     cart_items = get_cart_items(request)
-    # order = Order.objects.get(pk=request.session['order_id'])
     rate = dollar_rate()
     pay_pal_amount = round(int(request.session['grand_total']) / int(rate))
 
