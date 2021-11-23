@@ -47,7 +47,10 @@ def make_order(request):
         variant.save()
 
     # Delete user cart
-    Cart.objects.get(cart_id=get_cart_id(request)).delete()
+    try:
+        Cart.objects.get(cart_id=request.session.session_key).delete()
+    except:
+        pass
 
     # Deleting sessions
     del request.session['full_name']

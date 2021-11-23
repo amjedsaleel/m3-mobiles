@@ -224,13 +224,13 @@
 
         var options = {
             "key": "{{ razor_key }}", // Enter the Key ID generated from the Dashboard
-            "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "amount": "{{ razor_pay_amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": "INR",
-            "name": "Acme Corp",
-            "description": "Test Transaction",
-            "image": "https://example.com/your_logo",
+            "name": "M3 Mobiles",
+            "description": "Payment",
             "order_id": "{{ order_id }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 2
             "handler": function (response) {
+                $('#cover-spin').show(0)
                 $.ajax({
                     type: 'POST',
                     url: "{% url 'payments:razorpay-payment-verification' %}",
@@ -243,16 +243,17 @@
                     },
                     success: function (data) {
                         console.log(data)
+                        if (data.message === 'success') {
+                            $('#cover-spin').hide()
+                            window.location.replace("{% url 'order:order-completed' %}")
+                        }
                     }
                 })
             },
             "prefill": {
-                "name": "Gaurav Kumar",
-                "email": "gaurav.kumar@example.com",
-                "contact": "9999999999"
-            },
-            "notes": {
-                "address": "Razorpay Corporate Office"
+                "name": "{{ request.user.first_name }}",
+                "email": "{{ request.user.email }}",
+                "contact": "{{ request.user.mobile }}"
             },
             "theme": {
                 "color": "#3399cc"

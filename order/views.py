@@ -63,8 +63,8 @@ def review_order(request):
     rate = dollar_rate()
     pay_pal_amount = round(int(request.session['grand_total']) / int(rate))
 
-    data = {"amount": 500000, "currency": "INR", "receipt": "order_rcptid_11" }
-
+    razor_pay_amount = request.session['grand_total'] * 100
+    data = {"amount": razor_pay_amount, "currency": "INR"}
     payment = client.order.create(data=data)
 
     context = {
@@ -72,13 +72,10 @@ def review_order(request):
         'tax': intcomma(request.session['tax']),
         'total': intcomma(request.session['total_price']),
         'grand_total': intcomma(request.session['grand_total']),
-        # 'order': order,
         'pay_pal_amount': pay_pal_amount,
-
         'razor_key': settings.RAZOR_KEY_ID,
-        'order_id': payment['id']
-
-
+        'order_id': payment['id'],
+        'razor_pay_amount': razor_pay_amount
     }
     return render(request, 'order/review-order.html', context)
 
