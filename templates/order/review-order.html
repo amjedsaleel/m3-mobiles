@@ -217,7 +217,6 @@
         }).render('#paypal-button-container');
 
         document.getElementById('rzp-button1').onclick = function (e) {
-
             rzp1.open();
             e.preventDefault();
         }
@@ -246,6 +245,8 @@
                         if (data.message === 'success') {
                             $('#cover-spin').hide()
                             window.location.replace("{% url 'order:order-completed' %}")
+                        } else {
+                            window.location.replace("{% url 'payments:payment-failed' %}")
                         }
                     }
                 })
@@ -261,13 +262,7 @@
         };
         var rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response) {
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
+            window.location.replace("{% url 'payments:payment-failed' %}")
         });
 
     </script>

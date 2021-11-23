@@ -8,6 +8,7 @@ app_name = 'payments'
 
 urlpatterns = [
     path('paypal/', views.paypal, name='paypal'),
-    path('razorpay-payment-verification/', views.razorpay_payment_verification, name='razorpay-payment-verification')
+    path('razorpay-payment-verification/', views.razorpay_payment_verification, name='razorpay-payment-verification'),
+    path('failed/', views.failed, name='payment-failed')
 ]
 

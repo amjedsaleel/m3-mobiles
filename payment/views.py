@@ -62,3 +62,7 @@ def razorpay_payment_verification(request):
         make_order(request)
 
         return JsonResponse({'message': 'success'})
+
+
+def failed(request):
+    return render(request, 'payment/payment-failed.html')
