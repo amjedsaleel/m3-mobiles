@@ -44,7 +44,7 @@ def brand_wise(request, brand_slug):
 
 def product_details(request, brand_slug, variant_slug):
     variant = Variant.objects.get(slug=variant_slug)
-    suggestions = Variant.objects.filter(product_id=variant.product.id).exclude(slug=variant_slug)
+    suggestions = Variant.objects.filter(product_id=variant.product.id)
     context = {
         'variant': variant,
         'suggestions': suggestions

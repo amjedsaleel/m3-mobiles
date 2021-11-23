@@ -174,7 +174,7 @@
                     <div id="userManagement" class="collapse " data-bs-parent="#sideNavbar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link " href="#">View all users</a>
+                                <a class="nav-link {% block user-list %} {% endblock %}" href="{% url 'admin-panel:users' %}">View all users</a>
                             </li>
                         </ul>
                     </div>

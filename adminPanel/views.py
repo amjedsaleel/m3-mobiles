@@ -259,3 +259,24 @@ def delete_variant(request, variant_id):
 
 def variant_details(request, variant_slug):
     return render(request, 'adminPanel/variant-detail.html')
+
+
+def users_list(request):
+    users = User.objects.all()
+    return render(request, 'adminPanel/users.html', {'users': users})
+
+
+def block_user(request, pk):
+    if request.method == 'POST':
+        user = User.objects.get(pk=pk)
+        user.is_active = False
+        user.save()
+        return JsonResponse({'message': 'success'})
+
+
+def unblock_user(request, pk):
+    if request.method == 'POST':
+        user = User.objects.get(pk=pk)
+        user.is_active = True
+        user.save()
+        return JsonResponse({'message': 'success'})

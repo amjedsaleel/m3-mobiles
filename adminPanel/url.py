@@ -28,5 +28,10 @@ urlpatterns = [
     path('add-variant/', views.add_variant, name='add-variant'),
     path('edit-variant/<str:variant_id>/', views.edit_variant, name='edit-variant'),
     path('delete-variant/<str:variant_id>/', views.delete_variant, name='delete-variant'),
-    path('variant-details/<str:variant_slug>/', views.variant_details, name='variant-details')
+    path('variant-details/<str:variant_slug>/', views.variant_details, name='variant-details'),
+
+    # User
+    path('users/', views.users_list, name='users'),
+    path('block-user/<str:pk>/', views.block_user, name='block-user'),
+    path('unblock-user/<str:pk>/', views.unblock_user, name='unblock-user')
 ]
