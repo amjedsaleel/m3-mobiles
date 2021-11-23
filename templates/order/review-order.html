@@ -64,12 +64,12 @@
                     <div class="card">
                         <h5 class="card-header">Billing Address</h5>
                         <div class="card-body">
-                            <p class="card-text mb-0">{{ order.full_name }}</p>
-                            <p class="card-text mb-0">{{ order.phone }}</p>
-                            <p class="card-text mb-0">{{ order.city }}, {{ order.state }}</p>
-                            <p class="card-text mb-0">{{ order.country }}</p>
-                            <p class="card-text mb-0">{{ order.email }}</p>
-                            <p class="card-text mb-0">{{ order.phone }}</p>
+                            <p class="card-text mb-0">{{ request.session.full_name }}</p>
+                            <p class="card-text mb-0">{{ request.session.phone }}</p>
+                            <p class="card-text mb-0">{{ request.session.town }}, {{ request.session.state }}</p>
+                            <p class="card-text mb-0">{{ request.session.country }}</p>
+                            <p class="card-text mb-0">{{ request.session.email }}</p>
+                            <p class="card-text mb-0">{{ request.session.phone }}</p>
 
                         </div>
                     </div>

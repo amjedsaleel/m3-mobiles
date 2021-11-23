@@ -13,7 +13,7 @@ from django.conf import settings
 from .models import Order
 from .forms import OrderForm
 from cart.context_processors import cart_items_count
-from cart.utils import cart_summery, get_cart_items
+from cart.utils import get_cart_items
 
 
 client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
@@ -36,13 +36,22 @@ def place_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.order_total = int(request.session['total_price'])
-            order.tax = int(request.session['tax'])
-            order.grand_total = int(request.session['grand_total'])
-            order.user = request.user
-            order.save()
-            request.session['order_id'] = order.id
+            # order = form.save(commit=False)
+            # order.order_total = int(request.session['total_price'])
+            # order.tax = int(request.session['tax'])
+            # order.grand_total = int(request.session['grand_total'])
+            # order.user = request.user
+            # order.save()
+            # request.session['order_id'] = order.id
+            request.session['full_name'] = form.cleaned_data['full_name']
+            request.session['phone'] = form.cleaned_data['phone']
+            request.session['email'] = form.cleaned_data['email']
+            request.session['house_no'] = form.cleaned_data['house_no']
+            request.session['area'] = form.cleaned_data['area']
+            request.session['landmark'] = form.cleaned_data['landmark']
+            request.session['town'] = form.cleaned_data['town']
+            request.session['state'] = form.cleaned_data['state']
+            request.session['pin'] = form.cleaned_data['pin']
             return redirect('order:review-order')
         return redirect('order:place-order')
 
@@ -50,7 +59,7 @@ def place_order(request):
 @login_required
 def review_order(request):
     cart_items = get_cart_items(request)
-    order = Order.objects.get(pk=request.session['order_id'])
+    # order = Order.objects.get(pk=request.session['order_id'])
     rate = dollar_rate()
     pay_pal_amount = round(int(request.session['grand_total']) / int(rate))
 
@@ -63,7 +72,7 @@ def review_order(request):
         'tax': intcomma(request.session['tax']),
         'total': intcomma(request.session['total_price']),
         'grand_total': intcomma(request.session['grand_total']),
-        'order': order,
+        # 'order': order,
         'pay_pal_amount': pay_pal_amount,
 
         'razor_key': settings.RAZOR_KEY_ID,
