@@ -33,5 +33,10 @@ urlpatterns = [
     # User
     path('users/', views.users_list, name='users'),
     path('block-user/<str:pk>/', views.block_user, name='block-user'),
-    path('unblock-user/<str:pk>/', views.unblock_user, name='unblock-user')
+    path('unblock-user/<str:pk>/', views.unblock_user, name='unblock-user'),
+
+    # Order
+    path('active-orders/', views.active_order_products, name='active-order-products'),
+    path('orders-histpry/', views.order_history, name='orders-history'),
+    path('update-order-status/<str:pk>/', views.update_order_status, name='update-order-status'),
 ]

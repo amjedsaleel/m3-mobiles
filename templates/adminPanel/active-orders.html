@@ -1,0 +1,81 @@
+{% extends 'adminPanel/base.html' %}
+{% block tittle %} Active orders {% endblock %}
+{% block product-list %} active {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">Pending Deliveries</h3>
+                        <table class="table table-striped table-hover" id="active-orders">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tracking Id</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Order status</th>
+                                <th scope="col">Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for active_order in active_orders %}
+                                <tr id="{{ active_order.id }}">
+                                    <td>{{ active_order.tracking_id }}</td>
+                                    <td>{{ active_order.user.first_name }}</td>
+                                    <td>{{ active_order.variant.product.name }}</td>
+                                    <td>{{ active_order.price }}</td>
+                                    <td>{{ active_order.quantity }}</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" data-id="{{ active_order.id }}">
+                                            {% for i, j in status %}
+                                                <option value="{{ i }}"
+                                                        {% if active_order.status == i %}selected{% endif %}>{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <a href="" class="btn btn-sm btn-primary">Details</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        // Data table
+        $(document).ready(function () {
+            $('#active-orders').DataTable();
+        });
+
+        $('select').on('change', function () {
+            let status = this.value;
+            let id = this.getAttribute("data-id");
+
+            $.ajax({
+                method: 'POST',
+                url: `/admin-panel/update-order-status/${id}/`,
+                dataType: 'json',
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    status: status,
+                },
+                success: function (data) {
+                    if (data.message === "Delivered" || data.message === "Canceled") {
+                        document.getElementById(id).style.display = 'none'
+                    }
+                }
+            })
+
+        });
+
+    </script>
+{% endblock %}

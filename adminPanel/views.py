@@ -8,11 +8,12 @@ from django.views.decorators.cache import never_cache
 
 
 # local Django
+from .decorators import admin_ony
 from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
-from .decorators import admin_ony
+from order.models import OrderProduct, STATUS
 
 User = get_user_model()
 
@@ -257,15 +258,18 @@ def delete_variant(request, variant_id):
     return redirect('admin-panel:products')
 
 
+@never_cache
 def variant_details(request, variant_slug):
     return render(request, 'adminPanel/variant-detail.html')
 
 
+@never_cache
 def users_list(request):
     users = User.objects.all()
     return render(request, 'adminPanel/users.html', {'users': users})
 
 
+@never_cache
 def block_user(request, pk):
     if request.method == 'POST':
         user = User.objects.get(pk=pk)
@@ -274,9 +278,36 @@ def block_user(request, pk):
         return JsonResponse({'message': 'success'})
 
 
+@never_cache
 def unblock_user(request, pk):
     if request.method == 'POST':
         user = User.objects.get(pk=pk)
         user.is_active = True
         user.save()
         return JsonResponse({'message': 'success'})
+
+
+@never_cache
+def active_order_products(request):
+    exclude_list = ['Delivered', 'Canceled']
+    active_orders = OrderProduct.objects.all().exclude(status__in=exclude_list)
+    status = STATUS
+    context = {
+        'active_orders': active_orders,
+        'status': status
+    }
+    return render(request, 'adminPanel/active-orders.html', context)
+
+
+def update_order_status(request, pk):
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        order_product = OrderProduct.objects.get(pk=pk)
+        order_product.status = status
+        order_product.save()
+        return JsonResponse({'message': status})
+
+
+def order_history(request):
+    orders = OrderProduct.objects.filter(status__in=['Delivered', 'Canceled']).order_by('-tracking_id')
+    return render(request, 'adminPanel/order-history.html', {'orders': orders})

@@ -143,10 +143,10 @@
                     <div id="orderManagement" class="collapse " data-bs-parent="#sideNavbar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link " href="#">Active orders</a>
+                                <a class="nav-link {% block active-orders %}{% endblock %}" href="{% url 'admin-panel:active-order-products' %}">Active orders</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  " href="#">Order history</a>
+                                <a class="nav-link {% block orders-history %}{% endblock %}" href="{% url 'admin-panel:orders-history' %}">Order history</a>
                             </li>
                         </ul>
                     </div>
