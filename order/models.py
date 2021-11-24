@@ -24,6 +24,7 @@ STATUS = (
 
 
 class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     order_number = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -51,9 +52,11 @@ class Order(models.Model):
 
 
 class OrderProduct(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
+    tracking_id = models.CharField(max_length=50, null=True, unique=True, editable=False)
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS, default='New')
     quantity = models.IntegerField()
