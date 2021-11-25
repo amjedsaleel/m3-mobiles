@@ -2,10 +2,12 @@
 import uuid
 
 # Django
+from django.core.exceptions import ValidationError
 from django.db import models
 
 # local Django
 from brand.models import Brand
+
 
 # Create your models here.
 
@@ -65,7 +67,9 @@ class Variant(models.Model):
     ram = models.CharField(max_length=20, choices=RAM)
     storage = models.CharField(max_length=20, choices=STORAGE)
     color = models.CharField(max_length=20, choices=COLOR)
-    price = models.IntegerField()
+    landing_price = models.IntegerField(verbose_name="Landing price", null=True)
+    mrp = models.IntegerField(verbose_name='M.R.P', null=True)
+    tax = models.IntegerField(null=True)
     description = models.TextField(max_length=300)
     image1 = models.ImageField(upload_to='products')
     image2 = models.ImageField(upload_to='products', blank=True)
@@ -74,9 +78,16 @@ class Variant(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        unique_together = ('product', 'ram', 'storage', 'color', )
+        unique_together = ('product', 'ram', 'storage', 'color',)
 
     def __str__(self):
         return self.product.name
 
+    def clean(self):
+        super().clean()
+        self.landing_price = self.landing_price
+        self.mrp = self.mrp
+
+        if not self.mrp > self.landing_price:
+            raise ValidationError("M.R.P must be higher than landing price")
 

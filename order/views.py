@@ -64,7 +64,7 @@ def review_order(request):
 
     cart_items = get_cart_items(request)
     rate = dollar_rate()
-    pay_pal_amount = round(int(request.session['grand_total']) / int(rate))
+    pay_pal_amount = round((request.session['grand_total']) / rate, 2)
 
     razor_pay_amount = request.session['grand_total'] * 100
     data = {"amount": razor_pay_amount, "currency": "INR"}

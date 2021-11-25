@@ -30,10 +30,11 @@ def cart_summery(request):
     """
     cart_items = get_cart_items(request)
     total = 0
+    tax = 0
     for cart_item in cart_items:
-        total += cart_item.variant.price * cart_item.quantity
+        total += cart_item.variant.mrp * cart_item.quantity
+        tax += cart_item.variant.tax * cart_item.quantity
 
-    tax = (18 * total) / 100
     grand_total = tax + total
 
     request.session['total_price'] = total

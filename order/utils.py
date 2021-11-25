@@ -37,7 +37,7 @@ def make_order(request):
             payment=payment,
             variant=item.variant,
             quantity=item.quantity,
-            price=item.variant.price,
+            price=item.variant.mrp,
             ordered=True,
         )
 
