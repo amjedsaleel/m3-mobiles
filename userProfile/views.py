@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 # local Django
-from .forms import AddressForm
+from .forms import AddressForm, UpdateProfileForm
 from .models import Address
 from order.models import OrderProduct
 
@@ -78,3 +78,17 @@ def set_default_address(request, pk):
 def my_orders(request):
     order_products = OrderProduct.objects.filter(user=request.user)
     return render(request, 'userProfile/my-orders.html', {'order_products': order_products})
+
+
+@login_required
+def edit_profile(request):
+    form = UpdateProfileForm(instance=request.user)
+
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successfully profile updated')
+            return redirect('userProfile:dashboard')
+
+    return render(request, 'userProfile/edit-profile.html', {'form': form})

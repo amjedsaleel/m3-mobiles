@@ -12,5 +12,7 @@ urlpatterns = [
     path('edit-address/<str:pk>/', views.edit_address, name='edit-address'),
     path('delete-address/<str:pk>/', views.delete_address, name='delete-address'),
     path('set-default-address/<str:pk>/', views.set_default_address, name='set-default-address'),
-    path('my-orders/', views.my_orders, name='my-orders')
+
+    path('my-orders/', views.my_orders, name='my-orders'),
+    path('update-profile/', views.edit_profile, name='edit-profile')
 ]

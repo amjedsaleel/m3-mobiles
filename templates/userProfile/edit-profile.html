@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}M3 | Profile {% endblock %}
+{% block title %}M3 | Update profile {% endblock %}
 {% load crispy_forms_filters %}
 {% block content %}
     <section class="section-content padding-y bg">
@@ -10,8 +10,8 @@
                     <ul class="list-group">
                         <a class="list-group-item text-dark" href="{% url 'userProfile:dashboard' %}">Dashboard </a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-orders' %}">My Orders</a>
-                        <a class="list-group-item text-dark" href="{% url 'userProfile:edit-profile' %}">Edit Profile</a>
-                        <a class="list-group-item active" href="{% url 'userProfile:my-addresses' %}">My Addresses</a>
+                        <a class="list-group-item active text-white" href="{% url 'userProfile:edit-profile' %}">Edit Profile</a>
+                        <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My Addresses</a>
                         <a class="list-group-item text-dark" href="#">Wishlist</a>
                         <a class="list-group-item text-dark" href="#">Change Password</a>
                     </ul>
@@ -23,45 +23,27 @@
                 <main class="col-md-9">
                     <div class="card mt-3">
                         <div class="card-header">
-                            <strong> Update address </strong>
+                            <strong> Edit profile </strong>
                         </div>
                         <div class="card-body">
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-sm-6 form-group">
-                                        {{ form.full_name | as_crispy_field }}
+                                        {{ form.first_name | as_crispy_field }}
                                     </div>
                                     <div class="col-sm-6 form-group">
-                                        {{ form.phone | as_crispy_field }}
+                                        {{ form.last_name | as_crispy_field }}
                                     </div>
-                                    <div class="col-sm-12 form-group">
+                                    <div class="col-sm-6 form-group">
                                         {{ form.email | as_crispy_field }}
                                     </div>
                                     <div class="col-sm-6 form-group">
-                                        {{ form.house_no | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        {{ form.area | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-12 form-group">
-                                        {{ form.landmark | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        {{ form.town | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        {{ form.state | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        {{ form.pin | as_crispy_field }}
-                                    </div>
-                                    <div class="col-sm-6 form-group">
-                                        {{ form.type | as_crispy_field }}
+                                        {{ form.mobile | as_crispy_field }}
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <input type="submit" class="btn btn-primary w-50" value="Update Address">
+                                    <input type="submit" class="btn btn-primary w-50" value="Update profile">
                                 </div>
                             </form>
                         </div>
