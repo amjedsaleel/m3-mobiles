@@ -7,7 +7,7 @@ from django.http import JsonResponse
 # local Django
 from .forms import AddressForm
 from .models import Address
-
+from order.models import OrderProduct
 
 # Create your views here.
 
@@ -72,3 +72,9 @@ def set_default_address(request, pk):
     address.save()
     messages.success(request, 'Default address changed')
     return redirect('userProfile:my-addresses')
+
+
+@login_required
+def my_orders(request):
+    order_products = OrderProduct.objects.filter(user=request.user)
+    return render(request, 'userProfile/my-orders.html', {'order_products': order_products})
