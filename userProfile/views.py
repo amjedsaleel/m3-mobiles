@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib.auth.forms import PasswordChangeForm
 
 # local Django
 from .forms import AddressForm, UpdateProfileForm
@@ -92,3 +93,18 @@ def edit_profile(request):
             return redirect('userProfile:dashboard')
 
     return render(request, 'userProfile/edit-profile.html', {'form': form})
+
+
+@login_required
+def change_password(request):
+    form = PasswordChangeForm(request.user)
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your password was successfully updated.')
+            return redirect('accounts:sign-in')
+
+    return render(request, 'userProfile/change-password.html', {'form': form})
+
