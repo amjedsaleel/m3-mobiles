@@ -30,7 +30,14 @@
                             <p class="original-price small-gray-text">
                                 <del>25999</del>
                             </p>
-                            <p class="offer small-gray-text">10% off</p>
+                            <p class="offer small-gray-text">
+{#                                {% if last_product.product.offer > last_product. %}#}
+{#                                    {{ last_product.offer.offer }}#}
+{#                                {% else %}#}
+{#                                    yes#}
+{#                                {% endif %}#}
+                                {{ last_product.product.offer.is_active | yesno:"nn"}}
+                            </p>
                         </div>
                         <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
                             <a href="" class="btn btn-outline-primary"

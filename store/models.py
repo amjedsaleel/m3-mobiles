@@ -7,6 +7,7 @@ from django.db import models
 
 # local Django
 from brand.models import Brand
+from offer.models import ProductOffer, VariantOffer
 
 
 # Create your models here.
@@ -17,7 +18,7 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
-    offer = models.CharField(max_length=30, blank=True)
+    offer = models.ForeignKey(ProductOffer, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -71,6 +72,7 @@ class Variant(models.Model):
     mrp = models.IntegerField(verbose_name='M.R.P', null=True)
     tax = models.IntegerField(null=True)
     description = models.TextField(max_length=300)
+    offer = models.ForeignKey(VariantOffer, on_delete=models.SET_NULL, blank=True, null=True)
     image1 = models.ImageField(upload_to='products')
     image2 = models.ImageField(upload_to='products', blank=True)
     image3 = models.ImageField(upload_to='products', blank=True)
