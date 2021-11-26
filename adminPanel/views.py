@@ -303,6 +303,12 @@ def update_order_status(request, pk):
     if request.method == 'POST':
         status = request.POST.get('status')
         order_product = OrderProduct.objects.get(pk=pk)
+
+        if status == 'Canceled':
+            variant = order_product.variant
+            variant.stock += order_product.quantity
+            variant.save()
+
         order_product.status = status
         order_product.save()
         return JsonResponse({'message': status})
