@@ -26,17 +26,18 @@
                             ({{ last_product.ram }}, {{ last_product.storage }}, {{ last_product.color }})
                         </h6>
                         <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                            <p class="price regular-text-bold">₹{{ last_product.mrp }}</p>
+                            <p class="price regular-text-bold">₹{{ last_product.get_price.price }}</p>
                             <p class="original-price small-gray-text">
-                                <del>25999</del>
+                                <del>
+                                    {% if not last_product.mrp == last_product.get_price.price %}
+                                        ₹{{ last_product.mrp }}
+                                    {% endif %}
+                                </del>
                             </p>
                             <p class="offer small-gray-text">
-{#                                {% if last_product.product.offer > last_product. %}#}
-{#                                    {{ last_product.offer.offer }}#}
-{#                                {% else %}#}
-{#                                    yes#}
-{#                                {% endif %}#}
-                                {{ last_product.product.offer.is_active | yesno:"nn"}}
+                                {% if last_product.get_price.discount %}
+                                    {{ last_product.get_price.discount }}% off
+                                {% endif %}
                             </p>
                         </div>
                         <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
@@ -59,7 +60,6 @@
                     <a href="#" class="btn btn-outline-primary">See all</a>
                 </div>
             </div>
-
             <div class="row">
                 {% for product in brand.product_set.all %}
                     {% for variant in product.variant_set.reverse|slice:":3" %}
@@ -75,11 +75,17 @@
                                     ({{ variant.ram }}, {{ variant.storage }}, {{ variant.color }})
                                 </h6>
                                 <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                                    <p class="price regular-text-bold">₹{{ variant.mrp }}</p>
+                                    <p class="price regular-text-bold">₹{{ variant.get_price.price }}</p>
                                     <p class="original-price small-gray-text">
-                                        <del>25999</del>
+                                        {% if not variant.mrp ==  variant.get_price.price %}
+                                            <del>{{ variant.mrp }}</del>
+                                        {% endif %}
                                     </p>
-                                    <p class="offer small-gray-text">10% off</p>
+                                    <p class="offer small-gray-text">
+                                        {% if variant.get_price.discount %}
+                                            {{ variant.get_price.discount }}% off
+                                        {% endif %}
+                                    </p>
                                 </div>
                                 <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
                                     <a href="#" class="btn btn-outline-primary"

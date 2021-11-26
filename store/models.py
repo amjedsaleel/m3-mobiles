@@ -93,3 +93,23 @@ class Variant(models.Model):
         if not self.mrp > self.landing_price:
             raise ValidationError("M.R.P must be higher than landing price")
 
+    def get_price(self):
+
+        if self.offer and self.offer.is_active:
+            """ Checking variant offer exists or not"""
+            offer_price = (self.mrp / 100) * self.offer.discount_offer
+            price = self.mrp - offer_price
+            return {'price': price, 'discount': self.offer.discount_offer}
+        elif self.product.offer and self.product.offer.is_active:
+            """ checking product vise offer exists or not """
+            offer_price = (self.mrp / 100) * self.product.offer.discount_offer
+            price = self.mrp - offer_price
+            return {'price': price, 'discount': self.product.offer.discount_offer}
+        elif self.product.brand.offer and self.product.brand.offer.is_active:
+            """ Checking brand wise offer exits or not"""
+            offer_price = (self.mrp / 100) * self.product.brand.offer.discount_offer
+            price = self.mrp - offer_price
+            return {'price': price, 'discount': self.product.brand.offer.discount_offer}
+        else:
+            """ No offer currently available """
+            return {'price': self.mrp}

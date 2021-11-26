@@ -56,15 +56,21 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-start align-items-center">
                                 <div>
-                                    <p class="price regular-text-bold">₹{{ variant.mrp }}</p>
+                                    <p class="price regular-text-bold">₹{{ variant.get_price.price }}</p>
                                 </div>
                                 <div>
                                     <p class="original-price small-gray-text ml-4">
-                                        <del>583655</del>
+                                        {% if not variant.mrp == variant.get_price.price %}
+                                            <del> ₹{{ variant.mrp }} </del>
+                                        {% endif %}
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="offer small-gray-text ml-4">10%</p>
+                                    <p class="offer small-gray-text ml-4">
+                                        {% if variant.get_price.discount %}
+                                            {{ variant.get_price.discount }}% off
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +79,8 @@
                         <hr>
                         <div class="row col-12">
                             {% for i in suggestions %}
-                                <a href="{% url 'store:products-details' i.product.brand.slug i.slug %}" class="col-12 col-md-6 p-2 text-center" style="text-decoration: none">
+                                <a href="{% url 'store:products-details' i.product.brand.slug i.slug %}"
+                                   class="col-12 col-md-6 p-2 text-center" style="text-decoration: none">
                                     <p class="p-1 variant">{{ i.ram }} RAM, {{ i.storage }}GB
                                         Storage</p>
                                 </a>
@@ -89,38 +96,38 @@
                 </main>
             </div>
         </div>
-{#        {% if suggestions %}#}
-{#            <h4 class="mt-5">Suggestions</h4>#}
-{#            <div class="row mt-5">#}
-{#                {% for i in suggestions %}#}
-{#                    <div class="col-12 col-md-6 col-lg-4">#}
-{#                        <div class="card card-product-grid">#}
-{#                            <a href="{% url 'store:products-details' i.product.brand.slug i.slug %}"#}
-{#                               class="img-wrap mt-4 mb-4"> <img src="{{ i.image1.url }}" alt=""/>#}
-{#                            </a>#}
-{#                            <hr>#}
-{#                            <h5 class="pl-3">{{ i.product.name | capfirst }}</h5>#}
-{#                            <h6 class="pl-3 small-gray-text">#}
-{#                                ({{ i.ram }}, {{ i.storage }}, {{ i.color }})#}
-{#                            </h6>#}
-{#                            <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">#}
-{#                                <p class="price regular-text-bold">₹{{ i.price }}</p>#}
-{#                                <p class="original-price small-gray-text">#}
-{#                                    <del>25999</del>#}
-{#                                </p>#}
-{#                                <p class="offer small-gray-text">10% off</p>#}
-{#                            </div>#}
-{#                            <div class="d-flex pl-3 pr-3 justify-content-between mb-4">#}
-{#                                <a href="" class="btn btn-outline-primary"#}
-{#                                   onclick="addToCart(event, '{% url 'cart:add-to-cart' i.slug %}')">Add to#}
-{#                                    cart</a>#}
-{#                                <a href="#" class="btn btn-primary">Buy now</a>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        {% endif %}#}
+        {#        {% if suggestions %}#}
+        {#            <h4 class="mt-5">Suggestions</h4>#}
+        {#            <div class="row mt-5">#}
+        {#                {% for i in suggestions %}#}
+        {#                    <div class="col-12 col-md-6 col-lg-4">#}
+        {#                        <div class="card card-product-grid">#}
+        {#                            <a href="{% url 'store:products-details' i.product.brand.slug i.slug %}"#}
+        {#                               class="img-wrap mt-4 mb-4"> <img src="{{ i.image1.url }}" alt=""/>#}
+        {#                            </a>#}
+        {#                            <hr>#}
+        {#                            <h5 class="pl-3">{{ i.product.name | capfirst }}</h5>#}
+        {#                            <h6 class="pl-3 small-gray-text">#}
+        {#                                ({{ i.ram }}, {{ i.storage }}, {{ i.color }})#}
+        {#                            </h6>#}
+        {#                            <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">#}
+        {#                                <p class="price regular-text-bold">₹{{ i.price }}</p>#}
+        {#                                <p class="original-price small-gray-text">#}
+        {#                                    <del>25999</del>#}
+        {#                                </p>#}
+        {#                                <p class="offer small-gray-text">10% off</p>#}
+        {#                            </div>#}
+        {#                            <div class="d-flex pl-3 pr-3 justify-content-between mb-4">#}
+        {#                                <a href="" class="btn btn-outline-primary"#}
+        {#                                   onclick="addToCart(event, '{% url 'cart:add-to-cart' i.slug %}')">Add to#}
+        {#                                    cart</a>#}
+        {#                                <a href="#" class="btn btn-primary">Buy now</a>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                {% endfor %}#}
+        {#            </div>#}
+        {#        {% endif %}#}
     </div>
 {% endblock %}
 {% block script %}

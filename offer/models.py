@@ -5,24 +5,24 @@ from django.db import models
 
 
 class BrandOffer(models.Model):
-    offer = models.PositiveIntegerField(help_text='Offer in percentage')
+    discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.offer)
+        return str(self.discount_offer)
 
 
 class ProductOffer(models.Model):
-    offer = models.PositiveIntegerField(help_text='Offer in percentage')
+    discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.offer)
+        return str(self.discount_offer)
 
 
 class VariantOffer(models.Model):
-    offer = models.PositiveIntegerField(help_text='Offer in percentage')
+    discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.offer)
+        return str(self.discount_offer)

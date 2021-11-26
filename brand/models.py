@@ -4,6 +4,10 @@ import uuid
 # Django
 from django.db import models
 
+# local Django
+from offer.models import BrandOffer
+
+
 # Create your models here.
 
 
@@ -12,6 +16,7 @@ class Brand(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     log = models.ImageField(upload_to='brands')
+    offer = models.ForeignKey(BrandOffer, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -27,5 +32,3 @@ class Brand(models.Model):
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
         return super(Brand, self).save(*args, **kwargs)
-
-

@@ -53,11 +53,19 @@
                                         ({{ variant.ram }}, {{ variant.storage }}, {{ variant.color }})
                                     </h6>
                                     <div class="d-flex pl-3 pr-3 justify-content-between align-items-center mb-4">
-                                        <p class="price regular-text-bold">₹{{ variant.mrp }}</p>
+                                        <p class="price regular-text-bold">₹{{ variant.get_price.price }}</p>
                                         <p class="original-price small-gray-text">
-                                            <del>25999</del>
+                                            <del>
+                                                {% if not variant.mrp == variant.get_price.price %}
+                                                    ₹{{ variant.mrp }}
+                                                {% endif %}
+                                            </del>
                                         </p>
-                                        <p class="offer small-gray-text">10% off</p>
+                                        <p class="offer small-gray-text">
+                                            {% if variant.get_price.discount %}
+                                                {{ variant.get_price.discount }}% off
+                                            {% endif %}
+                                        </p>
                                     </div>
                                     <div class="d-flex pl-3 pr-3 justify-content-between mb-4">
                                         <a href="#" class="btn btn-outline-primary"
