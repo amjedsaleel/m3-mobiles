@@ -111,13 +111,12 @@ class Variant(models.Model):
             except:
                 try:
                     if self.product.brand.brandoffer.is_active:
-                        print("brand.............", self)
                         offer_price = (self.mrp / 100) * self.product.brand.brandoffer.discount_offer
                         price = self.mrp - offer_price
                         return {'price': price, 'discount': self.product.brand.brandoffer.discount_offer}
                     raise
                 except:
-                    print("Else................")
+                    pass
                 return {'price': self.mrp}
 
 # if self.offer and self.offer.is_active:

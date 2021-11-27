@@ -87,10 +87,11 @@
                                                     <td>{{ product_offer.product.name | capfirst }}</td>
                                                     <td class="offer">{{ product_offer.discount_offer }}% Off</td>
                                                     <td>
-                                                        {% if variant_offer.is_active %}
+                                                        {% if product_offer.is_active %}
                                                             Active
                                                         {% else %}
-                                                            <span class="text-warning fw-bold">Inactive</span>                                                         {% endif %}
+                                                            <span class="text-warning fw-bold">Inactive</span>
+                                                        {% endif %}
                                                     </td>
                                                     <td>
                                                         <a href="{% url 'admin-panel:update-product-offer' product_offer.id %}"><span
@@ -127,7 +128,7 @@
                                                         <td>{{ brand_offer.brand.name }}</td>
                                                         <td class="offer">{{ brand_offer.discount_offer }}% Off</td>
                                                         <td>
-                                                            {% if variant_offer.is_active %}
+                                                            {% if brand_offer.is_active %}
                                                                 Active
                                                             {% else %}
                                                                 <span class="text-warning fw-bold">Inactive</span>
