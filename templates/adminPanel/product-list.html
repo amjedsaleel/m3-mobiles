@@ -39,6 +39,7 @@
                                 <th scope="col">Brand</th>
                                 <th scope="col">Variant</th>
                                 <th scope="col">M.R.P</th>
+                                <th scope="col">Offer</th>
                                 <th scope="col">Stock</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -60,6 +61,13 @@
                                     <td>{{ variant.product.brand | capfirst }}</td>
                                     <td>{{ variant.ram }}, {{ variant.storage }}, {{ variant.color }}</td>
                                     <td>{{ variant.mrp }}</td>
+                                    <td>
+                                        {% if variant.get_price.discount %}
+                                            <span class="offer">{{ variant.get_price.discount }}% Off</span>
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
                                     <td>{{ variant.stock }}</td>
                                     <td>
                                         <a href="{% url 'admin-panel:variant-details' variant.slug %}"><span

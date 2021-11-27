@@ -15,7 +15,8 @@
                                 <th scope="col">Tracking Id</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Product</th>
-                                <th scope="col">Price</th>
+                                <th scope="col">Amount paid</th>
+                                <th scope="col">Discount</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Order status</th>
                                 <th scope="col">Date</th>
@@ -27,7 +28,14 @@
                                     <td>{{ order.tracking_id }}</td>
                                     <td>{{ order.user.first_name }}</td>
                                     <td>{{ order.variant.product.name }}</td>
-                                    <td>{{ order.price }}</td>
+                                    <td>{{ order.paid }}</td>
+                                    <td>
+                                        {% if order.discount %}
+                                            <span class="offer"> {{ order.discount }}</span>
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
                                     <td>{{ order.quantity }}</td>
                                     <td>{{ order.status }}</td>
                                     <td>{{ order.updated_at | naturaltime }}</td>
