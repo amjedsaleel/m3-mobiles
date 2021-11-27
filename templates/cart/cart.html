@@ -27,7 +27,7 @@
                                             <figcaption class="info">
                                                 <a href="#"
                                                    class="title text-dark">{{ cart_item.variant.product.name |capfirst }}</a>
-                                                <small class="text-muted">₹{{ cart_item.variant.mrp | intcomma }}</small>
+                                                <small class="text-muted">₹{{ cart_item.variant.get_price.price | intcomma }}</small>
                                             </figcaption>
                                         </figure>
                                     </td>

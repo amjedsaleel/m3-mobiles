@@ -32,5 +32,6 @@ class CartItem(models.Model):
         return f'{self.cart} + {self.variant}'
 
     def sub_total(self):
-        return self.variant.mrp * self.quantity
+        price = self.variant.get_price()
+        return price['price'] * self.quantity
 

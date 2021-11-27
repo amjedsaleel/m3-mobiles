@@ -10,6 +10,8 @@ from brand.models import Brand
 
 def index(request):
     last_products = Variant.objects.all()[:6]
+    for i in last_products:
+        print(i.get_price())
     brands = Brand.objects.all()
     context = {
         'last_products': last_products,

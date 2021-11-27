@@ -32,7 +32,8 @@ def cart_summery(request):
     total = 0
     tax = 0
     for cart_item in cart_items:
-        total += cart_item.variant.mrp * cart_item.quantity
+        price = cart_item.variant.get_price()
+        total += price['price'] * cart_item.quantity
         tax += cart_item.variant.tax * cart_item.quantity
 
     grand_total = tax + total

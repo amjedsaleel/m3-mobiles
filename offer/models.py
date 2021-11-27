@@ -1,10 +1,13 @@
+# Django
 from django.db import models
 
-
+# local Django
+from brand.models import Brand
 # Create your models here.
 
 
 class BrandOffer(models.Model):
+    brand = models.OneToOneField(Brand, on_delete=models.CASCADE, null=True, blank=True)
     discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
@@ -13,6 +16,7 @@ class BrandOffer(models.Model):
 
 
 class ProductOffer(models.Model):
+    product = models.OneToOneField('store.Product', on_delete=models.CASCADE, null=True, blank=True)
     discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
@@ -21,6 +25,7 @@ class ProductOffer(models.Model):
 
 
 class VariantOffer(models.Model):
+    variant = models.OneToOneField('store.Variant', on_delete=models.CASCADE, null=True, blank=True)
     discount_offer = models.PositiveIntegerField(help_text='Offer in percentage')
     is_active = models.BooleanField(default=True)
 
