@@ -15,6 +15,7 @@ from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
 from order.models import OrderProduct, STATUS
 from offer.models import VariantOffer, ProductOffer, BrandOffer
+from offer.froms import VariantOfferForm, ProductOfferForm, BrandOfferForm
 
 User = get_user_model()
 
@@ -331,3 +332,45 @@ def offers(request):
         'brand_offers': brand_offers
     }
     return render(request, 'adminPanel/offers.html', context)
+
+
+def update_variant_offer(request, pk):
+    variant_offer = VariantOffer.objects.get(pk=pk)
+    form = VariantOfferForm(instance=variant_offer)
+
+    if request.method == 'POST':
+        form = VariantOfferForm(request.POST, instance=variant_offer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Variant offer was updated')
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/update-offer.html', {'form': form})
+
+
+def update_product_offer(request, pk):
+    product_offer = ProductOffer.objects.get(pk=pk)
+    form = ProductOfferForm(instance=product_offer)
+
+    if request.method == 'POST':
+        form = ProductOfferForm(request.POST, instance=product_offer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Product offer was updated')
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/update-offer.html', {'form': form})
+
+
+def update_brand_offer(request, pk):
+    brand_offer = BrandOffer.objects.get(pk=pk)
+    form = BrandOfferForm(instance=brand_offer)
+
+    if request.method == 'POST':
+        form = BrandOfferForm(request.POST, instance=brand_offer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Brand offer was updated')
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/update-offer.html', {'form': form})

@@ -41,5 +41,9 @@ urlpatterns = [
     path('update-order-status/<str:pk>/', views.update_order_status, name='update-order-status'),
 
     # Offers
-    path('offers/', views.offers, name='offers')
+    path('offers/', views.offers, name='offers'),
+    path('update-variant-offer/<str:pk>/', views.update_variant_offer, name='update-variant-offer'),
+    path('update-product-offer/<str:pk>/', views.update_product_offer, name='update-product-offer'),
+    path('update-brand-offer/<str:pk>/', views.update_brand_offer, name='update-brand-offer'),
+
 ]
