@@ -42,6 +42,9 @@ urlpatterns = [
 
     # Offers
     path('offers/', views.offers, name='offers'),
+    path('add-variant-offer/', views.add_variant_offer, name='add-variant-offer'),
+    path('add-product-offer/', views.add_product_offer, name='add-product-offer'),
+    path('add-brand-offer/', views.add_brand_offer, name='add-brand-offer'),
     path('update-variant-offer/<str:pk>/', views.update_variant_offer, name='update-variant-offer'),
     path('update-product-offer/<str:pk>/', views.update_product_offer, name='update-product-offer'),
     path('update-brand-offer/<str:pk>/', views.update_brand_offer, name='update-brand-offer'),

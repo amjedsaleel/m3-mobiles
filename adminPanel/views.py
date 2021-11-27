@@ -334,6 +334,45 @@ def offers(request):
     return render(request, 'adminPanel/offers.html', context)
 
 
+def add_variant_offer(request):
+    form = VariantOfferForm()
+
+    if request.method == 'POST':
+        form = VariantOfferForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "New variant offer added")
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/add-offer.html', {'form': form})
+
+
+def add_product_offer(request):
+    form = ProductOfferForm()
+
+    if request.method == 'POST':
+        form = ProductOfferForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "New product offer added")
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/add-offer.html', {'form': form})
+
+
+def add_brand_offer(request):
+    form = BrandOfferForm()
+
+    if request.method == 'POST':
+        form = BrandOfferForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "New brand offer was added")
+            return redirect('admin-panel:offers')
+
+    return render(request, 'adminPanel/add-offer.html', {'form': form})
+
+
 def update_variant_offer(request, pk):
     variant_offer = VariantOffer.objects.get(pk=pk)
     form = VariantOfferForm(instance=variant_offer)
