@@ -1,7 +1,6 @@
 # local Django
 from .models import Order, OrderProduct
-from cart.models import CartItem, Cart, Variant
-from cart.utils import get_cart_id
+from cart.models import CartItem, Variant
 from payment.models import Payment
 
 
@@ -31,13 +30,21 @@ def make_order(request):
     cart_items = CartItem.objects.filter(user=request.user)
 
     for item in cart_items:
+        price = item.variant.get_price()
+        try:
+            discount = (item.variant.mrp * price['discount']) / 100
+        except KeyError:
+            """ No discounts """
+            discount = 0
+
         order_product = OrderProduct.objects.create(
             user=request.user,
             order=order,
             payment=payment,
             variant=item.variant,
             quantity=item.quantity,
-            price=item.variant.mrp,
+            paid=price['price'],
+            discount=discount,
             ordered=True,
         )
 
