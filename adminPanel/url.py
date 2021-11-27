@@ -39,4 +39,7 @@ urlpatterns = [
     path('active-orders/', views.active_order_products, name='active-order-products'),
     path('orders-histpry/', views.order_history, name='orders-history'),
     path('update-order-status/<str:pk>/', views.update_order_status, name='update-order-status'),
+
+    # Offers
+    path('offers/', views.offers, name='offers')
 ]

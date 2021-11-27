@@ -31,3 +31,7 @@ class VariantOffer(models.Model):
 
     def __str__(self):
         return str(self.discount_offer)
+
+    def get_variant(self):
+        variant = self.variant.slug
+        return variant.replace("-", " ")

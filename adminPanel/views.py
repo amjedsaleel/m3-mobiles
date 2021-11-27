@@ -14,6 +14,7 @@ from brand.forms import BrandForm
 from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
 from order.models import OrderProduct, STATUS
+from offer.models import VariantOffer, ProductOffer, BrandOffer
 
 User = get_user_model()
 
@@ -317,3 +318,16 @@ def update_order_status(request, pk):
 def order_history(request):
     orders = OrderProduct.objects.filter(status__in=['Delivered', 'Canceled']).order_by('-tracking_id')
     return render(request, 'adminPanel/order-history.html', {'orders': orders})
+
+
+def offers(request):
+    variant_offers = VariantOffer.objects.all()
+    product_offers = ProductOffer.objects.all()
+    brand_offers = BrandOffer.objects.all()
+
+    context = {
+        'variant_offers': variant_offers,
+        'product_offers': product_offers,
+        'brand_offers': brand_offers
+    }
+    return render(request, 'adminPanel/offers.html', context)

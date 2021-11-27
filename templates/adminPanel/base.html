@@ -211,11 +211,14 @@
                                 <a class="nav-link  " href="#">Redeemed coupons</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  " href="#">Brand offers</a>
+                                <a class="nav-link  {% block offer %}{% endblock %}" href="{% url 'admin-panel:offers' %}">Offers</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link  " href="#">Product offers</a>
-                            </li>
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link  " href="#">Product offers</a>#}
+{#                            </li>#}
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link  " href="#">Variant offers</a>#}
+{#                            </li>#}
                         </ul>
                     </div>
                 </li>
