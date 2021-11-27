@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.views.decorators.cache import never_cache
 
 
@@ -374,3 +374,30 @@ def update_brand_offer(request, pk):
             return redirect('admin-panel:offers')
 
     return render(request, 'adminPanel/update-offer.html', {'form': form})
+
+
+def delete_variant_offer(request, pk):
+
+    if request.method == 'POST':
+        VariantOffer.objects.get(pk=pk).delete()
+        return JsonResponse({'message': "success"})
+
+    return redirect('admin-panel:offers')
+
+
+def delete_product_offer(request, pk):
+
+    if request.method == 'POST':
+        ProductOffer.objects.get(pk=pk).delete()
+        return JsonResponse({'message': "success"})
+
+    return redirect('admin-panel:offers')
+
+
+def delete_brand_offer(request, pk):
+
+    if request.method == 'POST':
+        BrandOffer.objects.get(pk=pk).delete()
+        return JsonResponse({'message': "success"})
+
+    return redirect('admin-panel:offers')

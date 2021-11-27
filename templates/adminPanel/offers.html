@@ -50,13 +50,15 @@
                                                     {% if variant_offer.is_active %}
                                                         Active
                                                     {% else %}
-                                                        <span class="text-warning fw-bold">Inactive</span>                                                         {% endif %}
+                                                        <span class="text-warning fw-bold">Inactive</span>
+                                                    {% endif %}
                                                 </td>
                                                 <td>
                                                     <a href="{% url 'admin-panel:update-variant-offer' variant_offer.id %}"><span
                                                             class="material-icons-outlined text-warning">edit</span></a>
                                                     <a href="#"><span
-                                                            class="material-icons-outlined text-danger">delete</span></a>
+                                                            class="material-icons-outlined text-danger"
+                                                            onclick="deleteOffer(event, '{% url 'admin-panel:delete-variant-offer' variant_offer.id %}', '{{ variant_offer.id }}')">delete</span></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -79,8 +81,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            {% for product_offer in product_offers %}
+                                        {% for product_offer in product_offers %}
+                                            <tr id="{{ product_offer.id }}">
                                                 <td>{{ product_offer.product.name | capfirst }}</td>
                                                 <td class="offer">{{ product_offer.discount_offer }}% Off</td>
                                                 <td>
@@ -94,10 +96,11 @@
                                                     <a href="{% url 'admin-panel:update-product-offer' product_offer.id %}"><span
                                                             class="material-icons-outlined text-warning">edit</span></a>
                                                     <a href="#"><span
-                                                            class="material-icons-outlined text-danger">delete</span></a>
+                                                            class="material-icons-outlined text-danger"
+                                                            onclick="deleteOffer(event, '{% url 'admin-panel:delete-product-offer' product_offer.id %}', '{{ product_offer.id }}')">delete</span></a>
                                                 </td>
-                                            {% endfor %}
-                                        </tr>
+                                            </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -118,7 +121,7 @@
                                         </thead>
                                         <tbody>
                                         {% for brand_offer in brand_offers %}
-                                            <tr>
+                                            <tr id="{{ brand_offer.id }}">
                                                 <td>{{ brand_offer.brand.name }}</td>
                                                 <td class="offer">{{ brand_offer.discount_offer }}% Off</td>
                                                 <td>
@@ -133,7 +136,7 @@
                                                             class="material-icons-outlined text-warning">edit</span></a>
                                                     <a href=""><span
                                                             class="material-icons-outlined text-danger"
-                                                            id="pp">delete</span></a>
+                                                            onclick="deleteOffer(event, '{% url 'admin-panel:delete-brand-offer' brand_offer.id %}', '{{ brand_offer.id }}')">delete</span></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -162,5 +165,39 @@
         $(document).ready(function () {
             $('#brand-offer').DataTable();
         });
+
+        function deleteOffer(e, id, offer_id) {
+            let url = id
+            e.preventDefault()
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("Successfully deleted", {
+                        icon: "success",
+                    }).then(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.message === "success") {
+                                    document.getElementById(offer_id).style.display = 'none';
+                                }
+                            }
+                        })
+                    })
+                }
+            });
+        }
+
+
     </script>
 {% endblock %}
