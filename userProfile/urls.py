@@ -14,6 +14,8 @@ urlpatterns = [
     path('set-default-address/<str:pk>/', views.set_default_address, name='set-default-address'),
 
     path('my-orders/', views.my_orders, name='my-orders'),
+    path('cancel-order/<str:pk>/', views.cancel_order_product, name='cancel-order'),
+
     path('update-profile/', views.edit_profile, name='edit-profile'),
     path('change-password/', views.change_password, name='change-password')
 ]

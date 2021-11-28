@@ -82,6 +82,16 @@ def my_orders(request):
 
 
 @login_required
+def cancel_order_product(request, pk):
+
+    if request.method == 'POST':
+        product = OrderProduct.objects.get(pk=pk)
+        product.status = 'Canceled'
+        product.save()
+        return JsonResponse({'message': 'success'})
+
+
+@login_required
 def edit_profile(request):
     form = UpdateProfileForm(instance=request.user)
 
