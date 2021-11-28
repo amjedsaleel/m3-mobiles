@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 
 
 # local Django
-from .decorators import admin_ony
+from .decorators import admin_only
 from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Product, Variant
@@ -47,13 +47,13 @@ def logout(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def dashboard(request):
     return render(request, 'adminPanel/dashboard.html')
 
 
 @never_cache
-@admin_ony
+@admin_only
 def brand(request):
     """
     Listing all brands
@@ -66,7 +66,7 @@ def brand(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def add_brand(request):
     """
     Adding new brand
@@ -87,7 +87,7 @@ def add_brand(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def edit_brand(request, brand_id):
     """
     Edit / Update an existing brand
@@ -110,7 +110,7 @@ def edit_brand(request, brand_id):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def delete_brand(request, brand_id):
     """
     Delete the brand
@@ -123,7 +123,7 @@ def delete_brand(request, brand_id):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def all_products(request):
     """
     Listing all products and variants
@@ -138,7 +138,7 @@ def all_products(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def delete_product(request, product_id):
     """
     Delete the product
@@ -149,6 +149,8 @@ def delete_product(request, product_id):
         return JsonResponse({'message': 'success'})
 
 
+@never_cache
+@admin_only
 def edit_product(request, product_id):
     """
     Edit/Update the product
@@ -170,7 +172,7 @@ def edit_product(request, product_id):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def brand_wise_variant(request, variant_id):
     """
     Filter variants based on the brand
@@ -183,7 +185,7 @@ def brand_wise_variant(request, variant_id):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def add_product(request):
     """
     Adding new product
@@ -205,7 +207,7 @@ def add_product(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def add_variant(request):
     """
     Adding new variant under a product
@@ -227,7 +229,7 @@ def add_variant(request):
 
 
 @never_cache
-@admin_ony
+@admin_only
 def edit_variant(request, variant_id):
     """
     Edit/Update variants
@@ -250,6 +252,7 @@ def edit_variant(request, variant_id):
 
 
 @never_cache
+@admin_only
 def delete_variant(request, variant_id):
     """
     Delete a variant
@@ -261,17 +264,20 @@ def delete_variant(request, variant_id):
 
 
 @never_cache
+@admin_only
 def variant_details(request, variant_slug):
     return render(request, 'adminPanel/variant-detail.html')
 
 
 @never_cache
+@admin_only
 def users_list(request):
     users = User.objects.all()
     return render(request, 'adminPanel/users.html', {'users': users})
 
 
 @never_cache
+@admin_only
 def block_user(request, pk):
     if request.method == 'POST':
         user = User.objects.get(pk=pk)
@@ -281,6 +287,7 @@ def block_user(request, pk):
 
 
 @never_cache
+@admin_only
 def unblock_user(request, pk):
     if request.method == 'POST':
         user = User.objects.get(pk=pk)
@@ -290,6 +297,7 @@ def unblock_user(request, pk):
 
 
 @never_cache
+@admin_only
 def active_order_products(request):
     exclude_list = ['Delivered', 'Canceled']
     active_orders = OrderProduct.objects.all().exclude(status__in=exclude_list)
@@ -301,6 +309,8 @@ def active_order_products(request):
     return render(request, 'adminPanel/active-orders.html', context)
 
 
+@never_cache
+@admin_only
 def update_order_status(request, pk):
     if request.method == 'POST':
         status = request.POST.get('status')
@@ -316,11 +326,15 @@ def update_order_status(request, pk):
         return JsonResponse({'message': status})
 
 
+@never_cache
+@admin_only
 def order_history(request):
     orders = OrderProduct.objects.filter(status__in=['Delivered', 'Canceled']).order_by('-tracking_id')
     return render(request, 'adminPanel/order-history.html', {'orders': orders})
 
 
+@never_cache
+@admin_only
 def offers(request):
     variant_offers = VariantOffer.objects.all()
     product_offers = ProductOffer.objects.all()
@@ -334,6 +348,8 @@ def offers(request):
     return render(request, 'adminPanel/offers.html', context)
 
 
+@never_cache
+@admin_only
 def add_variant_offer(request):
     form = VariantOfferForm()
 
@@ -347,6 +363,8 @@ def add_variant_offer(request):
     return render(request, 'adminPanel/add-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def add_product_offer(request):
     form = ProductOfferForm()
 
@@ -360,6 +378,8 @@ def add_product_offer(request):
     return render(request, 'adminPanel/add-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def add_brand_offer(request):
     form = BrandOfferForm()
 
@@ -373,6 +393,8 @@ def add_brand_offer(request):
     return render(request, 'adminPanel/add-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def update_variant_offer(request, pk):
     variant_offer = VariantOffer.objects.get(pk=pk)
     form = VariantOfferForm(instance=variant_offer)
@@ -387,6 +409,8 @@ def update_variant_offer(request, pk):
     return render(request, 'adminPanel/update-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def update_product_offer(request, pk):
     product_offer = ProductOffer.objects.get(pk=pk)
     form = ProductOfferForm(instance=product_offer)
@@ -401,6 +425,8 @@ def update_product_offer(request, pk):
     return render(request, 'adminPanel/update-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def update_brand_offer(request, pk):
     brand_offer = BrandOffer.objects.get(pk=pk)
     form = BrandOfferForm(instance=brand_offer)
@@ -415,6 +441,8 @@ def update_brand_offer(request, pk):
     return render(request, 'adminPanel/update-offer.html', {'form': form})
 
 
+@never_cache
+@admin_only
 def delete_variant_offer(request, pk):
 
     if request.method == 'POST':
@@ -424,6 +452,8 @@ def delete_variant_offer(request, pk):
     return redirect('admin-panel:offers')
 
 
+@never_cache
+@admin_only
 def delete_product_offer(request, pk):
 
     if request.method == 'POST':
@@ -433,6 +463,8 @@ def delete_product_offer(request, pk):
     return redirect('admin-panel:offers')
 
 
+@never_cache
+@admin_only
 def delete_brand_offer(request, pk):
 
     if request.method == 'POST':
