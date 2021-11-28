@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 
 
-def admin_ony(view_fun):
+def admin_only(view_fun):
     def wrapper(request, *args, **kwargs):
         if 'admin' not in request.session:
             return redirect('admin-panel:login')
