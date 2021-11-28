@@ -10,7 +10,7 @@
         <div class="row mt-4">
             <div class="col-12 d-flex justify-content-between">
                 <h4>New Arrivals</h4>
-                <a href="#" class="btn btn-outline-primary">See all</a>
+                <a href="{% url 'store:store' %}" class="btn btn-outline-primary">See all</a>
             </div>
         </div>
         <div class="row mt-5">
@@ -57,7 +57,7 @@
             <div class="row mt-4">
                 <div class="col-12 d-flex justify-content-between mt-4 mb-3">
                     <h4>{{ brand.name | capfirst }}</h4>
-                    <a href="#" class="btn btn-outline-primary">See all</a>
+                    <a href="{% url 'store:brand-wise' brand.slug %}" class="btn btn-outline-primary">See all</a>
                 </div>
             </div>
             <div class="row">
