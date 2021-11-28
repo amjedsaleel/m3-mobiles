@@ -56,6 +56,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     Custom user model
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    profile_picture = models.ImageField(upload_to='profile-picture', null=True, blank=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)

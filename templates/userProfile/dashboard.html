@@ -30,7 +30,8 @@
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My
                             Addresses</a>
                         <a class="list-group-item text-dark" href="#">Wishlist</a>
-                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Change Password</a>
+                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Change
+                            Password</a>
                     </ul>
                     <br>
                     <a class="btn btn-light btn-block" href="#"> <i class="fa fa-power-off"></i> <span class="text">Log
@@ -40,8 +41,13 @@
                 <main class="col-md-5 ml-md-5">
                     <div class="row text-center card">
                         <div class="col-12">
-                            <img src="{% static 'images/avathar.png' %}" class="img-fluid pt-4" alt="" srcset=""
-                                 style="width: 25%">
+                            {% if request.user.profile_picture %}
+                                <img src="{{ request.user.profile_picture.url }}" class="img-fluid pt-4" alt="" srcset=""
+                                     style="width: 25%">
+                            {% else %}
+                                <img src="{% static 'images/avathar.png' %}" class="img-fluid pt-4" alt="" srcset=""
+                                     style="width: 25%">
+                            {% endif %}
                             <hr>
                         </div>
 

@@ -96,7 +96,7 @@ def edit_profile(request):
     form = UpdateProfileForm(instance=request.user)
 
     if request.method == 'POST':
-        form = UpdateProfileForm(request.POST, instance=request.user)
+        form = UpdateProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Successfully profile updated')

@@ -10,8 +10,10 @@
                     <ul class="list-group">
                         <a class="list-group-item text-dark" href="{% url 'userProfile:dashboard' %}">Dashboard </a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-orders' %}">My Orders</a>
-                        <a class="list-group-item active text-white" href="{% url 'userProfile:edit-profile' %}">Edit Profile</a>
-                        <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My Addresses</a>
+                        <a class="list-group-item active text-white" href="{% url 'userProfile:edit-profile' %}">Edit
+                            Profile</a>
+                        <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My
+                            Addresses</a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Wishlist</a>
                         <a class="list-group-item text-dark" href="#">Change Password</a>
                     </ul>
@@ -26,7 +28,7 @@
                             <strong> Edit profile </strong>
                         </div>
                         <div class="card-body">
-                            <form action="" method="post">
+                            <form action="" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-sm-6 form-group">
@@ -40,6 +42,9 @@
                                     </div>
                                     <div class="col-sm-6 form-group">
                                         {{ form.mobile | as_crispy_field }}
+                                    </div>
+                                    <div class="col-sm-12 form-group">
+                                        {{ form.profile_picture | as_crispy_field }}
                                     </div>
                                 </div>
                                 <div class="text-center">
