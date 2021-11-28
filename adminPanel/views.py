@@ -329,7 +329,7 @@ def update_order_status(request, pk):
 @never_cache
 @admin_only
 def order_history(request):
-    orders = OrderProduct.objects.filter(status__in=['Delivered', 'Canceled']).order_by('-tracking_id')
+    orders = OrderProduct.objects.filter(status__in=['Delivered', 'Canceled'])
     return render(request, 'adminPanel/order-history.html', {'orders': orders})
 
 

@@ -53,7 +53,9 @@
     <script>
         // Data table
         $(document).ready(function () {
-            $('#orders-history').DataTable();
+            $('#orders-history').DataTable({
+                 "ordering": false
+            });
         });
     </script>
 {% endblock %}
