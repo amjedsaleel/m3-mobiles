@@ -51,7 +51,7 @@ class Coupon(models.Model):
     coupon_code = models.CharField(max_length=50, unique=True)
     discount = models.PositiveIntegerField(help_text="Offer in percentage", null=True)
     limit = models.PositiveIntegerField()
-    used = models.PositiveIntegerField(default=0, editable=False)
+    used = models.PositiveIntegerField(default=0)
     valid_from = models.DateField()
     valid_to = models.DateField()
     is_active = models.BooleanField(default=False)
@@ -64,5 +64,3 @@ class RedeemedCoupon(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-
-
