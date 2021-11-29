@@ -138,6 +138,10 @@
                                 <dd class="text-right">₹{{ tax }}</dd>
                             </dl>
                             <dl class="dlist-align">
+                                <dt>Coupon discount:</dt>
+                                <dd class="text-right text-success b"><strong>₹-{{ request.session.discount | default:"0"}}</strong></dd>
+                            </dl>
+                            <dl class="dlist-align">
                                 <dt>Grand Total:</dt>
                                 <dd class="text-right text-dark b"><strong>₹{{ grand_total | intcomma }}</strong></dd>
                             </dl>
