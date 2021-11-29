@@ -1,5 +1,5 @@
 # Django
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from .context_processors import cart_items_count
 from store.models import Variant
 from order.forms import OrderForm
 from userProfile.models import Address
-from offer.models import Coupon, RedeemedCoupon
+from offer.models import Coupon
 
 # Create your views here.
 
@@ -177,11 +177,24 @@ def checkout(request):
 
 
 def apply_coupon(request):
+    """
+    This function validate the enter coupon code in  valid or not
+    """
     if request.method == 'POST':
         coupon_code = request.POST.get('coupon-code')
         try:
             coupon = Coupon.objects.get(coupon_code=coupon_code)
         except Coupon.DoesNotExist:
+            return JsonResponse({'message': 'invalid coupon'})
+
+        # Checking current status of the entered coupon code
+        if coupon.is_active:
+            if coupon.limit > coupon.used and coupon.valid_to >= timezone.now().date():
+                """ Coupon code is valid, so the coupon code is saving to the  current user session """
+                request.session['coupon_code'] = coupon_code
+            else:
+                return JsonResponse({'message': 'expired'})
+        else:
             return JsonResponse({'message': 'invalid coupon'})
 
         return JsonResponse({'message': 'success'})

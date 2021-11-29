@@ -119,10 +119,13 @@
                             <form action="" class="mt-2" onsubmit="applyCoupon(event)" id="coupon">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="validationServer03"
+                                    <input type="text" class="form-control" id="validationServer01"
                                            placeholder="Enter coupon code" name="coupon-code" required>
-                                    <div class="invalid-feedback" style="display: none" id="invalid-feedback">In valid
-                                        coupon code
+                                    <div class="invalid-feedback" style="display: none" id="invalid-feedback">
+                                        Coupon code is invalid or Coupon code was expired
+                                    </div>
+                                    <div class="valid-feedback" style="display: none" id="valid-feedback">
+                                        Coupon code is valid
                                     </div>
                                 </div>
 
@@ -170,12 +173,19 @@
                 data: $("#coupon").serialize(),
                 success: function (data) {
                     if (data.message === "success") {
-                        $("#coupon").trigger('reset');
-                        document.getElementById("validationServer03").classList.remove("is-invalid");
+                        document.getElementById("validationServer01").classList.remove("is-invalid");
                         document.getElementById("invalid-feedback").style.display = 'none';
-                    } else if(data.message === "invalid coupon") {
-                        document.getElementById("validationServer03").classList.add("is-invalid");
+
+                        document.getElementById("validationServer01").classList.add("is-valid");
+                        document.getElementById("valid-feedback").style.display = 'block';
+
+                    } else if (data.message === "invalid coupon") {
+                        document.getElementById("validationServer01").classList.remove("is-valid");
+                        document.getElementById("valid-feedback").style.display = 'none';
+
+                        document.getElementById("validationServer01").classList.add("is-invalid");
                         document.getElementById("invalid-feedback").style.display = 'block';
+
                     }
                 },
             })
