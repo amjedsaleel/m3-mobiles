@@ -95,15 +95,20 @@
                         <div class="card-body">
                             <dl class="dlist-align">
                                 <dt>Total price:</dt>
-                                <dd class="text-right">₹{{ total }}</dd>
+                                <dd class="text-right">₹<span id="total-price">{{ total }}</span></dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Tax:</dt>
                                 <dd class="text-right">₹{{ tax }}</dd>
                             </dl>
                             <dl class="dlist-align">
-                                <dt>Total:</dt>
-                                <dd class="text-right text-dark b"><strong>₹{{ grand_total }}</strong></dd>
+                                <dt>Coupon discount:</dt>
+                                <dd class="text-right text-success b">₹-<strong id="discount-amount">0</strong></dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Total grand:</dt>
+                                <dd class="text-right text-dark b">₹<strong id="grand-total">{{ grand_total }}</strong>
+                                </dd>
                             </dl>
                             <hr>
                             <p class="text-center mb-3">
@@ -169,7 +174,7 @@
             e.preventDefault()
             $.ajax({
                 type: 'POST',
-                url: "{% url 'cart:apply-coupon' %}",
+                url: "{% url 'offers:apply-coupon' %}",
                 data: $("#coupon").serialize(),
                 success: function (data) {
                     if (data.message === "success") {
@@ -179,6 +184,11 @@
                         document.getElementById("validationServer01").classList.add("is-valid");
                         document.getElementById("valid-feedback").style.display = 'block';
 
+                        // Updating cart summery
+                        document.getElementById("total-price").innerText = data.total_price;
+                        document.getElementById("grand-total").innerText = data.grand_total;
+                        document.getElementById("discount-amount").innerText = data.discount;
+
                     } else if (data.message === "invalid coupon") {
                         document.getElementById("validationServer01").classList.remove("is-valid");
                         document.getElementById("valid-feedback").style.display = 'none';
@@ -186,6 +196,12 @@
                         document.getElementById("validationServer01").classList.add("is-invalid");
                         document.getElementById("invalid-feedback").style.display = 'block';
 
+                    } else {
+                        document.getElementById("validationServer01").classList.remove("is-invalid");
+                        document.getElementById("invalid-feedback").style.display = 'none';
+
+                        document.getElementById("validationServer01").classList.add("is-valid");
+                        document.getElementById("valid-feedback").style.display = 'block';
                     }
                 },
             })

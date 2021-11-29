@@ -1,3 +1,55 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.utils import timezone
+from django.contrib.humanize.templatetags.humanize import intcomma
+
+
+# local Django
+from .models import Coupon
+from cart.utils import cart_summery
+
 
 # Create your views here.
+
+
+def apply_coupon(request):
+    """
+    This function validate the enter coupon code in  valid or not
+    """
+
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon-code')
+
+        # Fetching the coupon code instance
+        try:
+            coupon = Coupon.objects.get(coupon_code=coupon_code)
+        except Coupon.DoesNotExist:
+            return JsonResponse({'message': 'invalid coupon'})
+
+        # Checking the entered coupon code already in the session
+        try:
+            if coupon_code == request.session['coupon_code']:
+                return JsonResponse({'message': 'already applied'})
+        except KeyError:
+            pass
+
+        cart_summery(request)  # Update the cart summery with the coupon discount
+
+        # Checking current status of the entered coupon code
+        if coupon.is_active:
+            if coupon.limit > coupon.used and coupon.valid_to >= timezone.now().date():
+                """ Coupon code is valid, so the coupon code is saving to the  current user session """
+                request.session['coupon_code'] = coupon_code
+                discount = (request.session['total_price'] * coupon.discount) / 100
+                request.session['total_price'] -= discount
+                request.session['grand_total'] = request.session['total_price'] + request.session['tax']
+                context = {
+                    'message': 'success',
+                    'discount': discount,
+                    'total_price': intcomma(request.session['total_price']),
+                    'grand_total': intcomma(request.session['grand_total'])
+                }
+                return JsonResponse(context)
+            else:
+                return JsonResponse({'message': 'expired'})
+
+        return JsonResponse({'message': 'invalid coupon'})
