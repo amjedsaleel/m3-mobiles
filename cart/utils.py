@@ -28,6 +28,11 @@ def cart_summery(request):
     Calculating cart summery.
     Total price, tax, and grand total.
     """
+    try:
+        del request.session['discount']
+    except KeyError:
+        pass
+
     cart_items = get_cart_items(request)
     total = 0
     tax = 0

@@ -40,6 +40,7 @@ def apply_coupon(request):
                 """ Coupon code is valid, so the coupon code is saving to the  current user session """
                 request.session['coupon_code'] = coupon_code
                 discount = (request.session['total_price'] * coupon.discount) / 100
+                request.session['discount'] = discount
                 request.session['total_price'] -= discount
                 request.session['grand_total'] = request.session['total_price'] + request.session['tax']
                 context = {
