@@ -1,9 +1,10 @@
 # Django
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
 
 # local Django
 from .models import Cart, CartItem
@@ -12,6 +13,7 @@ from .context_processors import cart_items_count
 from store.models import Variant
 from order.forms import OrderForm
 from userProfile.models import Address
+from offer.models import Coupon, RedeemedCoupon
 
 # Create your views here.
 
@@ -172,3 +174,14 @@ def checkout(request):
         'grand_total': intcomma(request.session['grand_total']),
     }
     return render(request, 'cart/checkout.html', context)
+
+
+def apply_coupon(request):
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon-code')
+        try:
+            coupon = Coupon.objects.get(coupon_code=coupon_code)
+        except Coupon.DoesNotExist:
+            return JsonResponse({'message': 'invalid coupon'})
+
+        return JsonResponse({'message': 'success'})
