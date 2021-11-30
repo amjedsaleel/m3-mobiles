@@ -5,15 +5,16 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
-
+from django.db.models import Sum
 
 # local Django
 from .decorators import admin_only
+from accounts.models import CustomUser
 from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
-from order.models import OrderProduct, STATUS
+from order.models import OrderProduct, STATUS, Order
 from offer.models import VariantOffer, ProductOffer, BrandOffer
 from offer.froms import VariantOfferForm, ProductOfferForm, BrandOfferForm
 
@@ -49,7 +50,21 @@ def logout(request):
 @never_cache
 @admin_only
 def dashboard(request):
-    return render(request, 'adminPanel/dashboard.html')
+    total_orders = Order.objects.all().count()
+    total_users = CustomUser.objects.all().count()
+    total_revenue = Order.objects.aggregate(Sum('order_total'))
+
+    landing_price_sum = Variant.objects.aggregate(Sum('landing_price'))
+    total_landing_price = landing_price_sum['landing_price__sum']
+    total_profit = float(total_revenue['order_total__sum']) - float(total_landing_price)
+
+    context = {
+        'total_orders': total_orders,
+        'total_users': total_users,
+        'total_revenue': total_revenue['order_total__sum'],
+        'total_profit': total_profit
+    }
+    return render(request, 'adminPanel/dashboard.html', context)
 
 
 @never_cache
