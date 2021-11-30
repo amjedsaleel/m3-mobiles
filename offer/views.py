@@ -2,9 +2,8 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.humanize.templatetags.humanize import intcomma
 
-
 # local Django
-from .models import Coupon
+from .models import Coupon, RedeemedCoupon
 from cart.utils import cart_summery
 
 
@@ -18,21 +17,25 @@ def apply_coupon(request):
 
     if request.method == 'POST':
         coupon_code = request.POST.get('coupon-code')
+        cart_summery(request)  # Update the cart summery with the coupon discount
+
+        try:
+            if coupon_code == request.session['coupon_code']:  # Checking the entered coupon code already in the session
+                return JsonResponse({'error': 'already applied'})
+        except KeyError:
+            pass
 
         # Fetching the coupon code instance
         try:
             coupon = Coupon.objects.get(coupon_code=coupon_code)
         except Coupon.DoesNotExist:
-            return JsonResponse({'message': 'invalid coupon'})
+            return JsonResponse({'error': 'invalid coupon'})
 
-        # Checking the entered coupon code already in the session
         try:
-            if coupon_code == request.session['coupon_code']:
-                return JsonResponse({'message': 'already applied'})
-        except KeyError:
+            if RedeemedCoupon.objects.get(user=request.user, coupon_id=coupon.id):
+                return JsonResponse({'error': 'This coupon code is already used'})
+        except RedeemedCoupon.DoesNotExist:
             pass
-
-        cart_summery(request)  # Update the cart summery with the coupon discount
 
         # Checking current status of the entered coupon code
         if coupon.is_active:
@@ -51,6 +54,6 @@ def apply_coupon(request):
                 }
                 return JsonResponse(context)
             else:
-                return JsonResponse({'message': 'expired'})
+                return JsonResponse({'error': 'coupon code was expired'})
 
-        return JsonResponse({'message': 'invalid coupon'})
+        return JsonResponse({'error': 'coupon code was expired'})
