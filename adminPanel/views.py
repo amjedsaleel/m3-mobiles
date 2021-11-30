@@ -1,4 +1,6 @@
 # django
+import datetime
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
@@ -6,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 from django.db.models import Sum
+from django.utils import timezone
 
 # local Django
 from .decorators import admin_only
@@ -14,11 +17,13 @@ from brand.models import Brand
 from brand.forms import BrandForm
 from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
+from payment.models import Payment
 from order.models import OrderProduct, STATUS, Order
 from offer.models import VariantOffer, ProductOffer, BrandOffer
 from offer.froms import VariantOfferForm, ProductOfferForm, BrandOfferForm
 
 User = get_user_model()
+
 
 # Create your views here.
 
@@ -50,7 +55,9 @@ def logout(request):
 @never_cache
 @admin_only
 def dashboard(request):
-    total_orders = Order.objects.all().count()
+    current_year = timezone.now().year
+
+    total_orders = Order.objects.filter(is_ordered=True).count()
     total_users = CustomUser.objects.all().count()
     total_revenue = Order.objects.aggregate(Sum('order_total'))
 
@@ -58,11 +65,35 @@ def dashboard(request):
     total_landing_price = landing_price_sum['landing_price__sum']
     total_profit = float(total_revenue['order_total__sum']) - float(total_landing_price)
 
+    order_products = OrderProduct.objects.filter(created_at__lt=datetime.date(current_year, 12, 31))
+    month_wise_order_count = list()
+    mount = timezone.now().month
+    for i in range(1, mount+1):
+        month_wise_order = order_products.filter(created_at__month=i).count()
+        month_wise_order_count.append(month_wise_order)
+
+    cod_count = Payment.objects.filter(payment_method='COD').count()
+    paypal_count = Payment.objects.filter(payment_method="PayPal").count()
+    razorpay_count = Payment.objects.filter(payment_method='razorpay').count()
+
+    brands = Brand.objects.all()
+    brands_list = list()
+    for i in brands:
+        brands_list.append(i.name)
+
     context = {
         'total_orders': total_orders,
         'total_users': total_users,
         'total_revenue': total_revenue['order_total__sum'],
-        'total_profit': total_profit
+        'total_profit': total_profit,
+
+        'month_wise_order_count': month_wise_order_count,
+        'month_name': ['January', 'February', 'March', 'May', 'June', 'July', 'August', 'September', 'October',
+                       'November', 'December'],
+
+        'payment_method_status': [cod_count, paypal_count, razorpay_count],
+
+        'brands_list': brands_list
     }
     return render(request, 'adminPanel/dashboard.html', context)
 
@@ -459,7 +490,6 @@ def update_brand_offer(request, pk):
 @never_cache
 @admin_only
 def delete_variant_offer(request, pk):
-
     if request.method == 'POST':
         VariantOffer.objects.get(pk=pk).delete()
         return JsonResponse({'message': "success"})
@@ -470,7 +500,6 @@ def delete_variant_offer(request, pk):
 @never_cache
 @admin_only
 def delete_product_offer(request, pk):
-
     if request.method == 'POST':
         ProductOffer.objects.get(pk=pk).delete()
         return JsonResponse({'message': "success"})
@@ -481,7 +510,6 @@ def delete_product_offer(request, pk):
 @never_cache
 @admin_only
 def delete_brand_offer(request, pk):
-
     if request.method == 'POST':
         BrandOffer.objects.get(pk=pk).delete()
         return JsonResponse({'message': "success"})

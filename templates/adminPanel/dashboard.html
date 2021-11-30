@@ -4,7 +4,7 @@
     <div class="bg-primary pt-10 pb-21"></div>
     <div class="container-fluid mt-n22 px-6">
         <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-10">
+            <div class="col-xl-3 col-lg-6 col-md-12 col-12">
                 <!-- card -->
                 <div class="card rounded-3">
                     <!-- card body -->
@@ -17,13 +17,13 @@
                         </div>
                         <!-- project number -->
                         <div>
-                            <h1 class="fw-bold">{{ total_orders | intcomma}}</h1>
+                            <h1 class="fw-bold">{{ total_orders | intcomma }}</h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-10">
+            <div class="col-xl-3 col-lg-6 col-md-12 col-12">
                 <!-- card -->
                 <div class="card rounded-3">
                     <!-- card body -->
@@ -36,13 +36,13 @@
                         </div>
                         <!-- project number -->
                         <div>
-                            <h1 class="fw-bold">{{ total_users | intcomma}}</h1>
+                            <h1 class="fw-bold">{{ total_users | intcomma }}</h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-10">
+            <div class="col-xl-3 col-lg-6 col-md-12 col-12">
                 <!-- card -->
                 <div class="card rounded-3">
                     <!-- card body -->
@@ -55,13 +55,13 @@
                         </div>
                         <!-- project number -->
                         <div>
-                            <h1 class="fw-bold">{{ total_revenue | intcomma}}</h1>
+                            <h1 class="fw-bold">{{ total_revenue | intcomma }}</h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-10">
+            <div class="col-xl-3 col-lg-6 col-md-12 col-12">
                 <!-- card -->
                 <div class="card rounded-3">
                     <!-- card body -->
@@ -74,11 +74,139 @@
                         </div>
                         <!-- project number -->
                         <div>
-                            <h1 class="fw-bold">{{ total_profit | intcomma}}</h1>
+                            <h1 class="fw-bold">{{ total_profit | intcomma }}</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="row mt-7 d-flex justify-content-evenly">
+            <div class="col-12 col-lg-5 card">
+                <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
+            <div class="col-12 col-lg-5 card ">
+                <canvas id="transaction" width="300" height="300"></canvas>
+            </div>
+            <div class="col-12 col-lg-5 card mt-5">
+                <canvas id="leading-brands" width="300" height="300"></canvas>
+            </div>
+        </div>
     </div>
+    {{ brands_list }}
+{% endblock %}
+{% block script %}
+    <script>
+        // Sales
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const salesLabels = [
+            '',
+            {% for i in month_name %}
+                '{{ i }}',
+            {% endfor %}
+        ];
+        const data = {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Sales',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ month_wise_order_count }},
+            }]
+        };
+
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                animations: {
+                    tension: {
+                        duration: 1000,
+                        easing: 'linear',
+                        from: 1,
+                        to: 0,
+                        loop: true
+                    }
+                },
+                scales: {
+                    y: { // defining min and max so hiding the dataset does not change scale range
+                        min: 0,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Payment methods
+        const transactionData = {
+            labels: [
+                'Cash on Delivery',
+                'PayPal',
+                'Razorpay'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: {{ payment_method_status }},
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const transaction = document.getElementById('transaction').getContext('2d');
+        const myTransactionChart = new Chart(transaction, {
+            type: 'doughnut',
+            data: transactionData,
+        })
+
+
+        // Leading brands
+        const leadingBrandsLabel = [
+            {% for i in brands_list %}
+                '{{ i }}',
+            {% endfor %}
+        ];
+        const leadingBrandsData = {
+            labels: leadingBrandsLabel,
+            datasets: [{
+                label: 'Brands',
+                data: [65, 59, 80, 90],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                ],
+                borderWidth: 1
+            }]
+        };
+        const leadingBrand = document.getElementById('leading-brands').getContext('2d');
+        const leadingBrandChart = new Chart(leadingBrand, {
+            type: 'bar',
+            data: leadingBrandsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
+        })
+
+    </script>
 {% endblock %}
