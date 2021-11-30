@@ -17,7 +17,6 @@ def apply_coupon(request):
 
     if request.method == 'POST':
         coupon_code = request.POST.get('coupon-code')
-        cart_summery(request)  # Update the cart summery with the coupon discount
 
         try:
             if coupon_code == request.session['coupon_code']:  # Checking the entered coupon code already in the session
@@ -36,6 +35,8 @@ def apply_coupon(request):
                 return JsonResponse({'error': 'This coupon code is already used'})
         except RedeemedCoupon.DoesNotExist:
             pass
+
+        cart_summery(request)  # Update the cart summery with the coupon discount
 
         # Checking current status of the entered coupon code
         if coupon.is_active:

@@ -15,6 +15,7 @@ from django.contrib import messages
 from .models import Payment
 from accounts.verification import send_otp, verify_otp_number
 from order.utils import make_order
+from offer.utils import use_coupon
 
 
 # Create your views here.
@@ -25,12 +26,14 @@ client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET)
 def paypal(request):
     if request.is_ajax():
         transaction_id = request.POST.get('transactionId')
+        use_coupon(request)
 
         # Saving payment details
         payment = Payment.objects.create(
             user=request.user,
             payment_id=transaction_id,
             amount_paid=request.session['grand_total'],
+            coupon_discount=request.session['discount'],
             payment_method='PayPal',
             status=True
         )
@@ -57,10 +60,13 @@ def razorpay_payment_verification(request):
         except:
             return JsonResponse({'messages': 'error'})
 
+        use_coupon(request)
+
         # Saving payment details
         payment = Payment.objects.create(
             user=request.user,
             payment_id=razorpay_payment_id,
+            coupon_discount=request.session['discount'],
             amount_paid=request.session['grand_total'],
             payment_method='razorpay',
             status=True
@@ -89,10 +95,13 @@ def cash_on_delivery(request):
         verify = verify_otp_number(request.user.mobile, otp)
 
         if verify:
+            use_coupon(request)
+
             # Saving payment details
             payment = Payment.objects.create(
                 user=request.user,
                 payment_id=f'COD{datetime.now().strftime("%Y%m%d%H%M%S")}',
+                coupon_discount=request.session['discount'],
                 amount_paid=request.session['grand_total'],
                 payment_method='COD',
                 status=True

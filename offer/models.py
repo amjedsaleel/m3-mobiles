@@ -62,5 +62,9 @@ class Coupon(models.Model):
 
 class RedeemedCoupon(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.email} - {self.coupon.coupon_name}'
+
