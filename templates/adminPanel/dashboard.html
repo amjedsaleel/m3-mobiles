@@ -89,11 +89,13 @@
                 <canvas id="transaction" width="300" height="300"></canvas>
             </div>
             <div class="col-12 col-lg-5 card mt-5">
+                <canvas id="most-moving-brands" width="300" height="300"></canvas>
+            </div>
+            <div class="col-12 col-lg-5 card mt-5">
                 <canvas id="leading-brands" width="300" height="300"></canvas>
             </div>
         </div>
     </div>
-    {{ brands_list }}
 {% endblock %}
 {% block script %}
     <script>
@@ -163,7 +165,38 @@
         })
 
 
-        // Leading brands
+        // Most moving brands
+        const mostMovingBrandsLabel = [
+            {% for i in most_moving_brands%}
+                '{{ i }}',
+            {% endfor %}
+        ]
+        const mostMovingBrandsData = {
+            labels: mostMovingBrandsLabel,
+            datasets: [{
+                label: 'Most moving brands',
+                data: [300, 50, 100, 456],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const mostMovingBrands = document.getElementById('most-moving-brands').getContext('2d');
+        const mostMovingBrandsChart = new Chart(mostMovingBrands, {
+            type: 'pie',
+            data: mostMovingBrandsData,
+
+        })
+
+
+        // Total products
         const leadingBrandsLabel = [
             {% for i in brands_list %}
                 '{{ i }}',
@@ -172,16 +205,16 @@
         const leadingBrandsData = {
             labels: leadingBrandsLabel,
             datasets: [{
-                label: 'Brands',
+                label: 'Total product',
                 data: {{ products_count }},
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(255, 205, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(201, 203, 207, 0.2)'
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(255, 205, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(201, 203, 207, 0.7)'
                 ],
                 borderColor: [
                     'rgb(255, 99, 132)',

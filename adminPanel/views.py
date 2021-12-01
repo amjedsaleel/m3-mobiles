@@ -56,6 +56,9 @@ def logout(request):
 @admin_only
 def dashboard(request):
     current_year = timezone.now().year
+    variants = Variant.objects.all()
+    brands = Brand.objects.all()
+    order_products = OrderProduct.objects.all()
 
     total_orders = Order.objects.filter(is_ordered=True).count()
     total_users = CustomUser.objects.all().count()
@@ -68,7 +71,7 @@ def dashboard(request):
     order_products = OrderProduct.objects.filter(created_at__lt=datetime.date(current_year, 12, 31), status='Delivered')
     month_wise_order_count = list()
     mount = timezone.now().month
-    for i in range(1, mount+1):
+    for i in range(1, mount + 1):
         month_wise_order = order_products.filter(created_at__month=i).count()
         month_wise_order_count.append(month_wise_order)
 
@@ -76,12 +79,18 @@ def dashboard(request):
     paypal_count = Payment.objects.filter(payment_method="PayPal").count()
     razorpay_count = Payment.objects.filter(payment_method='razorpay').count()
 
-    brands = Brand.objects.all()
     brands_list = list()
     products_count = list()
     for i in brands:
         brands_list.append(i.name)
         products_count.append(Variant.objects.filter(product__brand__name=i.name).count())
+
+    most_moving_brands_count = list()
+    most_moving_brands = list()
+    for i in brands:
+        most_moving_brands.append(i)
+        most_moving_brands_count.append(
+            OrderProduct.objects.filter(variant__product__brand=i, status="Delivered").count())
 
     context = {
         'total_orders': total_orders,
@@ -96,7 +105,10 @@ def dashboard(request):
         'payment_method_status': [cod_count, paypal_count, razorpay_count],
 
         'brands_list': brands_list,
-        'products_count': products_count
+        'products_count': products_count,
+
+        'most_moving_brands': most_moving_brands,
+        'most_moving_brands_count': most_moving_brands_count,
     }
     return render(request, 'adminPanel/dashboard.html', context)
 
