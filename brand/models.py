@@ -4,10 +4,6 @@ import uuid
 # Django
 from django.db import models
 
-# local Django
-# from offer.models import BrandOffer
-
-
 # Create your models here.
 
 
@@ -22,9 +18,6 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_count(self):
-    #     return self.product_set.all()
-
     def clean(self):
         self.name = self.name.lower()
         super().clean()
@@ -32,3 +25,5 @@ class Brand(models.Model):
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
         return super(Brand, self).save(*args, **kwargs)
+
+

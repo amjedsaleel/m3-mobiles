@@ -65,7 +65,7 @@ def dashboard(request):
     total_landing_price = landing_price_sum['landing_price__sum']
     total_profit = float(total_revenue['order_total__sum']) - float(total_landing_price)
 
-    order_products = OrderProduct.objects.filter(created_at__lt=datetime.date(current_year, 12, 31))
+    order_products = OrderProduct.objects.filter(created_at__lt=datetime.date(current_year, 12, 31), status='Delivered')
     month_wise_order_count = list()
     mount = timezone.now().month
     for i in range(1, mount+1):
@@ -78,8 +78,10 @@ def dashboard(request):
 
     brands = Brand.objects.all()
     brands_list = list()
+    products_count = list()
     for i in brands:
         brands_list.append(i.name)
+        products_count.append(Variant.objects.filter(product__brand__name=i.name).count())
 
     context = {
         'total_orders': total_orders,
@@ -93,7 +95,8 @@ def dashboard(request):
 
         'payment_method_status': [cod_count, paypal_count, razorpay_count],
 
-        'brands_list': brands_list
+        'brands_list': brands_list,
+        'products_count': products_count
     }
     return render(request, 'adminPanel/dashboard.html', context)
 
