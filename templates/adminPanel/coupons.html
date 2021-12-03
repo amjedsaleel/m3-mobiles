@@ -7,7 +7,7 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h3 class="card-title">Coupons</h3>
-                        <table class="table table-striped table-hover" id="orders-history">
+                        <table class="table table-striped table-hover" id="coupons">
                             <thead>
                             <tr>
                                 <th scope="col">Coupon name</th>
@@ -33,9 +33,10 @@
                                     <td>{{ coupon.valid_to }}</td>
                                     <td>{{ coupon.is_active }}</td>
                                     <td>
-                                        <a href="#"><span
+                                        <a href="{% url 'admin-panel:edit-coupon' coupon.id %}"><span
                                                 class="material-icons-outlined text-warning">edit</span></a>
-                                        <a href="#"><span class="material-icons-outlined text-danger">delete</span></a>
+                                        <a href="#"><span class="material-icons-outlined text-danger"
+                                                          onclick="deleteCoupon(event, '{% url 'admin-panel:delete-coupon' coupon.id %}')">delete</span></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -46,4 +47,46 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        // Data table
+        $(document).ready(function () {
+            $('#coupons').DataTable({
+                "ordering": false
+            });
+        });
+
+        function deleteCoupon(e, id) {
+            // Deleting product variant
+            let url = id
+            e.preventDefault()
+            swal({
+                title: "Are you sure?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("Successfully coupon deleted", {
+                        icon: "success",
+                    }).then(function () {
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.message === "success") {
+                                    window.location.replace("{% url 'admin-panel:all-coupons' %}");
+                                }
+                            }
+                        })
+                    })
+                }
+            });
+        }
+    </script>
 {% endblock %}

@@ -534,7 +534,7 @@ def delete_brand_offer(request, pk):
 
 @admin_only
 def coupons(request):
-    all_coupons = Coupon.objects.all()
+    all_coupons = Coupon.objects.all().order_by('-created_at')
     context = {
         'all_coupons': all_coupons
     }
@@ -553,6 +553,27 @@ def add_coupon(request):
             messages.success(request, 'New coupon is added')
             return redirect('admin-panel:all-coupons')
     return render(request, 'adminPanel/add-coupon.html', {'form': form})
+
+
+@admin_only
+def edit_coupon(request, pk):
+    coupon = Coupon.objects.get(pk=pk)
+    form = CouponFrom(instance=coupon)
+
+    if request.method == 'POST':
+        form = CouponFrom(request.POST, instance=coupon)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Coupon was successfully updated')
+            return redirect('admin-panel:all-coupons')
+    return render(request, 'adminPanel/edit-coupon.html', {'form': form})
+
+
+@admin_only
+def delete_coupon(request, pk):
+    if request.method == 'POST':
+        Coupon.objects.get(pk=pk).delete()
+        return JsonResponse({'message': 'success'})
 
 
 @admin_only

@@ -55,6 +55,7 @@ class Coupon(models.Model):
     valid_from = models.DateField()
     valid_to = models.DateField()
     is_active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.coupon_name
@@ -62,7 +63,7 @@ class Coupon(models.Model):
 
 class RedeemedCoupon(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
 
     def __str__(self):

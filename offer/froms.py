@@ -30,7 +30,7 @@ class CouponFrom(ModelForm):
 
     class Meta:
         model = Coupon
-        fields = ['coupon_name', 'coupon_code', 'discount', 'limit', 'valid_from', 'valid_to']
+        fields = ['coupon_name', 'coupon_code', 'discount', 'limit', 'valid_from', 'valid_to', 'is_active']
         widgets = {
             'valid_from': DateInput(attrs={'type': 'date'}),
             'valid_to': DateInput(attrs={'type': 'date'}),

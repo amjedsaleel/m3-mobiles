@@ -55,6 +55,8 @@ urlpatterns = [
     # Coupon offers
     path('all-coupons/', views.coupons, name='all-coupons'),
     path('add-coupon/', views.add_coupon, name='add-coupon'),
+    path('edit-copuon/<str:pk>/', views.edit_coupon, name='edit-coupon'),
+    path('delete-coupon/<str:pk>/', views.delete_coupon, name='delete-coupon'),
 
     # Report
     path('report/', views.report, name='report')
