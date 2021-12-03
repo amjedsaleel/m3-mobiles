@@ -1,0 +1,47 @@
+{% extends 'adminPanel/base.html' %}
+{% load humanize %}
+{% block tittle %} Redeemed coupons {% endblock %}
+{% block redeemed-coupon %} active {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">Orders history</h3>
+                        <table class="table table-striped table-hover" id="redeemed-coupons">
+                            <thead>
+                            <tr>
+                                <th scope="col">Sl. NO</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Coupon code</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for redeemed_coupon in redeemed_coupons %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ redeemed_coupon.user }}</td>
+                                    <td>{{ redeemed_coupon.coupon.coupon_code }}</td>
+                                    <td>{{ redeemed_coupon.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        // Data table
+        $(document).ready(function () {
+            $('#redeemed-coupons').DataTable({
+                "ordering": false
+            });
+        });
+    </script>
+{% endblock %}

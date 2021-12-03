@@ -208,7 +208,7 @@
                                 <a class="nav-link {% block add-coupon %}{% endblock %}" href="{% url 'admin-panel:add-coupon' %}">Add coupons</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  " href="#">Redeemed coupons</a>
+                                <a class="nav-link  {% block redeemed-coupon %}{% endblock %}" href="{% url 'admin-panel:redeemed-coupons' %}">Redeemed coupons</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link  {% block offer %}{% endblock %}" href="{% url 'admin-panel:offers' %}">Offers</a>

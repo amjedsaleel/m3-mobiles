@@ -577,6 +577,16 @@ def delete_coupon(request, pk):
 
 
 @admin_only
+def redeemed_coupon(request):
+    redeemed_coupons = RedeemedCoupon.objects.all().order_by('-created_at')
+
+    context = {
+        'redeemed_coupons': redeemed_coupons
+    }
+    return render(request, 'adminPanel/redeemed-coupons.html', context)
+
+
+@admin_only
 def report(request):
     brands = Brand.objects.all()
     variants = Variant.objects.all()

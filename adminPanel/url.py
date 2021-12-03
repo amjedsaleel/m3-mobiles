@@ -57,6 +57,7 @@ urlpatterns = [
     path('add-coupon/', views.add_coupon, name='add-coupon'),
     path('edit-copuon/<str:pk>/', views.edit_coupon, name='edit-coupon'),
     path('delete-coupon/<str:pk>/', views.delete_coupon, name='delete-coupon'),
+    path('redeemed-coupons/', views.redeemed_coupon, name='redeemed-coupons'),
 
     # Report
     path('report/', views.report, name='report')

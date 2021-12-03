@@ -65,6 +65,7 @@ class RedeemedCoupon(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f'{self.user.email} - {self.coupon.coupon_name}'
