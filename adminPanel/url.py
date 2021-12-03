@@ -51,4 +51,7 @@ urlpatterns = [
     path('delete-variant-offer/<str:pk>/', views.delete_variant_offer, name='delete-variant-offer'),
     path('delete-product-offer/<str:pk>/', views.delete_product_offer, name='delete-product-offer'),
     path('delete-brand-offer/<str:pk>/', views.delete_brand_offer, name='delete-brand-offer'),
+
+    # Report
+    path('report/', views.report, name='report')
 ]

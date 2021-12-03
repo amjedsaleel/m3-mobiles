@@ -245,7 +245,7 @@
                     <div id="report" class="collapse " data-bs-parent="#sideNavbar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link " href="#">View report</a>
+                                <a class="nav-link {% block report %}{% endblock %}" href="{% url 'admin-panel:report' %}">View report</a>
                             </li>
                         </ul>
                     </div>

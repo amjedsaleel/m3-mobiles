@@ -1,0 +1,124 @@
+{% extends 'adminPanel/base.html' %}
+{% load humanize %}
+{% block report %} active {% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12   mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">All Brands</h3>
+                        <table class="table table-striped table-hover" id="brands">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Brand</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for brand in brands %}
+                                <tr id="">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ brand.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All products -->
+            <div class="col-12  mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">All Products</h3>
+                        <table class="table table-striped table-hover" id="products">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Brand</th>
+                                <th scope="col">Variant</th>
+                                <th scope="col">M.R.P</th>
+                                <th scope="col">Stock</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for variant in variants %}
+                                <tr id="">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ variant.product.name }}</td>
+                                    <td>{{ variant.product.brand }}</td>
+                                    <td>{{ variant.ram }}, {{ variant.storage }}, {{ variant.color }}</td>
+                                    <td>{{ variant.mrp }}</td>
+                                    <td>{{ variant.stock }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders -->
+            <div class="col-12 mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">Orders</h3>
+                        <table class="table table-striped table-hover" id="orders">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tracking Id</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Amount paid</th>
+                                <th scope="col">Discount</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Order status</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in order_products %}
+                                <tr id="{{ order.id }}">
+                                    <td>{{ order.tracking_id }}</td>
+                                    <td>{{ order.user.first_name }}</td>
+                                    <td>{{ order.variant.product.name }}</td>
+                                    <td>{{ order.paid }}</td>
+                                    <td>
+                                        {% if order.discount %}
+                                            <span class="offer"> {{ order.discount }}</span>
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order.quantity }}</td>
+                                    <td>{{ order.status }}</td>
+                                    <td>{{ order.updated_at | naturaltime }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        // Data table
+        $(document).ready(function () {
+            $('#brands').DataTable();
+        });
+
+        $(document).ready(function () {
+            $('#products').DataTable();
+        });
+
+        $(document).ready(function () {
+            $('#orders').DataTable();
+        });
+    </script>
+{% endblock %}

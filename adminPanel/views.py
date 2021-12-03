@@ -530,3 +530,16 @@ def delete_brand_offer(request, pk):
         return JsonResponse({'message': "success"})
 
     return redirect('admin-panel:offers')
+
+
+def report(request):
+    brands = Brand.objects.all()
+    variants = Variant.objects.all()
+    order_products = OrderProduct.objects.all()
+
+    context = {
+        'brands': brands,
+        'variants': variants,
+        'order_products': order_products
+    }
+    return render(request, 'adminPanel/report.html', context)
