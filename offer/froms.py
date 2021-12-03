@@ -1,8 +1,8 @@
 # Django
-from django.forms import ModelForm
+from django.forms import ModelForm, DateInput
 
 # local
-from .models import VariantOffer, ProductOffer, BrandOffer
+from .models import VariantOffer, ProductOffer, BrandOffer, Coupon
 
 
 class VariantOfferForm(ModelForm):
@@ -24,3 +24,14 @@ class BrandOfferForm(ModelForm):
     class Meta:
         model = BrandOffer
         fields = ['brand', 'discount_offer', 'is_active']
+
+
+class CouponFrom(ModelForm):
+
+    class Meta:
+        model = Coupon
+        fields = ['coupon_name', 'coupon_code', 'discount', 'limit', 'valid_from', 'valid_to']
+        widgets = {
+            'valid_from': DateInput(attrs={'type': 'date'}),
+            'valid_to': DateInput(attrs={'type': 'date'}),
+        }

@@ -19,8 +19,8 @@ from store.models import Product, Variant
 from store.forms import VariantForm, ProductForm
 from payment.models import Payment
 from order.models import OrderProduct, STATUS, Order
-from offer.models import VariantOffer, ProductOffer, BrandOffer
-from offer.froms import VariantOfferForm, ProductOfferForm, BrandOfferForm
+from offer.models import VariantOffer, ProductOffer, BrandOffer, Coupon, RedeemedCoupon
+from offer.froms import VariantOfferForm, ProductOfferForm, BrandOfferForm, CouponFrom
 
 User = get_user_model()
 
@@ -532,6 +532,30 @@ def delete_brand_offer(request, pk):
     return redirect('admin-panel:offers')
 
 
+@admin_only
+def coupons(request):
+    all_coupons = Coupon.objects.all()
+    context = {
+        'all_coupons': all_coupons
+    }
+    return render(request, 'adminPanel/coupons.html', context)
+
+
+@admin_only
+def add_coupon(request):
+    form = CouponFrom()
+
+    if request.method == 'POST':
+        form = CouponFrom(request.POST)
+        if form.is_valid():
+            print('yes')
+            form.save()
+            messages.success(request, 'New coupon is added')
+            return redirect('admin-panel:all-coupons')
+    return render(request, 'adminPanel/add-coupon.html', {'form': form})
+
+
+@admin_only
 def report(request):
     brands = Brand.objects.all()
     variants = Variant.objects.all()

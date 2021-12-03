@@ -202,10 +202,10 @@
                     <div id="offerManagement" class="collapse " data-bs-parent="#sideNavbar">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link " href="#">All coupons</a>
+                                <a class="nav-link {% block coupons %}{% endblock %}" href="{% url 'admin-panel:all-coupons' %}">All coupons</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  " href="#">Add coupons</a>
+                                <a class="nav-link {% block add-coupon %}{% endblock %}" href="{% url 'admin-panel:add-coupon' %}">Add coupons</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link  " href="#">Redeemed coupons</a>

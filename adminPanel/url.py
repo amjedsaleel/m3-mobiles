@@ -52,6 +52,10 @@ urlpatterns = [
     path('delete-product-offer/<str:pk>/', views.delete_product_offer, name='delete-product-offer'),
     path('delete-brand-offer/<str:pk>/', views.delete_brand_offer, name='delete-brand-offer'),
 
+    # Coupon offers
+    path('all-coupons/', views.coupons, name='all-coupons'),
+    path('add-coupon/', views.add_coupon, name='add-coupon'),
+
     # Report
     path('report/', views.report, name='report')
 ]
