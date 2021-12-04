@@ -4,6 +4,65 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
+            <!-- Orders -->
+            <div class="col-12 mt-5">
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <h3 class="card-title">Orders</h3>
+                        <form action="" method="get" class="mb-4">
+                            <div class="form-row d-flex justify-content-around">
+                                <div class="form-group col-6 col-md-3">
+                                    <label>From</label>
+                                    <input type="date" class="form-control" name="from">
+                                </div>
+                                <div class="form-group col-6 col-md-3">
+                                    <label>To</label>
+                                    <input type="date" class="form-control" name="to">
+                                </div>
+                                <div class="form-group col-6 col-md-3 mt-5">
+                                    <input type="submit" class="btn  btn-outline-primary" value="Filter">
+                                </div>
+                            </div>
+                        </form>
+                        <table class="table table-striped table-hover" id="orders">
+                            <thead>
+                            <tr>
+                                <th scope="col">Tracking Id</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Amount paid</th>
+                                <th scope="col">Discount</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Order status</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in order_products %}
+                                <tr id="{{ order.id }}">
+                                    <td>{{ order.tracking_id }}</td>
+                                    <td>{{ order.user.first_name }}</td>
+                                    <td>{{ order.variant.product.name }}</td>
+                                    <td>{{ order.paid }}</td>
+                                    <td>
+                                        {% if order.discount %}
+                                            <span class="offer"> {{ order.discount }}</span>
+                                        {% else %}
+                                            ---
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order.quantity }}</td>
+                                    <td>{{ order.status }}</td>
+                                    <td>{{ order.updated_at | naturaltime }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-12   mt-5">
                 <div class="card mt-5">
                     <div class="card-body">
@@ -61,48 +120,6 @@
                 </div>
             </div>
 
-            <!-- Orders -->
-            <div class="col-12 mt-5">
-                <div class="card mt-5">
-                    <div class="card-body">
-                        <h3 class="card-title">Orders</h3>
-                        <table class="table table-striped table-hover" id="orders">
-                            <thead>
-                            <tr>
-                                <th scope="col">Tracking Id</th>
-                                <th scope="col">Customer Name</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Amount paid</th>
-                                <th scope="col">Discount</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Order status</th>
-                                <th scope="col">Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for order in order_products %}
-                                <tr id="{{ order.id }}">
-                                    <td>{{ order.tracking_id }}</td>
-                                    <td>{{ order.user.first_name }}</td>
-                                    <td>{{ order.variant.product.name }}</td>
-                                    <td>{{ order.paid }}</td>
-                                    <td>
-                                        {% if order.discount %}
-                                            <span class="offer"> {{ order.discount }}</span>
-                                        {% else %}
-                                            ---
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ order.quantity }}</td>
-                                    <td>{{ order.status }}</td>
-                                    <td>{{ order.updated_at | naturaltime }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 {% endblock %}
@@ -120,5 +137,7 @@
         $(document).ready(function () {
             $('#orders').DataTable();
         });
+
+        window.history.replaceState({}, document.title, "/" + "admin-panel/report/");
     </script>
 {% endblock %}

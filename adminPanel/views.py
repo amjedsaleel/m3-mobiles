@@ -12,6 +12,7 @@ from django.utils import timezone
 
 # local Django
 from .decorators import admin_only
+from .forms import OrderProductFilterForm
 from accounts.models import CustomUser
 from brand.models import Brand
 from brand.forms import BrandForm
@@ -592,9 +593,15 @@ def report(request):
     variants = Variant.objects.all()
     order_products = OrderProduct.objects.all()
 
+    if request.GET.get('from'):
+        date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")
+        date_to = datetime.datetime.strptime(request.GET.get('to'), "%Y-%m-%d")
+        date_to += datetime.timedelta(days=1)
+        order_products = order_products.filter(created_at__range=[date_from, date_to])
+
     context = {
         'brands': brands,
         'variants': variants,
-        'order_products': order_products
+        'order_products': order_products,
     }
     return render(request, 'adminPanel/report.html', context)
