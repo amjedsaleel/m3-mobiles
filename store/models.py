@@ -94,6 +94,9 @@ class Variant(models.Model):
         if not self.mrp > self.landing_price:
             raise ValidationError("M.R.P must be higher than landing price")
 
+    def get_variant(self):
+        return f'{self.ram} RAM, {self.storage} Storage, {self.color}'
+
     def get_price(self):
         try:
             if self.variantoffer.is_active:
