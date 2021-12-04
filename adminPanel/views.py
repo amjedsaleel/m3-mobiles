@@ -12,7 +12,6 @@ from django.utils import timezone
 
 # local Django
 from .decorators import admin_only
-from .forms import OrderProductFilterForm
 from accounts.models import CustomUser
 from brand.models import Brand
 from brand.forms import BrandForm
