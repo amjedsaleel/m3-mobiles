@@ -24,6 +24,10 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="mb-4 px-10">
+                            <a href="{% url 'admin-panel:order-product-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                                as CSV</a>
+                        </div>
                         <table class="table table-striped table-hover" id="orders">
                             <thead>
                             <tr>
@@ -67,6 +71,10 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h3 class="card-title">All Brands</h3>
+                        <div class="mb-4 mt-4">
+                            <a href="{% url 'admin-panel:brands-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                                as CSV</a>
+                        </div>
                         <table class="table table-striped table-hover" id="brands">
                             <thead>
                             <tr>
@@ -92,6 +100,10 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <h3 class="card-title">All Products</h3>
+                        <div class="mb-4 mt-4">
+                            <a href="{% url 'admin-panel:products-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                                as CSV</a>
+                        </div>
                         <table class="table table-striped table-hover" id="products">
                             <thead>
                             <tr>

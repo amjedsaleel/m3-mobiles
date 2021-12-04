@@ -1,6 +1,8 @@
-# django
+# started library
 import datetime
+import csv
 
+# django
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate
@@ -9,6 +11,7 @@ from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 from django.db.models import Sum
 from django.utils import timezone
+from django.http import HttpResponse
 
 # local Django
 from .decorators import admin_only
@@ -604,3 +607,50 @@ def report(request):
         'order_products': order_products,
     }
     return render(request, 'adminPanel/report.html', context)
+
+
+@admin_only
+def order_product_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=orders.csv'
+
+    writer = csv.writer(response)
+    order_products = OrderProduct.objects.all()
+
+    writer.writerow(
+        ['Customer', 'Tracking Id', 'product', 'variant', 'Quantity', 'Amount paid', 'Discount', 'Date', 'status'])
+
+    for order_product in order_products:
+        writer.writerow([order_product.user.first_name, order_product.tracking_id, order_product.variant.product.name,
+                         order_product.variant.get_variant(), order_product.quantity, order_product.paid,
+                         order_product.discount, order_product.created_at, order_product.status])
+    return response
+
+
+@admin_only
+def brands_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=brands.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Brand name'])
+    brands = Brand.objects.all()
+
+    for i in brands:
+        writer.writerow([i.name])
+
+    return response
+
+
+@admin_only
+def all_products_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=all-products.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Product', 'Brand', 'Variant', 'Landing price', 'M.R.P', 'Tax', 'Stock'])
+
+    all_variants = Variant.objects.all()
+    for i in all_variants:
+        writer.writerow(
+            [i.product.name, i.product.brand.name, i.get_variant(), i.landing_price, i.mrp, i.tax, i.stock])
+
+    return response
