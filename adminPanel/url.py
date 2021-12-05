@@ -61,8 +61,12 @@ urlpatterns = [
 
     # Report
     path('report/', views.report, name='report'),
-    path('order-product-csv/', views.order_product_csv, name='order-product-csv'),
-    path('brands-csv/', views.brands_csv, name='brands-csv'),
-    path('products-csv', views.all_products_csv, name='products-csv'),
-    path('brands-pdf/', views.brand_pdf, name='brands-pdf')
+    # CSV
+    path('order-products-csv/', views.order_product_csv, name='order-products-csv'),
+    path('report/brands-csv/', views.brands_csv, name='brands-csv'),
+    path('report.products-csv', views.all_variants_csv, name='products-csv'),
+    # PDF
+    path('report/brands-pdf/', views.brand_pdf, name='brands-pdf'),
+    path('report/order-products-pdf/', views.order_products_pdf, name='order-products-pdf'),
+    path('report/all-variants-pdf/', views.all_variants_pdf, name='all-variants')
 ]

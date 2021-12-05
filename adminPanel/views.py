@@ -646,7 +646,7 @@ def brands_csv(request):
 
 
 @admin_only
-def all_products_csv(request):
+def all_variants_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=all-products.csv'
     writer = csv.writer(response)
@@ -666,5 +666,25 @@ def brand_pdf(request):
     html = render_to_string('adminPanel/brand-pdf.html', {'brands': brands})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename=brands.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
+    return response
+
+
+@admin_only
+def order_products_pdf(request):
+    order_products = OrderProduct.objects.all()
+    html = render_to_string('adminPanel/order-products-pdf.html', {'order_products': order_products})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=orders.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
+    return response
+
+
+@admin_only
+def all_variants_pdf(request):
+    variants = Variant.objects.all()
+    html = render_to_string('adminPanel/all-varinats-pdf.html', {'variants': variants})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=all_products.pdf'
     weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
     return response

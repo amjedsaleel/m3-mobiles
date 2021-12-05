@@ -25,8 +25,10 @@
                             </div>
                         </form>
                         <div class="mb-4 px-10">
-                            <a href="{% url 'admin-panel:order-product-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                            <a href="{% url 'admin-panel:order-products-csv' %}" class="btn btn-sm btn-outline-success">Export
                                 as CSV</a>
+                            <a href="{% url 'admin-panel:order-products-pdf' %}" class="btn btn-sm btn-outline-danger">Export
+                                as PDF</a>
                         </div>
                         <table class="table table-striped table-hover" id="orders">
                             <thead>
@@ -45,8 +47,8 @@
                             {% for order in order_products %}
                                 <tr id="{{ order.id }}">
                                     <td>{{ order.tracking_id }}</td>
-                                    <td>{{ order.user.first_name }}</td>
-                                    <td>{{ order.variant.product.name }}</td>
+                                    <td>{{ order.user.first_name | capfirst}}</td>
+                                    <td>{{ order.variant.product.name | capfirst}}</td>
                                     <td>{{ order.paid }}</td>
                                     <td>
                                         {% if order.discount %}
@@ -88,7 +90,7 @@
                             {% for brand in brands %}
                                 <tr id="">
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ brand.name }}</td>
+                                    <td>{{ brand.name | capfirst}}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -103,8 +105,10 @@
                     <div class="card-body">
                         <h3 class="card-title">All Products</h3>
                         <div class="mb-4 mt-4">
-                            <a href="{% url 'admin-panel:products-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                            <a href="{% url 'admin-panel:products-csv' %}" class="btn btn-sm btn-outline-success">Export
                                 as CSV</a>
+                            <a href="{% url 'admin-panel:all-variants' %}" class="btn btn-sm btn-outline-danger">Export
+                                as PDF</a>
                         </div>
                         <table class="table table-striped table-hover" id="products">
                             <thead>
@@ -121,8 +125,8 @@
                             {% for variant in variants %}
                                 <tr id="">
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ variant.product.name }}</td>
-                                    <td>{{ variant.product.brand }}</td>
+                                    <td>{{ variant.product.name | capfirst}}</td>
+                                    <td>{{ variant.product.brand | capfirst}}</td>
                                     <td>{{ variant.ram }}, {{ variant.storage }}, {{ variant.color }}</td>
                                     <td>{{ variant.mrp }}</td>
                                     <td>{{ variant.stock }}</td>
