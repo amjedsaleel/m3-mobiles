@@ -57,6 +57,7 @@ def paypal(request):
             buy_now_make_order(request)
         else:
             make_order(request)
+
         return JsonResponse({'message': 'success'})
 
 
@@ -77,19 +78,35 @@ def razorpay_payment_verification(request):
         except:
             return JsonResponse({'messages': 'error'})
 
+        buy_now = request.POST.get('buyNow', False)
         use_coupon(request)
+
+        if buy_now:
+            variant_slug = request.POST.get('variantSlug')
+            variant = Variant.objects.get(slug=variant_slug)
+            grand_total = (variant.mrp + variant.tax) - request.session['discount']
+            request.session['buy_now_total'] = variant.mrp
+            request.session['buy_now_tax'] = variant.tax
+            request.session['buy_now_grand_total'] = grand_total
+            request.session['buy_now_variant_slug'] = variant_slug
+        else:
+            grand_total = request.session['grand_total']
 
         # Saving payment details
         payment = Payment.objects.create(
             user=request.user,
             payment_id=razorpay_payment_id,
             coupon_discount=request.session['discount'],
-            amount_paid=request.session['grand_total'],
+            amount_paid=grand_total,
             payment_method='razorpay',
             status=True
         )
         request.session['payment_id'] = payment.id
-        make_order(request)
+
+        if buy_now:
+            buy_now_make_order(request)
+        else:
+            make_order(request)
 
         return JsonResponse({'message': 'success'})
 
@@ -102,7 +119,12 @@ def cod_confirmation(request):
     t1 = threading.Thread(target=send_otp, args=(request.user.mobile, ))
     t1.start()
     messages.success(request, 'Enter otp to complete order')
-    return redirect('payments:cash-on-delivery')
+    variant_slug = request.GET.get('variant', False)
+
+    if variant_slug:
+        return redirect(f'/payments/cash-on-delivery/?variant={variant_slug}')
+    else:
+        return redirect('payments:cash-on-delivery')
 
 
 def cash_on_delivery(request):
@@ -110,23 +132,38 @@ def cash_on_delivery(request):
     if request.method == 'POST':
         otp = request.POST.get('otp')
         verify = verify_otp_number(request.user.mobile, otp)
+        variant_slug = request.POST.get('variant_slug')
 
         if verify:
             use_coupon(request)
+
+            if variant_slug:
+                variant = Variant.objects.get(slug=variant_slug)
+                grand_total = (variant.mrp + variant.tax) - request.session['discount']
+                request.session['buy_now_total'] = variant.mrp
+                request.session['buy_now_tax'] = variant.tax
+                request.session['buy_now_grand_total'] = grand_total
+                request.session['buy_now_variant_slug'] = variant_slug
+            else:
+                grand_total = request.session['grand_total']
 
             # Saving payment details
             payment = Payment.objects.create(
                 user=request.user,
                 payment_id=f'COD{datetime.now().strftime("%Y%m%d%H%M%S")}',
                 coupon_discount=request.session['discount'],
-                amount_paid=request.session['grand_total'],
+                amount_paid=grand_total,
                 payment_method='COD',
                 status=True
             )
             request.session['payment_id'] = payment.id
-            make_order(request)
-            return redirect('order:order-completed')
 
+            if variant_slug:
+                buy_now_make_order(request)
+            else:
+                make_order(request)
+
+            return redirect('order:order-completed')
         messages.error(request, 'Invalid OTP')
         return redirect('payments:cash-on-delivery')
     return render(request, 'accounts/verify-otp.html')

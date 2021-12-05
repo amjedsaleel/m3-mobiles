@@ -7,6 +7,9 @@
             <form method="post" action="" id="otp">
                 {% include 'includes/messages.html' %}
                 {% csrf_token %}
+                {% if request.GET.variant %}
+                    <input type="hidden" value="{{ request.GET.variant }}" name="variant_slug">
+                {% endif %}
                 <div class="form-group">
                     <label for="">OTP number</label>
                     <input type="number" class="form-control" placeholder="" name="otp">

@@ -149,7 +149,7 @@
                                 <!-- PayPal Button Will Load -->
                             </div>
                             <div>
-                                <a href="{% url 'payments:cod-confirmation' %}" class="btn btn-outline-primary w-100"
+                                <a href="{% url 'payments:cod-confirmation' %}?variant={{ variant.slug }}" class="btn btn-outline-primary w-100"
                                    style="border-radius: 20px;">COD</a>
                             </div>
                             <div>
@@ -243,6 +243,8 @@
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_signature: response.razorpay_signature,
+                        buyNow: true,
+                        variantSlug: "{{ variant.slug }}"
                     },
                     success: function (data) {
                         console.log(data)
