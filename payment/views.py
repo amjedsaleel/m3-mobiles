@@ -14,8 +14,9 @@ from django.contrib import messages
 # local Django
 from .models import Payment
 from accounts.verification import send_otp, verify_otp_number
-from order.utils import make_order
+from order.utils import make_order, buy_now_make_order
 from offer.utils import use_coupon
+from store.models import Variant
 
 
 # Create your views here.
@@ -26,20 +27,36 @@ client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET)
 def paypal(request):
     if request.is_ajax():
         transaction_id = request.POST.get('transactionId')
+        buy_now = request.POST.get('buyNow', False)
         use_coupon(request)
+
+        if buy_now:
+            variant_slug = request.POST.get('variantSlug')
+            variant = Variant.objects.get(slug=variant_slug)
+            grand_total = (variant.mrp + variant.tax) - request.session['discount']
+            request.session['buy_now_total'] = variant.mrp
+            request.session['buy_now_tax'] = variant.tax
+            request.session['buy_now_grand_total'] = grand_total
+            request.session['buy_now_variant_slug'] = variant_slug
+        else:
+            grand_total = request.session['grand_total']
 
         # Saving payment details
         payment = Payment.objects.create(
             user=request.user,
             payment_id=transaction_id,
-            amount_paid=request.session['grand_total'],
+            amount_paid=grand_total,
             coupon_discount=request.session['discount'],
             payment_method='PayPal',
             status=True
         )
         payment.save()
         request.session['payment_id'] = payment.id
-        make_order(request)
+
+        if buy_now:
+            buy_now_make_order(request)
+        else:
+            make_order(request)
         return JsonResponse({'message': 'success'})
 
 

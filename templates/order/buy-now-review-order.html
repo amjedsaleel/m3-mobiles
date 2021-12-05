@@ -202,7 +202,9 @@
                             data: {
                                 csrfmiddlewaretoken: csrftoken,
                                 orderNumber: orderNumber,
-                                transactionId: transaction.id
+                                transactionId: transaction.id,
+                                buyNow: true,
+                                variantSlug: "{{ variant.slug }}"
                             },
                             success: function (data) {
                                 if (data.message === 'success') {
@@ -216,6 +218,8 @@
             }
         }).render('#paypal-button-container');
 
+
+        // Razorpay
         document.getElementById('rzp-button1').onclick = function (e) {
             rzp1.open();
             e.preventDefault();

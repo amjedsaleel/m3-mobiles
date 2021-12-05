@@ -70,3 +70,50 @@ def make_order(request):
     del request.session['tax']
     del request.session['grand_total']
     del request.session['payment_id']
+
+
+def buy_now_make_order(request):
+    payment = Payment.objects.get(id=request.session['payment_id'])
+    variant = Variant.objects.get(slug=request.session['buy_now_variant_slug'])
+    price = variant.get_price()
+
+    try:
+        discount = (variant.mrp * price['discount']) / 100
+    except KeyError:
+        """ No discounts """
+        discount = 0
+
+    # Creating Order
+    order = Order.objects.create(
+        user=request.user,
+        payment=payment,
+        full_name=request.session['full_name'],
+        phone=request.session['phone'],
+        email=request.session['email'],
+        house_no=request.session['house_no'],
+        area=request.session['area'],
+        landmark=request.session['landmark'],
+        town=request.session['town'],
+        state=request.session['state'],
+        pin=request.session['pin'],
+        is_ordered=True,
+        order_total=request.session['buy_now_total'],
+        tax=request.session['buy_now_tax'],
+        grand_total=request.session['buy_now_grand_total']
+    )
+
+    OrderProduct.objects.create(
+        user=request.user,
+        order=order,
+        payment=payment,
+        variant=variant,
+        quantity=1,
+        paid=price['price'],
+        discount=discount,
+        ordered=True,
+    )
+
+    del request.session['buy_now_total']
+    del request.session['buy_now_tax']
+    del request.session['buy_now_grand_total']
+    del request.session['buy_now_variant_slug']

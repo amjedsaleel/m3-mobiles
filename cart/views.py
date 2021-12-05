@@ -184,6 +184,11 @@ def checkout(request):
 @login_required
 def buy_now_checkout(request):
     try:
+        del request.session['coupon_code']
+    except KeyError:
+        pass
+
+    try:
         variant = Variant.objects.get(slug=request.GET.get('variant'))
     except Variant.DoesNotExist:
         return redirect('store:store')
