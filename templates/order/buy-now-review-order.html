@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %} M3 | Place order {% endblock %}
+{% block style %}
+    <style>
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: none;
+        }
+
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: black;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <section class="section-content padding-y bg">
+        <!-- Spinner div -->
+        <div id="cover-spin"></div>
+
+        <div class="container">
+            <h4 class="text-center mb-20">Review Your Order and Make Payment</h4>
+            <div class="row">
+                <aside class="col-lg-8">
+                    <div class="card">
+                        <h5 class="card-header">Billing Address</h5>
+                        <div class="card-body">
+                            <p class="card-text mb-0">{{ request.session.full_name }}</p>
+                            <p class="card-text mb-0">{{ request.session.phone }}</p>
+                            <p class="card-text mb-0">{{ request.session.town }}, {{ request.session.state }}</p>
+                            <p class="card-text mb-0">{{ request.session.country }}</p>
+                            <p class="card-text mb-0">{{ request.session.email }}</p>
+                            <p class="card-text mb-0">{{ request.session.phone }}</p>
+
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <h5 class="card-header">Review Products</h5>
+                        <div class="card-body">
+                            <table class="table table-borderless table-shopping-cart">
+                                <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Product</th>
+                                    <th scope="col" width="120">Quantity</th>
+                                    <th scope="col" width="120">Price</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr>
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside" style="width: 2.5em"><img
+                                                    src="{{ variant.image1.url }}"
+                                                    class="img-fluid"></div>
+                                            <figcaption class="info">
+                                                <a href="#"
+                                                   class="title text-dark">{{ variant.product.name }}</a>
+                                                <p class="text-muted small">
+                                                    {{ variant.ram }}, {{ variant.storage }}, {{ variant.color }}
+                                                </p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td class="text-center">
+                                        <div>
+                                            <p>{{ variant.quantity }}</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">₹{{ variant.mrp | intcomma }}</var>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </aside> <!-- col.// -->
+                <aside class="col-lg-4">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <dl class="dlist-align">
+                                <dt>Total price:</dt>
+                                <dd class="text-right">₹{{ total }}</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Tax:</dt>
+                                <dd class="text-right">₹{{ tax }}</dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Coupon discount:</dt>
+                                <dd class="text-right text-success b">
+                                    <strong>₹-{{ request.session.discount | default:"0" }}</strong></dd>
+                            </dl>
+                            <dl class="dlist-align">
+                                <dt>Grand Total:</dt>
+                                <dd class="text-right text-dark b"><strong>₹{{ grand_total | intcomma }}</strong></dd>
+                            </dl>
+                            <hr>
+                            <p class="text-center mb-3">
+                                <img src="{% static 'images/payments.png' %}" height="26">
+                            </p>
+                            <div id="paypal-button-container">
+                                <!-- PayPal Button Will Load -->
+                            </div>
+                            <div>
+                                <a href="{% url 'payments:cod-confirmation' %}" class="btn btn-outline-primary w-100"
+                                   style="border-radius: 20px;">COD</a>
+                            </div>
+                            <div>
+                                <a href="#" class="btn btn-primary w-100 mt-3" style="border-radius: 20px;"
+                                   id="rzp-button1">Razorpay</a>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block script %}
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            style: {
+                color: 'blue',
+                shape: 'pill',
+                label: 'pay',
+                height: 40,
+                layout: 'horizontal'
+            },
+
+            // Set up the transaction
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{ pay_pal_amount }}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    // Successful capture! For demo purposes:
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    let orderNumber = "{{ order.order_number }}"
+                    if (transaction.status === "COMPLETED") {
+                        let url = "{% url 'payments:paypal' %}"
+                        $('#cover-spin').show(0)
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            dataType: 'json',
+                            data: {
+                                csrfmiddlewaretoken: csrftoken,
+                                orderNumber: orderNumber,
+                                transactionId: transaction.id
+                            },
+                            success: function (data) {
+                                if (data.message === 'success') {
+                                    $('#cover-spin').hide()
+                                    window.location.replace("{% url 'order:order-completed' %}")
+                                }
+                            }
+                        })
+                    }
+                });
+            }
+        }).render('#paypal-button-container');
+
+        document.getElementById('rzp-button1').onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+
+        var options = {
+            "key": "{{ razor_key }}", // Enter the Key ID generated from the Dashboard
+            "amount": "{{ razor_pay_amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "M3 Mobiles",
+            "description": "Payment",
+            "order_id": "{{ order_id }}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 2
+            "handler": function (response) {
+                $('#cover-spin').show(0)
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'payments:razorpay-payment-verification' %}",
+                    dataType: 'json',
+                    data: {
+                        csrfmiddlewaretoken: csrftoken,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.message === 'success') {
+                            $('#cover-spin').hide()
+                            window.location.replace("{% url 'order:order-completed' %}")
+                        } else {
+                            window.location.replace("{% url 'payments:payment-failed' %}")
+                        }
+                    }
+                })
+            },
+            "prefill": {
+                "name": "{{ request.user.first_name }}",
+                "email": "{{ request.user.email }}",
+                "contact": "{{ request.user.mobile }}"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            window.location.replace("{% url 'payments:payment-failed' %}")
+        });
+
+    </script>
+{% endblock %}

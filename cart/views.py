@@ -1,5 +1,5 @@
 # Django
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,7 @@ from .context_processors import cart_items_count
 from store.models import Variant
 from order.forms import OrderForm
 from userProfile.models import Address
+
 
 # Create your views here.
 
@@ -178,3 +179,44 @@ def checkout(request):
         'grand_total': intcomma(request.session['grand_total']),
     }
     return render(request, 'cart/checkout.html', context)
+
+
+@login_required
+def buy_now_checkout(request):
+    try:
+        variant = Variant.objects.get(slug=request.GET.get('variant'))
+    except Variant.DoesNotExist:
+        return redirect('store:store')
+
+    addresses = Address.objects.filter(user=request.user)
+
+    try:
+        default_address = addresses.get(default=True)
+        form = OrderForm(
+            initial={
+                'full_name': default_address.full_name,
+                'phone': default_address.phone,
+                'email': default_address.email,
+                'house_no': default_address.house_no,
+                'area': default_address.area,
+                'landmark': default_address.landmark,
+                'town': default_address.town,
+                'state': default_address.state,
+                'pin': default_address.pin
+            }
+        )
+    except ObjectDoesNotExist:
+        form = OrderForm()
+
+    total = variant.mrp
+    tax = variant.tax
+    grand_total = total + tax
+    context = {
+        'from': form,
+        'addresses': addresses,
+        'tax': intcomma(tax),
+        'total': intcomma(total),
+        'grand_total': intcomma(grand_total),
+        'variant_slug': variant.slug
+    }
+    return render(request, 'cart/buy-now-checkout.html', context)
