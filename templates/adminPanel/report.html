@@ -72,8 +72,10 @@
                     <div class="card-body">
                         <h3 class="card-title">All Brands</h3>
                         <div class="mb-4 mt-4">
-                            <a href="{% url 'admin-panel:brands-csv' %}" class="btn btn-sm btn-outline-primary">Export
+                            <a href="{% url 'admin-panel:brands-csv' %}" class="btn btn-sm btn-outline-success">Export
                                 as CSV</a>
+                             <a href="{% url 'admin-panel:brands-pdf' %}" class="btn btn-sm btn-outline-danger">Export
+                                as PDF</a>
                         </div>
                         <table class="table table-striped table-hover" id="brands">
                             <thead>

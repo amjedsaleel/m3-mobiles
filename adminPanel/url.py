@@ -64,5 +64,5 @@ urlpatterns = [
     path('order-product-csv/', views.order_product_csv, name='order-product-csv'),
     path('brands-csv/', views.brands_csv, name='brands-csv'),
     path('products-csv', views.all_products_csv, name='products-csv'),
-    path('brand-pdf/', views.brand_pdf, name='brand-pdf')
+    path('brands-pdf/', views.brand_pdf, name='brands-pdf')
 ]

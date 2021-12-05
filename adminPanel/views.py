@@ -666,5 +666,5 @@ def brand_pdf(request):
     html = render_to_string('adminPanel/brand-pdf.html', {'brands': brands})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename=brands.pdf'
-    weasyprint.HTML(string=html).write_pdf(response)
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
     return response

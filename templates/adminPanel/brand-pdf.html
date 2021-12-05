@@ -12,27 +12,36 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Brand report</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="text-center">
-        <h3>Brand report</h3>
+        <h1>Brand report</h1>
     </div>
 </div>
 <table class="table table-bordered table-striped">
     <thead>
     <tr>
+        <th scope="col">SL. no</th>
         <th scope="col">Brand</th>
+        <th scope="col">Total products</th>
         <th scope="col">Date</th>
     </tr>
     </thead>
     <tbody>
     {% for brand in brands %}
         <tr>
+            <td>{{ forloop.counter }}</td>
             <td>{{ brand.name }}</td>
-            <td>
-                {{ brand.created_at | naturaltime }}
-            </td>
+            <td>{{ brand.get_products_count }}</td>
+            <td>{{ brand.created_at | date:"d/n/Y" }}</td>
         </tr>
     {% endfor %}
 
