@@ -2,6 +2,9 @@
 import datetime
 import csv
 
+# third party
+import weasyprint
+
 # django
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -12,6 +15,7 @@ from django.views.decorators.cache import never_cache
 from django.db.models import Sum
 from django.utils import timezone
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 # local Django
 from .decorators import admin_only
@@ -653,4 +657,14 @@ def all_products_csv(request):
         writer.writerow(
             [i.product.name, i.product.brand.name, i.get_variant(), i.landing_price, i.mrp, i.tax, i.stock])
 
+    return response
+
+
+@admin_only
+def brand_pdf(request):
+    brands = Brand.objects.all()
+    html = render_to_string('adminPanel/brand-pdf.html', {'brands': brands})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=brands.pdf'
+    weasyprint.HTML(string=html).write_pdf(response)
     return response
