@@ -4,6 +4,8 @@ import uuid
 # Django
 from django.db import models
 
+# local Django
+
 # Create your models here.
 
 
@@ -25,5 +27,8 @@ class Brand(models.Model):
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
         return super(Brand, self).save(*args, **kwargs)
+
+    def get_products_count(self):
+        return self.product_set.all().count()
 
 
