@@ -595,9 +595,9 @@ def redeemed_coupon(request):
 
 @admin_only
 def report(request):
-    brands = Brand.objects.all()
-    variants = Variant.objects.all()
-    order_products = OrderProduct.objects.all()
+    brands = Brand.objects.all().order_by('-created_at')
+    variants = Variant.objects.all().order_by('-created_at')
+    order_products = OrderProduct.objects.all().order_by('-updated_at')
 
     if request.GET.get('from'):
         date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")
@@ -619,7 +619,7 @@ def order_product_csv(request):
     response['Content-Disposition'] = 'attachment; filename=orders.csv'
 
     writer = csv.writer(response)
-    order_products = OrderProduct.objects.all()
+    order_products = OrderProduct.objects.all().order_by('-updated_at')
 
     writer.writerow(
         ['Customer', 'Tracking Id', 'product', 'variant', 'Quantity', 'Amount paid', 'Discount', 'Date', 'status'])
@@ -637,7 +637,7 @@ def brands_csv(request):
     response['Content-Disposition'] = 'attachment; filename=brands.csv'
     writer = csv.writer(response)
     writer.writerow(['Brand name'])
-    brands = Brand.objects.all()
+    brands = Brand.objects.all().order_by('-created_at')
 
     for i in brands:
         writer.writerow([i.name])
@@ -652,7 +652,7 @@ def all_variants_csv(request):
     writer = csv.writer(response)
     writer.writerow(['Product', 'Brand', 'Variant', 'Landing price', 'M.R.P', 'Tax', 'Stock'])
 
-    all_variants = Variant.objects.all()
+    all_variants = Variant.objects.all().order_by('-created_at')
     for i in all_variants:
         writer.writerow(
             [i.product.name, i.product.brand.name, i.get_variant(), i.landing_price, i.mrp, i.tax, i.stock])
@@ -662,7 +662,7 @@ def all_variants_csv(request):
 
 @admin_only
 def brand_pdf(request):
-    brands = Brand.objects.all()
+    brands = Brand.objects.all().order_by('-created_at')
     html = render_to_string('adminPanel/brand-pdf.html', {'brands': brands})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename=brands.pdf'
@@ -672,7 +672,7 @@ def brand_pdf(request):
 
 @admin_only
 def order_products_pdf(request):
-    order_products = OrderProduct.objects.all()
+    order_products = OrderProduct.objects.all().order_by('-updated_at')
     html = render_to_string('adminPanel/order-products-pdf.html', {'order_products': order_products})
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename=orders.pdf'
