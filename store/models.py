@@ -4,6 +4,7 @@ import uuid
 # Django
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.contrib.auth import get_user_model
 
 # local Django
 from brand.models import Brand
@@ -122,21 +123,15 @@ class Variant(models.Model):
                     pass
                 return {'price': self.mrp}
 
-# if self.offer and self.offer.is_active:
-#     """ Checking variant offer exists or not"""
-#     offer_price = (self.mrp / 100) * self.offer.discount_offer
-#     price = self.mrp - offer_price
-#     return {'price': 1, 'discount': self.offer.discount_offer}
-# if self.product.offer and self.product.offer.is_active:
-#     """ checking product vise offer exists or not """
-#     offer_price = (self.mrp / 100) * self.product.offer.discount_offer
-#     price = self.mrp - offer_price
-#     return {'price': price, 'discount': self.product.offer.discount_offer}
-# elif self.product.brand.offer and self.product.brand.offer.is_active:
-#     """ Checking brand wise offer exits or not"""
-#     offer_price = (self.mrp / 100) * self.product.brand.offer.discount_offer
-#     price = self.mrp - offer_price
-#     return {'price': price, 'discount': self.product.brand.offer.discount_offer}
-# else:
-#     """ No offer currently available """
-#     return {'price': self.mrp}
+
+class ReviewRating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    review = models.TextField(max_length=500, blank=True)
+    rating = models.FloatField()
+    status = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.rating
