@@ -45,7 +45,7 @@
                                     <div>
                                         <div class="wrapper">
                                             <p><span>Tracking ID: </span><span
-                                                    class="small-gray-text">{{ product.tracking_id }}</span></p>
+                                                    class="small-gray-text"><a href="{% url 'order:invoice' product.tracking_id %}"  class="small-gray-text" style="text-decoration: none">{{ product.tracking_id }}</a></span></p>
                                             <div class="d-flex justify-content-start">
                                                 <div>
                                                     <p><span>Status: &nbsp;</span></p>

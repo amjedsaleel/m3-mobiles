@@ -10,6 +10,7 @@ from django.conf import settings
 
 # local Django
 from .forms import OrderForm
+from .models import OrderProduct
 from cart.context_processors import cart_items_count
 from cart.utils import get_cart_items
 from store.models import Variant
@@ -126,3 +127,9 @@ def buy_now_review_order(request):
 @login_required
 def order_completed(request):
     return render(request, 'order/order-complete.html')
+
+
+@login_required
+def invoice(request, tracking_id):
+    order_product = OrderProduct.objects.get(tracking_id=tracking_id)
+    return render(request, 'order/invoice.html', {'order_product': order_product})

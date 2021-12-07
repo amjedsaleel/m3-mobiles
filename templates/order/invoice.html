@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block script %}
+    <style>
+        body {
+            margin-top: 20px;
+            color: #484b51;
+        }
+
+        .text-secondary-d1 {
+            color: #728299 !important;
+        }
+
+        .page-header {
+            margin: 0 0 1rem;
+            padding-bottom: 1rem;
+            padding-top: .5rem;
+            border-bottom: 1px dotted #e2e2e2;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+
+        .page-title {
+            padding: 0;
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 300;
+        }
+
+        .brc-default-l1 {
+            border-color: #dce9f0 !important;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+        }
+
+        .text-grey-m2 {
+            color: #888a8d !important;
+        }
+
+        .text-success-m2 {
+            color: #86bd68 !important;
+        }
+
+        .text-110 {
+            font-size: 110% !important;
+        }
+
+        .text-blue {
+            color: #478fcc !important;
+        }
+
+        .bgc-default-tp1 {
+            background-color: rgba(121, 169, 197, .92) !important;
+        }
+
+        .text-120 {
+            font-size: 120% !important;
+        }
+
+        .text-blue-m2 {
+            color: #68a3d5 !important;
+        }
+
+        .text-150 {
+            font-size: 150% !important;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="page-content container bg-white">
+        <div class="page-header text-blue-d2">
+            <h1 class="page-title text-secondary-d1">
+                Invoice
+                <small class="page-info">
+                    <i class="fa fa-angle-double-right text-80"></i>
+                    ID: #{{ order_product.order.order_number }}
+                </small>
+            </h1>
+        </div>
+
+        <div class="container px-0">
+            <div class="row mt-4">
+                <div class="col-12 col-lg-10 offset-lg-1">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="text-center text-150">
+                                <span class="text-default-d3">M3 mobiles.com</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .row -->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">To:</span>
+                                <span class="text-600 text-110 text-blue align-middle">{{ order_product.order.full_name }}</span>
+                            </div>
+                            <div class="text-grey-m2">
+                                <div class="my-1">
+                                    {{ order_product.order.house_no | capfirst }}, {{ order_product.order.area }}
+                                </div>
+                                <div class="my-1">
+                                    {{ order_product.order.town }} {{ order_product.order.state }}
+                                </div>
+                                <div class="my-1"><i class="fa fa-phone fa-flip-horizontal text-secondary"></i> <b
+                                        class="text-600">{{ order_product.order.phone }}</b></div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                        <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                            <hr class="d-sm-none"/>
+                            <div class="text-grey-m2">
+                                <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                    Invoice
+                                </div>
+
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                        class="text-600 text-90">ID:</span> #{{ order_product.order.order_number }}
+                                </div>
+
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span
+                                        class="text-600 text-90">Issue Date:</span> {{ order_product.order.created_at | date }}
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="row text-600 text-white bgc-default-tp1 py-25">
+                            <div class="col-9 col-sm-5">Product</div>
+                            <div class="d-none d-sm-block col-4 col-sm-2">Quantity</div>
+                            <div class="d-none d-sm-block col-sm-2">Discount</div>
+                            <div class="d-none d-sm-block col-sm-2">Amount paid</div>
+                        </div>
+
+                        <div class="text-95 text-secondary-d3">
+                            <div class="row mb-2 mb-sm-0 py-25">
+                                <div class="col-9 col-sm-5">{{ order_product.variant.product.name | capfirst }}
+                                    <br>
+                                    ({{ order_product.variant.get_variant }})
+                                </div>
+                                <div class="d-none d-sm-block col-2">{{ order_product.quantity }}</div>
+                                <div class="d-none d-sm-block col-2 text-95">₹{{ order_product.discount }}</div>
+                                <div class="d-none d-sm-block col-2 text-95">₹{{ order_product.paid }}</div>
+
+                            </div>
+                        </div>
+
+                        <div class="row border-b-2 brc-default-l2"></div>
+                        <hr/>
+
+                        <div>
+                            <span class="text-secondary-d1 text-105">Thank you for your business</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
