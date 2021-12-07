@@ -594,9 +594,6 @@ def report(request):
     variants = Variant.objects.all().order_by('-created_at')
     order_products = OrderProduct.objects.all().order_by('-updated_at')
 
-    result = OrderProduct.objects.values('variant__slug').annotate(revenue=Sum('paid')).filter(status='Delivered')
-    print(result)
-
     if request.GET.get('from'):
         date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")
         date_to = datetime.datetime.strptime(request.GET.get('to'), "%Y-%m-%d")

@@ -5,6 +5,7 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 
 # local Django
 from brand.models import Brand
@@ -122,6 +123,22 @@ class Variant(models.Model):
                 except:
                     pass
                 return {'price': self.mrp}
+
+    def sold_count(self):
+        result = self.orderproduct_set.filter(status='Delivered').aggregate(Sum('quantity'))
+        sold = str(result['quantity__sum'])
+        return sold.replace('None', '0')
+
+    def get_revenue(self):
+        result = self.orderproduct_set.filter(status='Delivered').aggregate(Sum('paid'))
+        revenue = str(result['paid__sum'])
+        return revenue.replace('None', '0')
+
+    def get_profit(self):
+        quantity = self.orderproduct_set.filter(variant=self, status='Delivered').aggregate(Sum('quantity'))
+        paid = self.orderproduct_set.filter(variant=self, status='Delivered').aggregate(Sum('paid'))
+        profit = float(str(paid['paid__sum'])) - self.landing_price * float(str(quantity['quantity__sum']))
+        return profit
 
 
 class ReviewRating(models.Model):
