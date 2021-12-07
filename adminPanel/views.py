@@ -63,17 +63,13 @@ def logout(request):
 @admin_only
 def dashboard(request):
     current_year = timezone.now().year
-    variants = Variant.objects.all()
+    # variants = Variant.objects.all()
     brands = Brand.objects.all()
-    order_products = OrderProduct.objects.all()
+    # order_products = OrderProduct.objects.all()
 
     total_orders = Order.objects.filter(is_ordered=True).count()
     total_users = CustomUser.objects.all().count()
-    total_revenue = Order.objects.aggregate(Sum('order_total'))
-
-    landing_price_sum = Variant.objects.aggregate(Sum('landing_price'))
-    total_landing_price = landing_price_sum['landing_price__sum']
-    total_profit = float(total_revenue['order_total__sum']) - float(total_landing_price)
+    total_revenue = OrderProduct.objects.filter(status='Delivered').aggregate(Sum('paid'))
 
     order_products = OrderProduct.objects.filter(created_at__lt=datetime.date(current_year, 12, 31), status='Delivered')
     month_wise_order_count = list()
@@ -102,8 +98,7 @@ def dashboard(request):
     context = {
         'total_orders': total_orders,
         'total_users': total_users,
-        'total_revenue': total_revenue['order_total__sum'],
-        'total_profit': total_profit,
+        'total_revenue': total_revenue['paid__sum'],
 
         'month_wise_order_count': month_wise_order_count,
         'month_name': ['January', 'February', 'March', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -598,6 +593,9 @@ def report(request):
     brands = Brand.objects.all().order_by('-created_at')
     variants = Variant.objects.all().order_by('-created_at')
     order_products = OrderProduct.objects.all().order_by('-updated_at')
+
+    result = OrderProduct.objects.values('variant__slug').annotate(revenue=Sum('paid')).filter(status='Delivered')
+    print(result)
 
     if request.GET.get('from'):
         date_from = datetime.datetime.strptime(request.GET.get('from'), "%Y-%m-%d")

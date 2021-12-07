@@ -43,7 +43,7 @@ def make_order(request):
             payment=payment,
             variant=item.variant,
             quantity=item.quantity,
-            paid=price['price'],
+            paid=price['price']*item.quantity,
             discount=discount,
             ordered=True,
         )
