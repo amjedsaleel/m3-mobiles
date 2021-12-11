@@ -11,9 +11,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'store:store' %}">Store <span class="sr-only">(current)</span></a>
                 </li>
-                <form action="" class="search">
+                <form action="{% url 'store:search' %}" class="search">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" style="width:60%;" placeholder="Search">
+                        <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword" required>
 
                         <div class="input-group-append">
                             <button class="btn" type="submit">

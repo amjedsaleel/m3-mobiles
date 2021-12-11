@@ -1,5 +1,6 @@
 # Django
 from django.shortcuts import render
+from django.db.models import Q
 
 # local Django
 from .models import Variant
@@ -52,3 +53,17 @@ def product_details(request, brand_slug, variant_slug):
         'suggestions': suggestions
     }
     return render(request, 'store/product-details.html', context)
+
+
+def search(request):
+    keyword = request.GET.get('keyword')
+    brands = Brand.objects.all()
+    variants = Variant.objects.filter(Q(product__name__icontains=keyword) | Q(product__brand__name__icontains=keyword))
+    variants_count = variants.count()
+
+    context = {
+        'brands': brands,
+        'variants': variants,
+        'variants_count': variants_count
+    }
+    return render(request, 'store/store.html', context)
