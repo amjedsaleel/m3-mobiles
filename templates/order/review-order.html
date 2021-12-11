@@ -52,6 +52,10 @@
         }
     </style>
 {% endblock %}
+{% block script-cdn %}
+    <script src="https://www.paypal.com/sdk/js?client-id=AU-EJvydFXQPAhRkYbphs-UYGlNGmvTeL_W28ky_tP0zj-5_hJXLpaMVWNtAc9xUQiB-wwZN3OtvH3Ro&currency=USD"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}
 {% block content %}
     <section class="section-content padding-y bg">
         <!-- Spinner div -->
@@ -139,7 +143,8 @@
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Coupon discount:</dt>
-                                <dd class="text-right text-success b"><strong>₹-{{ request.session.discount | default:"0"}}</strong></dd>
+                                <dd class="text-right text-success b">
+                                    <strong>₹-{{ request.session.discount | default:"0" }}</strong></dd>
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Grand Total:</dt>
