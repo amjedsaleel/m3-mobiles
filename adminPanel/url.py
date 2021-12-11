@@ -64,9 +64,11 @@ urlpatterns = [
     # CSV
     path('order-products-csv/', views.order_product_csv, name='order-products-csv'),
     path('report/brands-csv/', views.brands_csv, name='brands-csv'),
-    path('report.products-csv', views.all_variants_csv, name='products-csv'),
+    path('report/products-csv/', views.all_variants_csv, name='products-csv'),
+    path('report/sales-csv/', views.sales_csv, name='sales-csv'),
     # PDF
     path('report/brands-pdf/', views.brand_pdf, name='brands-pdf'),
     path('report/order-products-pdf/', views.order_products_pdf, name='order-products-pdf'),
-    path('report/all-variants-pdf/', views.all_variants_pdf, name='all-variants')
+    path('report/all-variants-pdf/', views.all_variants_pdf, name='all-variants'),
+    path('report/sales-pdf/', views.sales_pdf, name='sales-pdf')
 ]

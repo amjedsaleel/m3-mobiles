@@ -683,3 +683,28 @@ def all_variants_pdf(request):
     response['Content-Disposition'] = 'filename=all_products.pdf'
     weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
     return response
+
+
+@admin_only
+def sales_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=all-products.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Brand', 'Product', 'Variant', 'Sold', 'Revenue', 'Profit'])
+
+    all_variants = Variant.objects.all().order_by('-created_at')
+    for i in all_variants:
+        writer.writerow(
+            [i.product.brand.name, i.product.name, i.get_variant(), i.sold_count(), i.get_revenue(), i.get_profit()])
+
+    return response
+
+
+@admin_only
+def sales_pdf(request):
+    variants = Variant.objects.all()
+    html = render_to_string('adminPanel/sales-pdf.html', {'variants': variants})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=sales.pdf'
+    weasyprint.HTML(string=html, base_url=request.build_absolute_uri()).write_pdf(response)
+    return response

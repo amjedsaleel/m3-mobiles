@@ -137,7 +137,8 @@ class Variant(models.Model):
     def get_profit(self):
         quantity = self.orderproduct_set.filter(variant=self, status='Delivered').aggregate(Sum('quantity'))
         paid = self.orderproduct_set.filter(variant=self, status='Delivered').aggregate(Sum('paid'))
-        profit = float(str(paid['paid__sum'])) - self.landing_price * float(str(quantity['quantity__sum']))
+        profit = float(str(paid['paid__sum']).replace('None', '0')) - self.landing_price * float(
+            str(quantity['quantity__sum']).replace('None', '0'))
         return profit
 
 
