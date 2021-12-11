@@ -77,7 +77,7 @@ def set_default_address(request, pk):
 
 @login_required
 def my_orders(request):
-    order_products = OrderProduct.objects.filter(user=request.user)
+    order_products = OrderProduct.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'userProfile/my-orders.html', {'order_products': order_products})
 
 

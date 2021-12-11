@@ -13,7 +13,7 @@
                             Profile</a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My
                             Addresses</a>
-{#                        <a class="list-group-item text-dark" href="#">Wishlist</a>#}
+                        {#                        <a class="list-group-item text-dark" href="#">Wishlist</a>#}
                         <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Change
                             Password</a>
                     </ul>
@@ -45,7 +45,11 @@
                                     <div>
                                         <div class="wrapper">
                                             <p><span>Tracking ID: </span><span
-                                                    class="small-gray-text"><a href="{% url 'order:invoice' product.tracking_id %}"  class="small-gray-text" style="text-decoration: none">{{ product.tracking_id }}</a></span></p>
+                                                    class="small-gray-text"><a
+                                                    href="{% url 'order:invoice' product.tracking_id %}"
+                                                    class="small-gray-text"
+                                                    style="text-decoration: none">{{ product.tracking_id }}</a></span>
+                                            </p>
                                             <div class="d-flex justify-content-start">
                                                 <div>
                                                     <p><span>Status: &nbsp;</span></p>
@@ -59,7 +63,10 @@
                                             <p><span>Amount paid: </span>
                                                 <span class="small-gray-text">{{ product.paid }}</span>
                                             </p>
-                                            {% if not product.status == 'Canceled'  %}
+                                            {% if product.status == 'Canceled' %}
+
+                                            {% elif product.status == 'Delivered' %}
+                                            {% else %}
                                                 <a href="" class="btn btn-sm btn-outline-primary"
                                                    onclick="cancelOrder(event, '{% url 'userProfile:cancel-order' product.id %}')">Cancel
                                                     Order</a>
