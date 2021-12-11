@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.http import JsonResponse
 
 # local Django
 from .forms import CustomUserCreationForm, ResetPasswordForm
@@ -310,3 +311,10 @@ def set_new_password(request):
         'form': form
     }
     return render(request, 'accounts/new-password.html', context)
+
+
+def resent_otp(request):
+    if request.method == 'POST':
+        phone_number = request.session['phone_number']
+        send_otp(phone_number)
+        return JsonResponse({'message': 'success'})

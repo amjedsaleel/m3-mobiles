@@ -22,5 +22,7 @@ urlpatterns = [
     # Reset password
     path('reset-password/', views.reset_password, name='reset-password'),
     path('verify-reset-password-otp/', views.verify_reset_password_otp, name='verify-reset-password-otp'),
-    path('set-new-password/', views.set_new_password, name='set-new-password')
+    path('set-new-password/', views.set_new_password, name='set-new-password'),
+
+    path('resent-otp/', views.resent_otp, name='resent-otp')
 ]
