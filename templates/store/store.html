@@ -41,7 +41,7 @@
 
                     <div class="row">
                         {% for variant in variants %}
-                            <div class="col-12 col-md-5 col-lg-4 col-xl-3">
+                            <div class="col-12 col-md-5 col-lg-4 col-xl-3 d-flex justify-content-center">
                                 <div class="card card-product-grid">
                                     <a href="{% url 'store:products-details' variant.product.brand.slug variant.slug %}"
                                        class="img-wrap mt-4 mb-4"> <img src="{{ variant.image1.url }}"
