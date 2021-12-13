@@ -14,7 +14,7 @@
                             Profile</a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-addresses' %}">My
                             Addresses</a>
-{#                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Wishlist</a>#}
+                        {#                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Wishlist</a>#}
                         <a class="list-group-item text-dark" href="#">Change Password</a>
                     </ul>
                     <br>
@@ -28,7 +28,7 @@
                             <strong> Edit profile </strong>
                         </div>
                         <div class="card-body">
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="" method="post" enctype="multipart/form-data" id="edit-user-profile">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-sm-6 form-group">
@@ -58,4 +58,29 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#edit-user-profile").validate({
+                rules: {
+                    first_name: {
+                        required: true,
+                    },
+                    last_name: {
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    mobile: {
+                        required: true,
+                        maxlength: 10,
+                        number: true,
+                    }
+                },
+            })
+        })
+    </script>
 {% endblock %}

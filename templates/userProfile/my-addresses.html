@@ -10,10 +10,12 @@
                     <ul class="list-group">
                         <a class="list-group-item text-dark" href="{% url 'userProfile:dashboard' %}">Dashboard </a>
                         <a class="list-group-item text-dark" href="{% url 'userProfile:my-orders' %}">My Orders</a>
-                        <a class="list-group-item text-dark" href="{% url 'userProfile:edit-profile' %}">Edit Profile</a>
+                        <a class="list-group-item text-dark" href="{% url 'userProfile:edit-profile' %}">Edit
+                            Profile</a>
                         <a class="list-group-item active" href="{% url 'userProfile:my-addresses' %}">My Addresses</a>
-{#                        <a class="list-group-item text-dark" href="#">Wishlist</a>#}
-                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Change Password</a>
+                        {#                        <a class="list-group-item text-dark" href="#">Wishlist</a>#}
+                        <a class="list-group-item text-dark" href="{% url 'userProfile:change-password' %}">Change
+                            Password</a>
                     </ul>
                     <br>
                     <a class="btn btn-light btn-block" href="#"> <i class="fa fa-power-off"></i> <span class="text">Log
@@ -49,11 +51,11 @@
                                                 <hr>
                                                 <div class="bottom d-flex justify-content-between">
                                                     {% if not address.default %}
-                                                    <div>
-                                                        <a href="{% url 'userProfile:set-default-address' address.id %}"
-                                                           class="right small-gray-text d-flex justify-content-between">Set
-                                                            as default</a>
-                                                    </div>
+                                                        <div>
+                                                            <a href="{% url 'userProfile:set-default-address' address.id %}"
+                                                               class="right small-gray-text d-flex justify-content-between">Set
+                                                                as default</a>
+                                                        </div>
                                                     {% else %}
                                                         <p class="small-gray-text">Default</p>
                                                     {% endif %}
@@ -83,7 +85,7 @@
                             <strong> Add address </strong>
                         </div>
                         <div class="card-body">
-                            <form action="" method="post">
+                            <form action="" method="post" id="add-new-address">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-sm-6 form-group">
@@ -165,5 +167,34 @@
                 }
             })
         }
+
+        $(document).ready(function () {
+            $("#add-new-address").validate({
+                rules: {
+                    full_name: {
+                        required: true,
+                    },
+                    phone: {
+                        required: true,
+                        maxlength: 10,
+                        minlength: 10,
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    town: {
+                        required: true,
+                    },
+                    state: {
+                        required: true,
+                    },
+                    pin: {
+                        required: true,
+                        number: true
+                    },
+                },
+            })
+        })
     </script>
 {% endblock %}

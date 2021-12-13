@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 
 
 class AddressForm(forms.ModelForm):
+    phone = forms.CharField(label='Phone', required=True, widget=forms.NumberInput)
 
     class Meta:
         model = Address
@@ -14,6 +15,7 @@ class AddressForm(forms.ModelForm):
 
 
 class UpdateProfileForm(forms.ModelForm):
+    mobile = forms.CharField(label='Mobile', required=True, widget=forms.NumberInput)
 
     class Meta:
         model = get_user_model()

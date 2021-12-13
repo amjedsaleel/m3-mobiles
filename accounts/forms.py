@@ -11,6 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
     """
     password1 = forms.CharField(label='Password', required=True,
                                 widget=forms.PasswordInput)
+    mobile = forms.CharField(label='Mobile', required=True, widget=forms.NumberInput)
 
     class Meta:
         model = get_user_model()
