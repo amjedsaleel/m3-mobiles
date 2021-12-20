@@ -4,6 +4,7 @@ from django.http import JsonResponse, Http404
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
 
 # local Django
 from .models import Cart, CartItem
@@ -27,6 +28,7 @@ def user_cart(request):
     return render(request, 'cart/cart.html', context)
 
 
+@csrf_exempt
 def add_to_cart(request, variant_slug):
     if request.is_ajax():
         variant = Variant.objects.get(slug=variant_slug)
@@ -82,6 +84,7 @@ def add_to_cart(request, variant_slug):
     raise Http404
 
 
+@csrf_exempt
 def increment_cart_item(request, cart_item_id):
     if request.is_ajax():
         cart_item = CartItem.objects.get(pk=cart_item_id)
@@ -105,6 +108,7 @@ def increment_cart_item(request, cart_item_id):
         return JsonResponse(context)
 
 
+@csrf_exempt
 def decrement_cart_item(request, cart_item_id):
     if request.is_ajax():
         # Cart item decrementing
@@ -128,6 +132,7 @@ def decrement_cart_item(request, cart_item_id):
         return JsonResponse(context)
 
 
+@csrf_exempt
 def delete_cart_item(request, cart_item_id):
     if request.is_ajax():
         CartItem.objects.get(pk=cart_item_id).delete()
