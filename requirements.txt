@@ -16,7 +16,7 @@ html5lib==1.1
 idna==3.3
 jmespath==0.10.0
 Pillow==8.4.0
-psycopg2==2.9.2
+psycopg2-binary==2.9.2
 pycparser==2.21
 pydyf==0.1.2
 PyJWT==2.3.0
