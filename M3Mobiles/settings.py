@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Application definition
 
@@ -55,7 +55,6 @@ INSTALLED_APPS = [
 
     # Installed via pip
     'crispy_forms',
-    'storages',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -149,25 +148,13 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_ENDPOINT_URL = 'https://nyc3.digitaloceanspaces.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = config('AWS_LOCATION')
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -181,7 +168,6 @@ MESSAGE_TAGS = {
 }
 
 LOGIN_URL = '/accounts/login'
-
 
 # Twilio API credentials
 # (find here https://www.twilio.com/console)
