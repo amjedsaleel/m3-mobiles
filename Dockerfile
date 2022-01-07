@@ -1,0 +1,12 @@
+FROM python
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+RUN pip install gunicorn
+COPY .env .
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+COPY . .
+ENTRYPOINT sh entrypoint.sh
