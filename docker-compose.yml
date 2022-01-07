@@ -3,8 +3,6 @@ services:
   m3-mobiles:
     build:
       context: .
-    ports:
-      - "8000:8000"
     volumes:
      - m3-mobiles-assets:/app/assets
      - m3-mobiles-media:/app/media
@@ -22,6 +20,16 @@ services:
     volumes:
      - m3-mobiles-db:/var/lib/postgresql/data
 
+  nginx:
+    build: ./nginx 
+    ports:
+      - 80:80
+    volumes:
+      - m3-mobiles-assets:/app/assets
+      - m3-mobiles-media:/app/media
+    depends_on:
+      - m3-mobiles
+    
 volumes:
   m3-mobiles-assets:
   m3-mobiles-media:
