@@ -6,6 +6,21 @@ services:
     volumes:
      - m3-mobiles-assets:/app/assets
      - m3-mobiles-media:/app/media
+    env_file:
+      - .env
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - VERIFICATION_SID=${VERIFICATION_SID}
+      - RAZOR_KEY_ID=${RAZOR_KEY_ID}
+      - RAZOR_KEY_SECRET=${RAZOR_KEY_SECRET}
     depends_on:
       - db
 

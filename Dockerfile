@@ -5,7 +5,6 @@ ENV PYTHONUNBUFFERED 1
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
-COPY .env .
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 COPY . .
