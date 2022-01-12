@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: m3-mobiles-deployment
+  labels:
+    app: m3-mobiles
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: m3-mobiles
+  template:
+    metadata:
+      labels:
+        app: m3-mobiles
+    spec:
+      volumes:
+        - name: m3-mobiles-assets-vol
+          hostPath:
+            path: /home/docker/m3mobiles/assets
+        - name: m3-mobiles-media-vol
+          hostPath:
+              path: /home/docker/m3mobiles/media
+      containers:
+        - name: m3-mobiles
+          image: amjedsaleel/m3mobiles
+          volumeMounts:
+            - name: m3-mobiles-assets-vol
+              mountPath: /app/assets
+            - name: m3-mobiles-media-vol
+              mountPath: /app/media
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: secret-key
+            - name: DEBUG
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: debug
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: db-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: db-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: db-password
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: m3-mobiles-config-map
+                  key: postgres_db_url
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: db-port
+            - name: TWILIO_ACCOUNT_SID
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: twilio-account-sid
+            - name: TWILIO_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: twilio_auth_token
+            - name: VERIFICATION_SID
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: verification-sid
+            - name: RAZOR_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: razor-key-id
+            - name: RAZOR_KEY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: razor-key-secrete
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: m3-mobiles-service
+spec:
+  selector:
+    app: m3-mobiles
+#  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8000
+      
