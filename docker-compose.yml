@@ -21,6 +21,11 @@ services:
       - VERIFICATION_SID=${VERIFICATION_SID}
       - RAZOR_KEY_ID=${RAZOR_KEY_ID}
       - RAZOR_KEY_SECRET=${RAZOR_KEY_SECRET}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - AWS_LOCATION=${AWS_LOCATION}
+      - AWS_S3_ENDPOINT_URL${AWS_S3_ENDPOINT_URL}
     depends_on:
       - db
 
@@ -38,7 +43,7 @@ services:
   nginx:
     build: ./nginx 
     ports:
-      - 80:80
+      - "80:80"
     volumes:
       - m3-mobiles-assets:/app/assets
       - m3-mobiles-media:/app/media

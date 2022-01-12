@@ -93,7 +93,31 @@ spec:
                 secretKeyRef:
                   name: m3-mobiles-secret
                   key: razor-key-secrete
-
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: aws-access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: aws-secret-access-key
+            - name: AWS_STORAGE_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: aws-storage-bucket-name
+            - name: AWS_LOCATION
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: aws-location
+            - name: AWS_S3_ENDPOINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: m3-mobiles-secret
+                  key: aws-s3-endpoint-url
 ---
 apiVersion: v1
 kind: Service
