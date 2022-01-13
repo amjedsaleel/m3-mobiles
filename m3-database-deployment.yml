@@ -18,7 +18,7 @@ spec:
       volumes:
         - name: m3-mobiles-db-vol
           hostPath:
-            path: /home/docker/m3mobiles/database
+            path: /home/docker/m3mobiles/database2
       containers:
         - name: m3-mobiles-db
           image: postgres:alpine
