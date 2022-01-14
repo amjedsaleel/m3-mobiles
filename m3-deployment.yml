@@ -32,20 +32,20 @@ spec:
               mountPath: /app/media
           ports:
             - containerPort: 8000
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 8000
-          #   initialDelaySeconds: 3
-          #   failureThreshold: 1
-          #   periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 1
+            failureThreshold: 1
+            periodSeconds: 10
           startupProbe:
             httpGet:
               path: /
               port: 8000
-            initialDelaySeconds: 3
-            failureThreshold: 1
-            periodSeconds: 5            
+            initialDelaySeconds: 60
+            failureThreshold: 6
+            periodSeconds: 15            
 
           env:
             - name: SECRET_KEY
