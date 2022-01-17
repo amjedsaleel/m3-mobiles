@@ -1,0 +1,14 @@
+replicaCount: 1
+
+server:
+  repository: amjedsaleel/m3mobiles
+  tag: "latest"
+  port: 8000
+
+database:
+  repository: postgres
+  tag: alpine
+  port: 5432
+
+ingress:
+  host: "m3mobiles.com"

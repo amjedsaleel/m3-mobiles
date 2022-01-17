@@ -1,0 +1,3 @@
+Thank you for installing...
+Your release is named {{ .Release.Name }}.
+Application now available in "{{ .Values.ingress.host }}"
