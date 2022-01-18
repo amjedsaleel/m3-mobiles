@@ -31,6 +31,13 @@ spec:
               mountPath: /app/media
           ports:
             - containerPort: {{ .Values.server.port }}
+          resources:
+            requests:
+              cpu: 200m
+              # memory: 100mi
+            limits:
+              cpu: 400m
+              # memory: 200mi
           livenessProbe:
             httpGet:
               path: /
@@ -42,9 +49,9 @@ spec:
             httpGet:
               path: /
               port: {{ .Values.server.port }}
-            initialDelaySeconds: 60
-            failureThreshold: 6
-            periodSeconds: 15            
+            initialDelaySeconds: 30
+            failureThreshold: 2
+            periodSeconds: 10            
 
           env:
             - name: SECRET_KEY
@@ -146,3 +153,29 @@ spec:
       port: {{ .Values.server.port }}
       targetPort: {{ .Values.server.port }}
       
+
+--- 
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Release.Name }}
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource 
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 30
+  # - type: Resource 
+  #   resource:
+  #     name: memory
+  #     target:
+  #       type: AverageValue
+  #       AverageValue: 200Mi
