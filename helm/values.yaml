@@ -4,12 +4,32 @@ server:
   repository: amjedsaleel/m3mobiles
   tag: ""
   port: 8000
+  livenessProbe:
+    path: /
+    initialDelaySeconds: 1
+    failureThreshold: 1
+    periodSeconds: 10
+  startupProbe: 
+    path: /
+    initialDelaySeconds: 30
+    failureThreshold: 2
+    periodSeconds: 10
 
 database:
   repository: postgres
   tag: alpine
   port: 5432
 
+resources:
+  requests:
+    cpu: 200m
+  limits:
+    cpu: 400m
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 2
+  averageUtilization: 40
+
 ingress:
   host: "m3mobiles.com"
-

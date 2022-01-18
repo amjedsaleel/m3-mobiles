@@ -33,26 +33,25 @@ spec:
             - containerPort: {{ .Values.server.port }}
           resources:
             requests:
-              cpu: 200m
+              cpu: {{ .Values.resources.requests.cpu }}
               # memory: 100mi
             limits:
-              cpu: 400m
+              cpu: {{ .Values.resources.limits.cpu }}
               # memory: 200mi
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.server.livenessProbe.path }}
               port: {{ .Values.server.port }}
-            initialDelaySeconds: 1
-            failureThreshold: 1
-            periodSeconds: 10
+            initialDelaySeconds: {{ .Values.server.livenessProbe.initialDelaySeconds }}
+            failureThreshold: {{ .Values.server.livenessProbe.failureThreshold }}
+            periodSeconds: {{ .Values.server.livenessProbe.periodSeconds }}
           startupProbe:
             httpGet:
-              path: /
+              path: {{ .Values.server.startupProbe.path }}
               port: {{ .Values.server.port }}
-            initialDelaySeconds: 30
-            failureThreshold: 2
-            periodSeconds: 10            
-
+            initialDelaySeconds: {{ .Values.server.startupProbe.initialDelaySeconds }}
+            failureThreshold: {{ .Values.server.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.server.startupProbe.periodSeconds }}           
           env:
             - name: SECRET_KEY
               valueFrom:
@@ -164,15 +163,15 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Release.Name }}
-  minReplicas: 1
-  maxReplicas: 2
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
   metrics:
   - type: Resource 
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 30
+        averageUtilization: {{ .Values.hpa.averageUtilization }}
   # - type: Resource 
   #   resource:
   #     name: memory
