@@ -15,13 +15,6 @@ spec:
       labels:
         app: "{{ .Release.Name }}"
     spec:
-      volumes:
-        - name: m3-mobiles-assets-vol
-          hostPath:
-            path: /home/docker/m3mobiles/assets
-        - name: m3-mobiles-media-vol
-          hostPath:
-              path: /home/docker/m3mobiles/media
       containers:
         {{- include "helm.server" . | indent 8 }}       
           volumeMounts:
