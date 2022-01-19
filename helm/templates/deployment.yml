@@ -17,11 +17,6 @@ spec:
     spec:
       containers:
         {{- include "helm.server" . | indent 8 }}       
-          volumeMounts:
-            - name: m3-mobiles-assets-vol
-              mountPath: /app/assets
-            - name: m3-mobiles-media-vol
-              mountPath: /app/media
           ports:
             - containerPort: {{ .Values.server.port }}
           resources:

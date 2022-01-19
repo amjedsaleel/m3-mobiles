@@ -33,3 +33,9 @@ hpa:
 
 ingress:
   host: "m3mobiles.com"
+
+global:
+    postgresql:
+      postgresqlDatabase: "postgres"
+      postgresqlUsername: "postgres"
+      postgresqlPassword: "password"
