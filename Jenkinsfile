@@ -38,8 +38,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'python3 -m venv venv'
-                sh "source ./venv/bin/activate"
-                sh 'pip install -r requirements.txt'
+                sh '/home/jenkins-agent/workspace/workspace/m3-mobiles/venv/bin/pip install -r requirements.txt'
             }
         }
         
