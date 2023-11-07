@@ -53,6 +53,11 @@ pipeline {
                 sh 'trivy fs --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o trivy-fs-report.html .'
             }
         }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t  amjedsaleel/m3-mobile:${BUILD_NUMBER} .'
+            }
+        }
     }
 
     post {
