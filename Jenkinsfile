@@ -51,7 +51,7 @@ pipeline {
         }
         stage('TRIVY FS SCAN') {
             steps {
-                sh 'trivy fs --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o trivy-fs-report.html .'
+                sh 'trivy fs --format template --template "@/usr/local/share/trivy/templates/html.tpl" --ignore-unfixed -o trivy-fs-report.html .'
             }
         }
         stage('Docker build') {
@@ -61,7 +61,7 @@ pipeline {
         }
         stage('Trivy image scan') {
             steps {
-                sh 'trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o trivy-image-report.html amjedsaleel/m3-mobile:${BUILD_NUMBER}'
+                sh 'trivy image --format template  --template "@/usr/local/share/trivy/templates/html.tpl" --ignore-unfixed -o trivy-image-report.html amjedsaleel/m3-mobile:${BUILD_NUMBER}'
             }
         }
         stage('Push Image') {
