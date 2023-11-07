@@ -65,7 +65,7 @@ pipeline {
         }
         stage('Push Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'gmail-smtp', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     sh 'docker login -u $USERNAME -p $PASSWORD'
                 }
                 sh 'docker push amjedsaleel/m3-mobile:${BUILD_NUMBER}'
