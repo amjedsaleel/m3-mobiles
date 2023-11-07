@@ -50,8 +50,21 @@ pipeline {
         }
         stage('TRIVY FS SCAN') {
             steps {
-                sh "trivy fs . > trivyfs.txt"
+                sh 'trivy fs --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o trivy-fs-report.html .'
             }
+        }
+    }
+
+    post {
+        always {
+            emailext subject: '$JOB_NAME',
+                body: '$DEFAULT_CONTENT',
+                replyTo: 'no-reply@white.com',
+                attachLog: true,
+                to: 'whitekail777@gmail.com',
+                mimeType: 'text/html',
+                attachmentsPattern: 'trivy-fs-report.html,index.html'
+            
         }
     }
 }
