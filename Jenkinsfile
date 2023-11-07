@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
+        CURRENT_WORKSPACE = pwd()
     }
     stages {
         stage('clean workspace') {
@@ -38,7 +39,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'python3 -m venv venv'
-                sh '/home/jenkins-agent/workspace/workspace/m3-mobiles/venv/bin/pip install -r requirements.txt'
+                sh '${CURRENT_WORKSPACE}/venv/bin/pip install -r requirements.txt'
             }
         }
         
