@@ -58,6 +58,20 @@ pipeline {
                 sh 'docker build -t  amjedsaleel/m3-mobile:${BUILD_NUMBER} .'
             }
         }
+        stage('Trivy image scan') {
+            steps {
+                sh 'trivy image --format template --template "@/usr/local/share/trivy/templates/html.tpl" -o trivy-image-report.html amjedsaleel/m3-mobile:${BUILD_NUMBER}'
+            }
+        }
+        stage('Push Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'gmail-smtp', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh 'docker login -u $USERNAME -p $PASSWORD'
+                }
+                sh 'docker push amjedsaleel/m3-mobile:${BUILD_NUMBER}'
+                sh 'docker logout'
+            }
+        }
     }
 
     post {
@@ -68,7 +82,7 @@ pipeline {
                 attachLog: true,
                 to: 'whitekail777@gmail.com',
                 mimeType: 'text/html',
-                attachmentsPattern: 'trivy-fs-report.html,index.html'
+                attachmentsPattern: 'trivy-fs-report.html,trivy-image-report.html'
             
         }
     }
