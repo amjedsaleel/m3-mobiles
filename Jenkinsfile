@@ -1,9 +1,9 @@
 pipeline {
-    agent { label 'agent-1' }
-    tools {
-        jdk 'jdk17'
-        nodejs 'node:16.17.0'
-    }
+    agent any
+    // tools {
+    //     jdk 'jdk17'
+    //     nodejs 'node:16.17.0'
+    // }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
         CURRENT_WORKSPACE = pwd()
